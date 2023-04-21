@@ -1,0 +1,72 @@
+
+#' Sample size required to develop a risk prediction model for binary outcomes
+#'
+#' @description
+#' This function calculates the sample size required to achieve an expected Calibration Slope (S), given anticipated features of the data and the model
+#' (outcome prevalence, C-statistic and number of predictors). 
+
+#' @param S (numeric) The target expected calibaration slope
+#' @param p (numeric) The anticipated outcome prevalence
+#' @param c (numeric) The antcipated C-statistic
+#' @param n.predictors (numeric) The number of candidate predictor variables
+#' @param nsim (numeric) Number of simulations (at least 500)
+#' @param nval (numeric) Size of validation data (at least 10000 )
+#' @param ncores (numeric) Number of processing computer cores
+
+#'
+#' @return n: the required sample size
+#' @export
+#'
+#' @examples
+#' # Find the sample size
+#' n <- sampsizedev(S=0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 100, parallel=FALSE)
+#' 
+#' # Fast run with parallel computing
+#' # n <- sampsizedev(S=0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 100, parallel=TRUE)
+#' 
+#' # Check also the MAPE for the selected size
+#' expected_cs_mape(n, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel=FALSE)
+#' 
+
+#'
+#'
+
+#' @seealso
+#' expected_cs_mape()
+
+
+sampsizedev <- function(S, c, p, n.predictors, nval = 25000, nsim = 1000, tol = 20, parallel = TRUE){
+  
+  set.seed(1)
+  mean_var_eta     <- find_mu_sigma(p, c)
+  mean_eta         <- mean_var_eta[1]
+  variance_eta     <- mean_var_eta[2]
+  
+  r2   <- as.numeric(approximate_R2(c, p, n = 100000)[2])
+  
+  n_init <- round((n.predictors)/ ((S-1)*log(1-r2/S)))
+  
+  min.opt                              <- n_init*0.8
+  if (c<=0.7)            inflation_f   <- 1.3
+  if (c>0.7  & c<=0.8)   inflation_f   <- 1.5
+  if (c>0.8  & c<=0.85)  inflation_f   <- 2
+  if (c>0.85 & c<=0.9)   inflation_f   <- 2.5
+  max.opt                              <- inflation_f*n_init
+  
+  print("Optimisation Starting ~ 1 min left...")
+  s_est <- function(n, nsim=nsim){
+    
+    s <-  expected_s_n(round(n), S = S, mean_eta = mean_eta, variance_eta = variance_eta,  p = p, c = c, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel)[1]
+    round(s/0.003)*0.003-S
+    #(s - S)^2
+    #abs(s-S)
+  }
+  
+  n <- bisection(s_est, min.opt, max.opt, tol = tol, nsim = nsim)
+  n <- ceiling(n/10)*10
+  
+  #run <- expected_s(n, p=p, c=c, n.true=n.true, n.noise=n.noise, beta = c(0.5,0.3,0.3,0.15,0.15), nsim=1000, nval=50000, cores=2)
+  
+  print(paste("Required sample size: ", n ))
+  
+}
