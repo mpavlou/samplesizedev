@@ -37,6 +37,8 @@
 sampsizedev <- function(S, c, p, n.predictors, nval = 25000, nsim = 1000, tol = 20, parallel = TRUE){
 
   set.seed(1)
+
+
   mean_var_eta     <- find_mu_sigma(p, c)
   mean_eta         <- mean_var_eta[1]
   variance_eta     <- mean_var_eta[2]
