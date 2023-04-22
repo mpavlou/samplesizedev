@@ -27,4 +27,5 @@ Imports:
     doParallel,
     foreach, 
     rms
-
+URL: https://github.com/mpavlou/samplesizedev
+BugReports: https://github.com/mpavlou/samplesizedev/issues
