@@ -38,7 +38,6 @@ sampsizedev <- function(S, c, p, n.predictors, nval = 25000, nsim = 1000, tol = 
 
   set.seed(1)
 
-
   mean_var_eta     <- find_mu_sigma(p, c)
   mean_eta         <- mean_var_eta[1]
   variance_eta     <- mean_var_eta[2]
@@ -51,7 +50,7 @@ sampsizedev <- function(S, c, p, n.predictors, nval = 25000, nsim = 1000, tol = 
   if (c<=0.7)            inflation_f   <- 1.3
   if (c>0.7  & c<=0.8)   inflation_f   <- 1.5
   if (c>0.8  & c<=0.85)  inflation_f   <- 2
-  if (c>0.85 & c<=0.9)   inflation_f   <- 2.5
+  if (c>0.85 & c<=0.9)   inflation_f   <- 2.8
   max.opt                              <- inflation_f*n_init
 
   print("Optimisation Starting ~ 1 min left...")
