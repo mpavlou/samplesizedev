@@ -55,20 +55,18 @@ samplesizedev <- function(S, p, c,  n.predictors, nval = 25000, nsim = 1000, par
   if (c>0.85 & c<=0.9)   inflation_f   <- 2.8
   max.opt                              <- inflation_f*n_init
 
-  tol = round(n_init/100/10)*10
+  tol = ceiling(round(n_init/100)/10)*10
   #tol = 20
 
   print("Optimisation Starting ~ 1 min left...")
   s_est <- function(n, nsim=nsim){
 
-    s <-  expected_s_n(round(n), S = S, mean_eta = mean_eta, variance_eta = variance_eta,  p = p, c = c, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel)[1]
-    round(s/0.0025)*0.0025-S
-    #(s - S)^2
-    #abs(s-S)
+    s <-  expected_s_n(n, S = S, mean_eta = mean_eta, variance_eta = variance_eta,  p = p, c = c, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel)
+    round(s[1]/0.0025)*0.0025 - S
   }
 
   n <- bisection(s_est, min.opt, max.opt, tol = tol, nsim = nsim)
-  n <- ceiling(n/10)*10
+  n <- ceiling(n/tol)*tol
 
   #run <- expected_s(n, p=p, c=c, n.true=n.true, n.noise=n.noise, beta = c(0.5,0.3,0.3,0.15,0.15), nsim=1000, nval=50000, cores=2)
 

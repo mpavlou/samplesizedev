@@ -92,14 +92,14 @@ expected_cs_mape <- function(n, p, c, n.predictors, nsim = 1000, nval = 25000, p
   df        <- data.frame(cs)
   df        <- stats::na.omit(df)
   cs_plot   <- ggplot2:: ggplot(df,  ggplot2::aes(x = cs), size=12) +
-    ggplot2::geom_density() +  ggplot2::ggtitle(paste("Expected CS = ",round(stats::median(cs,na.rm=TRUE)/0.005)*0.005)) +
+    ggplot2::geom_density() +  ggplot2::ggtitle(paste("Expected CS = ",round(mean(cs,na.rm=TRUE)/0.005)*0.005)) +
     ggplot2::geom_vline( ggplot2::aes(xintercept=stats::median(cs, na.rm = TRUE)), color="blue", linetype ="dashed", size = 1) + ggplot2::ylab("Density") +  ggplot2::theme(text =  ggplot2::element_text(size = 13))
 
 
   df        <- data.frame(mape)
   df        <- stats::na.omit(df)
   mape_plot <- ggplot2::ggplot(df,  ggplot2::aes(x = mape), size=12) +
-    ggplot2::geom_density() + ggplot2::ggtitle(paste("Expected MAPE = ", round(stats::median(mape,na.rm=TRUE),3), sep = "")) +
+    ggplot2::geom_density() + ggplot2::ggtitle(paste("Expected MAPE = ", round(mean(mape,na.rm=TRUE),3), sep = "")) +
     ggplot2::geom_vline( ggplot2::aes(xintercept=stats::median(mape, na.rm = TRUE)), color="blue", linetype = "dashed", size=1) + ggplot2::ylab("Density") +  ggplot2::theme(text =  ggplot2::element_text(size = 13))
 
   figure  <- ggpubr::ggarrange(cs_plot, mape_plot,
@@ -118,7 +118,7 @@ expected_cs_mape <- function(n, p, c, n.predictors, nsim = 1000, nval = 25000, p
   prev      <- mean(yval)
   cstat     <- quickcstat(yval, invlogit(mean + xval %*% beta))
 
-  df        <- data.frame(n, round(stats::median(cs, na.rm = TRUE)/0.005) * 0.005, round(sqrt(stats::var(cs,na.rm = TRUE)/nsim), 4), round(stats::median(mape, na.rm = TRUE),4), round(prev, 3), round(cstat, 3) )
+  df        <- data.frame(n, round(mean(cs, na.rm = TRUE)/0.005) * 0.005, round(sqrt(stats::var(cs,na.rm = TRUE)/nsim), 4), round(mean(mape, na.rm = TRUE),4), round(prev, 3), round(cstat, 3) )
   names(df) <- c("N", "Expected CS", "MCE(CS)", "Expected MAPE", "Prevalence", "C-Statistic")
 
   performance <- df[,-3]
