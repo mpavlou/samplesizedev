@@ -5,7 +5,7 @@
 #' This function calculates the sample size required to achieve an expected Calibration Slope (S), given anticipated features of the data and the model
 #' (outcome prevalence, C-statistic and number of predictors).
 #'
-#'     It takes approximately one minute to run. Ideally it should be followed by checking also
+#'It takes approximately one minute to run. Ideally it should be followed by checking also
 #' the Mean Absolute Prediction Error that corresponds to the calculated sample size.
 
 #' @param S (numeric) The target expected calibration slope
@@ -22,18 +22,18 @@
 #'
 #' @examples
 #' # Find the sample size
-#' n <- samplesizedev(S=0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 100, parallel=FALSE)
+#'   samplesizedev(S = 0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 500, parallel = FALSE)
 #'
-#' # Fast run with parallel computing
-#' # n <- samplesizedev(S=0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 100, parallel=TRUE)
+#' # Prefer parallel computing with >2 cores that ensure faster running
+#' # samplesizedev(S = 0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 1000, parallel = TRUE)
 #'
 #' # Check the expected MAPE and Calibration Slope for the selected size
-#' # expected_cs_mape(n, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel=FALSE)
+#' # expected_cs_mape(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 1000, parallel = TRUE)
 #'
 #'
 #'
 #' @seealso
-#' expected_cs_mape()
+#' expected_cs_mape
 
 
 samplesizedev <- function(S, p, c,  n.predictors, nval = 25000, nsim = 1000, parallel = TRUE){
@@ -62,7 +62,7 @@ samplesizedev <- function(S, p, c,  n.predictors, nval = 25000, nsim = 1000, par
   s_est <- function(n, nsim=nsim){
 
     s <-  expected_s_n(round(n), S = S, mean_eta = mean_eta, variance_eta = variance_eta,  p = p, c = c, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel)[1]
-    round(s/0.003)*0.003-S
+    round(s/0.0025)*0.0025-S
     #(s - S)^2
     #abs(s-S)
   }
