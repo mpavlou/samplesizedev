@@ -37,10 +37,10 @@ This function calculates the expected calibration slope and MAPE given key data 
 (outcome prevalence, C-statistic and number of predictors). It takes approximately 15 seconds to test_allrun.
 }
 \examples{
-# expected_cs_mape(n = 1000, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = FALSE)
+expected_cs_mape(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = FALSE)
 
-# Fast run with parallel computing
-expected_cs_mape(n = 1000, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = TRUE)
+# Prefer parallel computing with >2 cores that ensure faster running
+# expected_cs_mape(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = TRUE)
 }
 \seealso{
 samplesizedev

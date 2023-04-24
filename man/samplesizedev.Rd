@@ -41,17 +41,17 @@ the Mean Absolute Prediction Error that corresponds to the calculated sample siz
 }
 \examples{
 # Find the sample size
-n <- samplesizedev(S=0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 100, parallel=FALSE)
+  samplesizedev(S = 0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 500, parallel = FALSE)
 
-# Fast run with parallel computing
-# n <- samplesizedev(S=0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 100, parallel=TRUE)
+# Prefer parallel computing with >2 cores that ensure faster running
+# samplesizedev(S = 0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 1000, parallel = TRUE)
 
 # Check the expected MAPE and Calibration Slope for the selected size
-# expected_cs_mape(n, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel=FALSE)
+# expected_cs_mape(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 1000, parallel = TRUE)
 
 
 
 }
 \seealso{
-expected_cs_mape()
+expected_cs_mape
 }
