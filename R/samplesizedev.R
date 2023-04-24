@@ -10,7 +10,7 @@
 #' @param p (numeric) The anticipated outcome prevalence
 #' @param c (numeric) The antcipated C-statistic
 #' @param n.predictors (numeric) The number of candidate predictor variables
-#' @param nsim (numeric) Number of simulations (at least 500)
+#' @param nsim (numeric) The number of simulations (at least 500, default value 1000 to ensure small simulation error)
 #' @param nval (numeric) Size of validation data (at least 10000 )
 #' @param parallel (logical) parallel processing to speed up computations (default=TRUE)
 

@@ -25,7 +25,7 @@ samplesizedev(
 
 \item{nval}{(numeric) Size of validation data (at least 10000 )}
 
-\item{nsim}{(numeric) Number of simulations (at least 500)}
+\item{nsim}{(numeric) The number of simulations (at least 500, default value 1000 to ensure small simulation error)}
 
 \item{parallel}{(logical) parallel processing to speed up computations (default=TRUE)}
 }
@@ -34,7 +34,8 @@ n: the required sample size
 }
 \description{
 This function calculates the sample size required to achieve an expected Calibration Slope (S), given anticipated features of the data and the model
-(outcome prevalence, C-statistic and number of predictors).
+(outcome prevalence, C-statistic and number of predictors). It takes approximately one minute to run. Ideally it should be followed by checking also
+the Mean Absolute Prediction Error that corresponds to the calculated sample size.
 }
 \examples{
 # Find the sample size
