@@ -27,14 +27,14 @@ expected_cs_mape(
 
 \item{nval}{(numeric) Size of validation data}
 
-\item{ncores}{(numeric) Number of processing computer cores}
+\item{parallel}{(logical) parallel processing to speed up computations (default=TRUE)}
 }
 \value{
 df: the expected calibration slope and mape
 }
 \description{
 This function calculates the expected calibration slope and MAPE given key data and model characteristics
-(outcome prevalence, C-statistic and number of predictors)
+(outcome prevalence, C-statistic and number of predictors).
 }
 \examples{
 expected_cs_mape(n = 1000, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel=FALSE)

@@ -3,16 +3,14 @@
 #'
 #' @description
 #' This function calculates the expected calibration slope and MAPE given key data and model characteristics
-#' (outcome prevalence, C-statistic and number of predictors)
-
+#' (outcome prevalence, C-statistic and number of predictors).
 #' @param n (numeric) The sample size
 #' @param p (numeric) The anticipated outcome prevalence
 #' @param c (numeric) The C-statistic
 #' @param n.predictors (numeric) Number of predictors
 #' @param nsim (numeric) Number of simulations
 #' @param nval (numeric) Size of validation data
-#' @param ncores (numeric) Number of processing computer cores
-
+#' @param parallel (logical) parallel processing to speed up computations (default=TRUE)
 #'
 #' @return df: the expected calibration slope and mape
 #' @export

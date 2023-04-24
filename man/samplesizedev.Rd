@@ -11,7 +11,6 @@ samplesizedev(
   n.predictors,
   nval = 25000,
   nsim = 1000,
-  tol = 20,
   parallel = TRUE
 )
 }
