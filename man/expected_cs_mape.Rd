@@ -21,9 +21,9 @@ expected_cs_mape(
 
 \item{c}{(numeric) The C-statistic}
 
-\item{n.predictors}{(numeric) Number of predictors}
+\item{n.predictors}{(numeric) The number of candidate predictor variables}
 
-\item{nsim}{(numeric) Number of simulations}
+\item{nsim}{(numeric) The number of simulations (at least 500, default value 1000)}
 
 \item{nval}{(numeric) Size of validation data}
 
@@ -34,7 +34,7 @@ df: the expected calibration slope and mape
 }
 \description{
 This function calculates the expected calibration slope and MAPE given key data and model characteristics
-(outcome prevalence, C-statistic and number of predictors).
+(outcome prevalence, C-statistic and number of predictors). It takes approximately 15 seconds to test_allrun.
 }
 \examples{
 expected_cs_mape(n = 1000, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel=FALSE)
@@ -43,5 +43,5 @@ expected_cs_mape(n = 1000, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, par
 # expected_cs_mape(n = 1000, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel=TRUE)
 }
 \seealso{
-sampsizedev()
+samplesizedev()
 }

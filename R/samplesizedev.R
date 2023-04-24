@@ -3,7 +3,9 @@
 #'
 #' @description
 #' This function calculates the sample size required to achieve an expected Calibration Slope (S), given anticipated features of the data and the model
-#' (outcome prevalence, C-statistic and number of predictors). It takes approximately one minute to run. Ideally it should be followed by checking also
+#' (outcome prevalence, C-statistic and number of predictors).
+#'
+#'     It takes approximately one minute to run. Ideally it should be followed by checking also
 #' the Mean Absolute Prediction Error that corresponds to the calculated sample size.
 
 #' @param S (numeric) The target expected calibration slope
@@ -23,7 +25,7 @@
 #' n <- samplesizedev(S=0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 100, parallel=FALSE)
 #'
 #' # Fast run with parallel computing
-#' # n <- sampsizedev(S=0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 100, parallel=TRUE)
+#' # n <- samplesizedev(S=0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 100, parallel=TRUE)
 #'
 #' # Check the expected MAPE and Calibration Slope for the selected size
 #' # expected_cs_mape(n, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel=FALSE)

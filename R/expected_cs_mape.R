@@ -3,7 +3,7 @@
 #'
 #' @description
 #' This function calculates the expected calibration slope and MAPE given key data and model characteristics
-#' (outcome prevalence, C-statistic and number of predictors). It takes approximately 15 seconds to run.
+#' (outcome prevalence, C-statistic and number of predictors). It takes approximately 15 seconds to test_allrun.
 #' @param n (numeric) The sample size
 #' @param p (numeric) The anticipated outcome prevalence
 #' @param c (numeric) The C-statistic
@@ -22,7 +22,7 @@
 #' # expected_cs_mape(n = 1000, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel=TRUE)
 
 #' @seealso
-#' sampsizedev()
+#' samplesizedev()
 
 #'
 #'
