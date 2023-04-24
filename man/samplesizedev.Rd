@@ -6,8 +6,8 @@
 \usage{
 samplesizedev(
   S,
-  c,
   p,
+  c,
   n.predictors,
   nval = 25000,
   nsim = 1000,
@@ -17,9 +17,9 @@ samplesizedev(
 \arguments{
 \item{S}{(numeric) The target expected calibration slope}
 
-\item{c}{(numeric) The antcipated C-statistic}
-
 \item{p}{(numeric) The anticipated outcome prevalence}
+
+\item{c}{(numeric) The anticipated C-statistic}
 
 \item{n.predictors}{(numeric) The number of candidate predictor variables}
 
@@ -34,7 +34,9 @@ n: the required sample size
 }
 \description{
 This function calculates the sample size required to achieve an expected Calibration Slope (S), given anticipated features of the data and the model
-(outcome prevalence, C-statistic and number of predictors). It takes approximately one minute to run. Ideally it should be followed by checking also
+(outcome prevalence, C-statistic and number of predictors).
+
+It takes approximately one minute to run. Ideally it should be followed by checking also
 the Mean Absolute Prediction Error that corresponds to the calculated sample size.
 }
 \examples{

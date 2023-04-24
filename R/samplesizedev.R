@@ -10,7 +10,7 @@
 
 #' @param S (numeric) The target expected calibration slope
 #' @param p (numeric) The anticipated outcome prevalence
-#' @param c (numeric) The antcipated C-statistic
+#' @param c (numeric) The anticipated C-statistic
 #' @param n.predictors (numeric) The number of candidate predictor variables
 #' @param nsim (numeric) The number of simulations (at least 500, default value 1000 to ensure small simulation error)
 #' @param nval (numeric) Size of validation data (at least 10000 )
@@ -36,7 +36,7 @@
 #' expected_cs_mape()
 
 
-samplesizedev <- function(S, c, p, n.predictors, nval = 25000, nsim = 1000, parallel = TRUE){
+samplesizedev <- function(S, p, c,  n.predictors, nval = 25000, nsim = 1000, parallel = TRUE){
 
   set.seed(1)
 
