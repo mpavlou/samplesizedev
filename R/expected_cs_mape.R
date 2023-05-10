@@ -92,8 +92,13 @@ expected_cs_mape <- function(n, p, c, n.predictors, nsim = 1000, nval = 25000, p
   df        <- data.frame(cs)
   df        <- stats::na.omit(df)
   cs_plot   <- ggplot2:: ggplot(df,  ggplot2::aes(x = cs), size=12) +
-    ggplot2::geom_density() +  ggplot2::ggtitle(paste("Expected CS = ",round(mean(cs,na.rm=TRUE)/0.005)*0.005)) +
-    ggplot2::geom_vline( ggplot2::aes(xintercept=stats::median(cs, na.rm = TRUE)), color="blue", linetype ="dashed", size = 1) + ggplot2::ylab("Density") +  ggplot2::theme(text =  ggplot2::element_text(size = 13))
+    ggplot2::geom_density() +  ggplot2::ggtitle(paste("Expected CS = ",round(mean(cs,na.rm=TRUE)/0.0025)*0.0025)) +
+    ggplot2::geom_vline( ggplot2::aes(xintercept = mean(cs, na.rm = TRUE)), color="blue", linetype ="dashed", size = 1) +
+    ggplot2::ylab("Density") +  ggplot2::theme(text =  ggplot2::element_text(size = 13)) +
+    ggplot2::xlab("Calibration Slope")
+
+  if ( abs(mean(cs, na.rm=TRUE)- 0.9) > 0.005)   cs_plot <-  cs_plot + ggplot2::geom_vline( ggplot2::aes(xintercept = 0.9), color="red", linetype ="dashed", size = 1)
+
 
 
   df        <- data.frame(mape)
@@ -107,7 +112,7 @@ expected_cs_mape <- function(n, p, c, n.predictors, nsim = 1000, nval = 25000, p
 
   cs_mape_plot <- ggpubr::annotate_figure(figure,
                                   top = ggpubr::text_grob(paste("Distribution of the Calibration Slope and MAPE\n","N=", n, ", Prevalence=", p, ", C-stat=",c,sep=""),
-                                                  color = "black", face = "bold", size = 13))
+                                                  color = "black", face = "bold", size = 13)) + ggplot2::xlab("MAPE")
 
   print(cs_mape_plot)
 
@@ -118,7 +123,7 @@ expected_cs_mape <- function(n, p, c, n.predictors, nsim = 1000, nval = 25000, p
   prev      <- mean(yval)
   cstat     <- quickcstat(yval, invlogit(mean + xval %*% beta))
 
-  df        <- data.frame(n, round(mean(cs, na.rm = TRUE)/0.005) * 0.005, round(sqrt(stats::var(cs,na.rm = TRUE)/nsim), 4), round(mean(mape, na.rm = TRUE),4), round(prev, 3), round(cstat, 3) )
+  df        <- data.frame(n, round(mean(cs, na.rm = TRUE)/0.0025) * 0.0025, round(sqrt(stats::var(cs,na.rm = TRUE)/nsim), 4), round(mean(mape, na.rm = TRUE),4), round(prev, 2), round(cstat, 2 ) )
   names(df) <- c("N", "Expected CS", "MCE(CS)", "Expected MAPE", "Prevalence", "C-Statistic")
 
   performance <- df[,-3]
