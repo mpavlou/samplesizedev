@@ -173,21 +173,21 @@ find_mu_sigma <- function(target.prev, target.c, min.opt = c(-10,0), max.opt = c
  # Build formula
  measurevar <- "Surv(t, censor)"
  etavar     <- "eta"
- formula    <- as.formula  (paste( measurevar, etavar, sep=" ~ "))
+ formula    <- as.formula  (paste("Surv(t, censor)", etavar, sep=" ~ "))
 
 
    cfun <- function(x) {
      set.seed(2)
-     u      <- runif(n)
+     u      <- stats::runif(n)
      eta    <- stats::rnorm(n, mean = 0, sd = sqrt(x))
      t      <- -log(u)/((lambda) * exp(eta) )
      #c      <- 1 - concordance(t ~ eta)$concordance; c
-     censor <- rep(1,n)
+     censor <- rep(1, n)
      data   <- data.frame(t, censor, eta)
 
-     big <- coxph(formula, data=data, x=TRUE, y=TRUE)
+     big <- survival::coxph(formula, data = data, x = TRUE, y = TRUE)
 
-     A1  <- pec::cindex(list("Cox X1"= big), formula=formula, data=data, eval.times=1)
+     A1  <- pec::cindex(list("Cox X1"= big), formula = formula, data = data, eval.times = 1)
 
      c <- A1$AppCindex[["Cox X1"]]
 
@@ -205,9 +205,9 @@ find_sigma_quick <- function(target.c,  min.opt = 0.1, max.opt = 8, tol=0.0001){
   lambda  <- 1
 
   # Build formula
-  measurevar <- "Surv(t, censor)"
+  measurevar <- "survival::Surv(t, censor)"
   etavar     <- "eta"
-  formula    <- as.formula  (paste( measurevar, etavar, sep=" ~ "))
+  formula    <- as.formula(paste( measurevar, etavar, sep=" ~ "))
 
 
   cfun <- function(x) {
@@ -215,7 +215,7 @@ find_sigma_quick <- function(target.c,  min.opt = 0.1, max.opt = 8, tol=0.0001){
     u      <- runif(n)
     eta    <- stats::rnorm(n, mean = 0, sd = sqrt(x))
     t      <- -log(u)/((lambda) * exp(eta) )
-    c      <- 1 - concordance(t ~ eta)$concordance; c
+    c      <- 1 - survival::concordance(t ~ eta)$concordance; c
     abs(c - target.c)
   }
 
@@ -242,7 +242,7 @@ find_sigma_quick <- function(target.c,  min.opt = 0.1, max.opt = 8, tol=0.0001){
 # #
 #  big <- coxph(formula, data=data, x=TRUE, y=TRUE)
 #
-#  A1  <- pec::cindex(list("Cox X1"= big), formula=formula, data=data, eval.times=1)
+#  A1  <- pec::cindex(list("Cox X1"= big), formula=Surv(t, censor)~eta, data=data, eval.times=1)
 #
 #  cest <- A1$AppCindex[["Cox X1"]]
 #  cest

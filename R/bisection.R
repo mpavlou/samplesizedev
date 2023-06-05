@@ -4,7 +4,8 @@ bisection <- function(f, a, b, iter = 10, tol = 10, nsim = 200) {
   # If the signs of the function at the evaluated points, a and b, stop the function and return message.
 
   nsim1 <- nsim
-  nsim  <- nsim/4
+  divide <- 4
+  nsim  <- nsim/divide
 
   fa <- f(a, nsim = nsim)
   fb <- f(b, nsim = nsim)
@@ -16,7 +17,7 @@ bisection <- function(f, a, b, iter = 10, tol = 10, nsim = 200) {
 
   for (k in 1:iter) {
 
-    if (k <=4 ) nsim <- nsim1/4*k
+    if (k <= divide ) nsim <- nsim1/divide*k
     a <- round(a/tol)*tol
     b <- round(b/tol)*tol
 

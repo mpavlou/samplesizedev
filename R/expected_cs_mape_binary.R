@@ -16,17 +16,17 @@
 #' @export
 #'
 #' @examples
-#' expected_cs_mape(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = FALSE)
+#' expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = FALSE)
 #'
 #' # Prefer parallel computing with >2 cores that ensure faster running
-#' # expected_cs_mape(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = TRUE)
+#' # expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = TRUE)
 
 #' @seealso
-#' samplesizedev
+#' samplesizedev_binary samplesizedev_survival
 
 #'
 #'
-expected_cs_mape <- function(n, p, c, n.predictors, nsim = 1000, nval = 25000, parallel=TRUE){
+expected_cs_mape_binary <- function(n, p, c, n.predictors, nsim = 1000, nval = 25000, parallel=TRUE){
 
   # Find mean and variance of for Normal linear predictor
 
@@ -123,10 +123,11 @@ expected_cs_mape <- function(n, p, c, n.predictors, nsim = 1000, nval = 25000, p
   prev      <- mean(yval)
   cstat     <- quickcstat(yval, invlogit(mean + xval %*% beta))
 
-  df        <- data.frame(n, round(mean(cs, na.rm = TRUE)/0.0025) * 0.0025, round(sqrt(stats::var(cs,na.rm = TRUE)/nsim), 4), round(mean(mape, na.rm = TRUE),4), round(prev, 2), round(cstat, 2 ) )
-  names(df) <- c("N", "Expected CS", "MCE(CS)", "Expected MAPE", "Prevalence", "C-Statistic")
+  df        <- data.frame(n, round(mean(cs, na.rm = TRUE)/0.0025) * 0.0025, round(sqrt(stats::var(cs,na.rm = TRUE)), 4), round(mean(mape, na.rm = TRUE),4), round(prev, 2), round(cstat, 2 ) )
+  names(df) <- c("N", "Expected CS", "SD(CS)", "Expected MAPE", "Prevalence", "C-Statistic")
 
-  performance <- df[,-3]
+  #performance <- df[,-3]
+  performance <- df
 
   performance
 

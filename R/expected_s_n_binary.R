@@ -1,4 +1,4 @@
-expected_s_n <- function(n, S, mean_eta, variance_eta,  p, c, n.predictors, nsim = 1000, nval = 25000, parallel = TRUE){
+expected_s_n_binary <- function(n, S, mean_eta, variance_eta,  p, c, n.predictors, nsim = 1000, nval = 25000, parallel = TRUE){
 
   set.seed(2022)
 
@@ -51,7 +51,17 @@ expected_s_n <- function(n, S, mean_eta, variance_eta,  p, c, n.predictors, nsim
 
   cs <- unlist(a)
 
-  graphics::hist(cs, main = paste("CS=",round(mean(cs,na.rm=TRUE)/0.0025)*0.0025, "N=",n))
+  #graphics::hist(cs, main = paste("CS=",round(mean(cs,na.rm=TRUE)/0.0025)*0.0025, "N=",n))
+  df        <- data.frame(cs)
+  df        <- stats::na.omit(df)
+  cs_plot   <- ggplot2:: ggplot(df,  ggplot2::aes(x = cs), size=12) +
+    ggplot2::geom_density() +  ggplot2::ggtitle(paste("N = ", n, ", Expected CS = ", round(mean(cs,na.rm=TRUE)/0.0025)*0.0025, ", SD(CS) = ", round(sqrt(stats::var(cs)),3))) +
+    ggplot2::geom_vline( ggplot2::aes(xintercept = mean(cs, na.rm = TRUE)), color="blue", linetype ="dashed", size = 1) +
+    ggplot2::ylab("Density") +  ggplot2::theme(text =  ggplot2::element_text(size = 13)) +
+    ggplot2::xlab("Calibration Slope")
+
+  if ( abs(mean(cs, na.rm=TRUE)- 0.9) > 0.005)   cs_plot <-  cs_plot + ggplot2::geom_vline( ggplot2::aes(xintercept = 0.9), color="red", linetype ="dashed", size = 1)
+  print(cs_plot)
   c(round(mean(cs,na.rm=TRUE)/0.0025)*0.0025, sqrt(stats::var(cs)/nsim))
 
 
