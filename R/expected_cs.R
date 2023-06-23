@@ -13,6 +13,8 @@
 #' @param nsim (numeric) The number of simulations (at least 500, default value 1000 to ensure small simulation error)
 #' @param nval (numeric) Size of validation data (at least 10000)
 #' @param parallel (logical) parallel processing to speed up computations (default=TRUE)
+#' @param method (character) the fitting method ("MLE" or "LSF"). Default value is "MLE"
+
 #'
 #' @return df: the expected calibration slope (and MAPE for binary outcomes)
 #' @export
@@ -28,11 +30,11 @@
 
 #'
 #'
-expected_cs <- function(outcome="Binary", n, p, c,  n.predictors, nval = 25000, nsim = 1000, parallel = TRUE){
+expected_cs <- function(outcome="Binary", n, p, c,  n.predictors, nval = 25000, nsim = 1000, parallel = TRUE, method = "MLE"){
 
-  if (outcome=="Binary")   performance <- expected_cs_mape_binary (n=n,  p=p, c=c,  n.predictors = n.predictors, nval = nval, nsim = nsim, parallel = parallel)
+  if (outcome=="Binary")   performance <- expected_cs_mape_binary (n=n,  p=p, c=c,  n.predictors = n.predictors, nval = nval, nsim = nsim, parallel = parallel, method = method)
 
-  if (outcome=="Survival") performance <- expected_cs_survival (n=n, p=p, c=c,  n.predictors = n.predictors, nval = nval, nsim = nsim, parallel = parallel)
+  if (outcome=="Survival") performance <- expected_cs_survival (n=n, p=p, c=c,  n.predictors = n.predictors, nval = nval, nsim = nsim, parallel = parallel, method = method)
 
   performance
 
