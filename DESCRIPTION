@@ -23,6 +23,7 @@ Imports:
     ggpubr, 
     mvtnorm,
     RcppNumerical,
+    speedglm,
     parallel,
     doParallel,
     foreach, 

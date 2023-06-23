@@ -98,7 +98,7 @@ samplesizedev_survival <- function(S, p, c,  n.predictors, nval = 25000, nsim = 
   min.opt                              <- round(n_init*0.8)
   if (c<=0.7)            inflation_f   <- 1.5
   if (c>0.7  & c<=0.8)   inflation_f   <- 2
-  if (c>0.8  & c<=0.85)  inflation_f   <- 3
+  if (c>0.8  & c<=0.85)  inflation_f   <- 3.5
   if (c>0.85 & c<=0.9)   inflation_f   <- 4
   max.opt                              <- round(inflation_f*n_init)
 

@@ -11,6 +11,8 @@
 #' @param nsim (numeric) The number of simulations (at least 500, default value 1000)
 #' @param nval (numeric) Size of validation data
 #' @param parallel (logical) parallel processing to speed up computations (default=TRUE)
+#' @param parallel (logical) parallel processing to speed up computations (default=TRUE)
+
 #'
 #' @return df: the expected calibration slope and mape
 #' @export
@@ -26,7 +28,7 @@
 
 #'
 #'
-expected_cs_mape_binary <- function(n, p, c, n.predictors, nsim = 1000, nval = 25000, parallel=TRUE){
+expected_cs_mape_binary <- function(n, p, c, n.predictors, nsim = 1000, nval = 25000, method ="MLE", parallel=TRUE){
 
   # Find mean and variance of for Normal linear predictor
 
@@ -59,6 +61,8 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, nsim = 1000, nval = 2
   mape <- NULL
   i    <- 0
 
+  if (method== "MLE") {
+
   a<- foreach::foreach(i = 1:nsim, .packages=c('mvtnorm','RcppNumerical', 'ggplot2' )) %dopar% {
 
     set.seed(i)
@@ -80,6 +84,80 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, nsim = 1000, nval = 2
     c(cs[i],mape[i])
 
   }
+
+  } else if (method == "LSF")
+
+  {
+
+    bootsf<-function(data,n=100){
+      #first column outcome
+      cal<-NULL
+      for (j in 1:n){
+        bs <- sample(nrow(data), replace=T)
+        databs=data[bs,]
+        xvarsbs=databs[,-1];ybs<-databs[,1]
+        fitbs <- speedglm::speedglm(ybs~xvarsbs, family=binomial())
+
+          eta_est    <- as.matrix(cbind(1,data[,-1]))%*%coef(fitbs)
+          fitcal     <- speedglm::speedglm(data[,1]~eta_est, family=binomial())
+          cal[j]     <- as.vector(coef(fitcal)[2])
+
+      }
+      return(stats::median(cal,na.rm=TRUE))
+    }
+
+
+    bootsf_parallel <-function(data, nboot=100){
+      cal <-NULL
+      cores <- parallel::detectCores()
+      cl    <- parallel::makeCluster(cores[1]-1)
+
+      doParallel::registerDoParallel(cl)
+
+      a<-   foreach::foreach(j = 1:nboot, packages="stats","speedglm") %dopar% {
+        bs <- sample(nrow(data), replace=T)
+        databs=data[bs,]
+        xvarsbs=databs[,-1];ybs<-databs[,1]
+        fitbs <- speedglm::speedglm(ybs~xvarsbs, family=binomial())
+
+        eta_est    <- as.matrix(cbind(1,data[,-1]))%*%coef(fitbs)
+        fitcal     <- speedglm::speedglm(data[,1]~eta_est, family=binomial())
+        cal[j]     <- as.vector(coef(fitcal)[2])
+      }
+
+      parallel::stopCluster(cl)
+
+      cs <- matrix(unlist(a), byrow=TRUE, nrow=nboot)
+      return(stats::median(cs,na.rm=TRUE))
+    }
+
+    a<- foreach::foreach(i = 1:nsim, .packages=c('mvtnorm','RcppNumerical', 'ggplot2', 'speedglm' )) %dopar% {
+
+      set.seed(i)
+      invlogit <- function(x) 1/(1+exp(-x))
+
+      x        <- mvtnorm::rmvnorm(round(n), rep(0, n.predictors), sigma = sigma )
+      y        <- stats::rbinom(round(n),  1, invlogit(mean + x%*%beta))
+      yval     <- stats::rbinom(nval, 1, invlogit(mean + xval%*%beta))
+      p_true   <- as.vector(invlogit(mean + xval%*%beta))
+
+      a         <- RcppNumerical::fastLR(cbind(1,x), y)
+      datasf    <- cbind(y, x)
+      sf        <- bootsf(datasf, 100)
+      betasf    <- c(1,rep(sf,n.predictors))*a$coef
+      off       <- speedglm(y~1,offset=cbind(1,x)%*%betasf,family=binomial())
+      betasf[1] <- betasf[1]+coef(off)
+      eta_est   <- cbind(1, xval)%*%betasf
+      p_est     <- as.vector(invlogit(eta_est))
+
+      fit      <- RcppNumerical::fastLR(cbind(1,eta_est), yval )
+      cs[i]    <- fit$coef[2]
+      mape[i]  <- mean(abs(p_true-p_est))
+
+      c(cs[i],mape[i])
+    }
+    }
+
 
   parallel::stopCluster(cl)
 
@@ -123,8 +201,15 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, nsim = 1000, nval = 2
   prev      <- mean(yval)
   cstat     <- quickcstat(yval, invlogit(mean + xval %*% beta))
 
-  df        <- data.frame(n, round(mean(cs, na.rm = TRUE)/0.0025) * 0.0025, round(sqrt(stats::var(cs,na.rm = TRUE)), 4), round(mean(mape, na.rm = TRUE),4), round(prev, 2), round(cstat, 2 ) )
-  names(df) <- c("N", "Expected CS", "SD(CS)", "Expected MAPE", "Prevalence", "C-Statistic")
+  df        <- data.frame(n, round(mean(cs, na.rm = TRUE)/0.0025) * 0.0025,
+                             round(sqrt(stats::var(cs,na.rm = TRUE)), 4),
+                             round(sqrt( mean( ((cs-1)^2), na.rm=TRUE) ), 4),
+                             round(stats::median(mape, na.rm = TRUE),4),
+                             round(sqrt(stats::var(mape,na.rm = TRUE)), 4),
+                             round(prev, 2),
+                             round(cstat, 2 ),
+                             n.predictors)
+  names(df) <- c("N", "Expected CS", "SD(CS)", "RMSD(CS)", "Expected MAPE",  "RMSD(MAPE)", "Prevalence", "C-Statistic", " # Predictors")
 
   #performance <- df[,-3]
   performance <- df

@@ -51,7 +51,7 @@ check also provides the expected Mean Absolute Prediction Error (MAPE) that corr
 }
 \examples{
 # Binary Outcome: Find the sample size required for an average calibration slope of S = 0.9
-  samplesizedev(outcome="Binary", S = 0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 500, parallel = FALSE)
+# samplesizedev(outcome="Binary", S = 0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 500, parallel = FALSE)
 
 # Binary Outcome: Prefer parallel computing with >2 cores that ensure faster running
 # samplesizedev(outcome="Binary", S = 0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 500, parallel = TRUE)

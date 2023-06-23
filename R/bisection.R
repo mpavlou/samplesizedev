@@ -1,11 +1,12 @@
 # Function for bisection method
 
-bisection <- function(f, a, b, iter = 10, tol = 10, nsim = 200) {
+bisection <- function(f, a, b, iter = 10, tol = 10, nsim = 1000) {
   # If the signs of the function at the evaluated points, a and b, stop the function and return message.
 
   nsim1 <- nsim
-  divide <- 4
-  nsim  <- nsim/divide
+
+  if (nsim>=1000) divide <- 4 else divide <- 2
+  nsim  <- round(nsim/divide)
 
   fa <- f(a, nsim = nsim)
   fb <- f(b, nsim = nsim)
