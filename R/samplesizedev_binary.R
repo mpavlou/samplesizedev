@@ -48,7 +48,7 @@ samplesizedev_binary <- function(S, p, c,  n.predictors, nval = 25000, nsim = 10
 
   n_init <- round((n.predictors)/ ((S-1)*log(1-r2/S)))
 
-  min.opt                              <- n_init*0.8
+  min.opt                              <- n_init*0.6
   if (c<=0.7)            inflation_f   <- 1.3
   if (c>0.7  & c<=0.8)   inflation_f   <- 1.5
   if (c>0.8  & c<=0.85)  inflation_f   <- 2

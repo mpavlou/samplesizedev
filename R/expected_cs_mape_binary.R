@@ -11,8 +11,6 @@
 #' @param nsim (numeric) The number of simulations (at least 500, default value 1000)
 #' @param nval (numeric) Size of validation data
 #' @param parallel (logical) parallel processing to speed up computations (default=TRUE)
-#' @param parallel (logical) parallel processing to speed up computations (default=TRUE)
-
 #'
 #' @return df: the expected calibration slope and mape
 #' @export
@@ -77,7 +75,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, nsim = 1000, nval = 2
     eta_est  <- cbind(1, xval) %*% as.vector(a$coef)
     p_est    <- as.vector(invlogit(eta_est))
 
-    fit      <- RcppNumerical::fastLR(cbind(1,eta_est), yval )
+    fit      <- RcppNumerical::fastLR(cbind(1,eta_est), yval, start = c(0,0.9) )
     cs[i]    <- fit$coef[2]
     mape[i]  <- mean(abs(p_true-p_est))
 
@@ -110,7 +108,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, nsim = 1000, nval = 2
     bootsf_parallel <-function(data, nboot=100){
       cal <-NULL
       cores <- parallel::detectCores()
-      cl    <- parallel::makeCluster(cores[1]-1)
+      cl    <- parallel::makeCluster(cores[1]-2)
 
       doParallel::registerDoParallel(cl)
 
@@ -204,12 +202,13 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, nsim = 1000, nval = 2
   df        <- data.frame(n, round(mean(cs, na.rm = TRUE)/0.0025) * 0.0025,
                              round(sqrt(stats::var(cs,na.rm = TRUE)), 4),
                              round(sqrt( mean( ((cs-1)^2), na.rm=TRUE) ), 4),
+                             round(mean(ifelse( (cs < 0.8), 1, 0),na.rm=TRUE), 2),
                              round(stats::median(mape, na.rm = TRUE),4),
                              round(sqrt(stats::var(mape,na.rm = TRUE)), 4),
                              round(prev, 2),
                              round(cstat, 2 ),
                              n.predictors)
-  names(df) <- c("N", "Expected CS", "SD(CS)", "RMSD(CS)", "Expected MAPE",  "RMSD(MAPE)", "Prevalence", "C-Statistic", " # Predictors")
+  names(df) <- c("N", "Expected CS", "SD(CS)", "RMSD(CS)", "Pr(CS<0.8)", "Expected MAPE",  "RMSD(MAPE)", "Prevalence", "C-Statistic", " # Predictors")
 
   #performance <- df[,-3]
   performance <- df

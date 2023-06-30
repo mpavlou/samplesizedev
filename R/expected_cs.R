@@ -13,7 +13,7 @@
 #' @param nsim (numeric) The number of simulations (at least 500, default value 1000 to ensure small simulation error)
 #' @param nval (numeric) Size of validation data (at least 10000)
 #' @param parallel (logical) parallel processing to speed up computations (default=TRUE)
-#' @param method (character) the fitting method ("MLE" or "LSF"). Default value is "MLE"
+#' @param method (character) the fitting method. "MLE" is the default and currently only option, but others will be added in future versions
 
 #'
 #' @return df: the expected calibration slope (and MAPE for binary outcomes)
