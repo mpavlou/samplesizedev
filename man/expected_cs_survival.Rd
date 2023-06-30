@@ -37,7 +37,7 @@ This function calculates the expected calibration slope given key data and model
 (proportion of censoring at time point of interest, C-index and number of predictors).
 }
 \examples{
-expected_cs_survival(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = FALSE)
+# expected_cs_survival(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = FALSE)
 
 # Prefer parallel computing with >2 cores that ensure faster running
 # expected_cs_survival(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = TRUE)

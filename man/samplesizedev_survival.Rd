@@ -41,7 +41,7 @@ the Mean Absolute Prediction Error that corresponds to the calculated sample siz
 }
 \examples{
 # Find the sample size
-  samplesizedev_survival(S = 0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 500, parallel = FALSE)
+# samplesizedev_survival(S = 0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 500, parallel = FALSE)
 
 # Prefer parallel computing with >2 cores that ensure faster running
 # samplesizedev_survival(S = 0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 1000, parallel = TRUE)

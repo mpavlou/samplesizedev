@@ -13,10 +13,9 @@
 #' @param parallel (logical) parallel processing to speed up computations (default=TRUE)
 #'
 #' @return df: the expected calibration slope
-#' @export
 #'
 #' @examples
-#' expected_cs_survival(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = FALSE)
+#' # expected_cs_survival(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = FALSE)
 #'
 #' # Prefer parallel computing with >2 cores that ensure faster running
 #' # expected_cs_survival(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = TRUE)

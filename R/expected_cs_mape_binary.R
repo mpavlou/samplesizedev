@@ -11,12 +11,14 @@
 #' @param nsim (numeric) The number of simulations (at least 500, default value 1000)
 #' @param nval (numeric) Size of validation data
 #' @param parallel (logical) parallel processing to speed up computations (default=TRUE)
+#' @param method (character) the fitting method. "MLE" is the default and currently only option, but others will be added in future versions
+#' @param parallel (numeric) relative strength of predictor variables (same length as n_predictors)
+
 #'
 #' @return df: the expected calibration slope and mape
-#' @export
 #'
 #' @examples
-#' expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, beta= c(0.9,0.1 ,0,0,0, rep(0,5)), nsim = 100, parallel = FALSE)
+#' # expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = FALSE)
 #'
 #' # Prefer parallel computing with >2 cores that ensure faster running
 #' # expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = TRUE)
@@ -220,8 +222,10 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta = rep(1/n.predic
 
 
 # expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 2000, parallel = TRUE)
-# expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, beta= c(0.5,0.3,0.2,0.1,0.1, rep(0,5)), nsim = 2000, parallel = TRUE)
-# expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, beta= c(0.9,0.1 ,0,0,0, rep(0,5)), nsim = 2000, parallel = TRUE)
-#
+# expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, beta= c(0.5,0.3,0.2,0.1,0.1,
+# rep(0,5)), nsim = 2000, parallel = TRUE)
+# expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, beta= c(0.9,0.1 ,0,0,0,
+# rep(0,5)), nsim = 2000, parallel = TRUE)
+
 
 

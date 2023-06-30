@@ -14,13 +14,15 @@
 #' @param nval (numeric) Size of validation data (at least 10000)
 #' @param parallel (logical) parallel processing to speed up computations (default=TRUE)
 #' @param method (character) the fitting method. "MLE" is the default and currently only option, but others will be added in future versions
+#' @param beta (numeric) the relative strength of predcitors (same lenght as n.predictors)
+
 
 #'
 #' @return df: the expected calibration slope (and MAPE for binary outcomes)
 #' @export
 #'
 #' @examples
-#' expected_cs(outcome="Binary", n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = FALSE)
+#' # expected_cs(outcome="Binary", n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = FALSE)
 #'
 #' # Prefer parallel computing with >2 cores that ensure faster running
 #' # expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = TRUE)

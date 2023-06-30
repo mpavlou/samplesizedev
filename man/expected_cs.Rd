@@ -34,6 +34,8 @@ expected_cs(
 \item{parallel}{(logical) parallel processing to speed up computations (default=TRUE)}
 
 \item{method}{(character) the fitting method. "MLE" is the default and currently only option, but others will be added in future versions}
+
+\item{beta}{(numeric) the relative strength of predcitors (same lenght as n.predictors)}
 }
 \value{
 df: the expected calibration slope (and MAPE for binary outcomes)
@@ -43,7 +45,7 @@ This function calculates the expected calibration slope and MAPE given key data 
 (outcome prevalence/, C-statistic and number of predictors). It takes approximately 15 seconds to run (binary outcome).
 }
 \examples{
-expected_cs(outcome="Binary", n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = FALSE)
+# expected_cs(outcome="Binary", n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = FALSE)
 
 # Prefer parallel computing with >2 cores that ensure faster running
 # expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = TRUE)

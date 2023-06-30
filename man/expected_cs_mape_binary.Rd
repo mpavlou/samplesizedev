@@ -9,6 +9,7 @@ expected_cs_mape_binary(
   p,
   c,
   n.predictors,
+  beta = rep(1/n.predictors, n.predictors),
   nsim = 1000,
   nval = 25000,
   method = "MLE",
@@ -28,7 +29,9 @@ expected_cs_mape_binary(
 
 \item{nval}{(numeric) Size of validation data}
 
-\item{parallel}{(logical) parallel processing to speed up computations (default=TRUE)}
+\item{method}{(character) the fitting method. "MLE" is the default and currently only option, but others will be added in future versions}
+
+\item{parallel}{(numeric) relative strength of predictor variables (same length as n_predictors)}
 }
 \value{
 df: the expected calibration slope and mape
@@ -38,7 +41,7 @@ This function calculates the expected calibration slope and MAPE given key data 
 (outcome prevalence, C-statistic and number of predictors). It takes approximately 15 seconds to test_allrun.
 }
 \examples{
-expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = FALSE)
+# expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = FALSE)
 
 # Prefer parallel computing with >2 cores that ensure faster running
 # expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = TRUE)

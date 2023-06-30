@@ -18,11 +18,10 @@
 
 #'
 #' @return n: the required sample size
-#' @export
 #'
 #' @examples
 #' # Find the sample size required for an average calibration slope of S = 0.9
-#'   samplesizedev_binary(S = 0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 500, parallel = FALSE)
+#' # samplesizedev_binary(S = 0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 500, parallel = FALSE)
 #'
 #' # Prefer parallel computing with >2 cores that ensure faster running
 #' # samplesizedev_binary(S = 0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 1000, parallel = TRUE)
