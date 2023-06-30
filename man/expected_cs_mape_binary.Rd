@@ -11,6 +11,7 @@ expected_cs_mape_binary(
   n.predictors,
   nsim = 1000,
   nval = 25000,
+  method = "MLE",
   parallel = TRUE
 )
 }

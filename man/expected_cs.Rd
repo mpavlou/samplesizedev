@@ -12,7 +12,8 @@ expected_cs(
   n.predictors,
   nval = 25000,
   nsim = 1000,
-  parallel = TRUE
+  parallel = TRUE,
+  method = "MLE"
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ expected_cs(
 \item{nsim}{(numeric) The number of simulations (at least 500, default value 1000 to ensure small simulation error)}
 
 \item{parallel}{(logical) parallel processing to speed up computations (default=TRUE)}
+
+\item{method}{(character) the fitting method. "MLE" is the default and currently only option, but others will be added in future versions}
 }
 \value{
 df: the expected calibration slope (and MAPE for binary outcomes)
