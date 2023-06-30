@@ -49,11 +49,11 @@ expected_cs_survival <- function(n, p, c, n.predictors, nsim = 1000, nval = 2500
   eta      <- x %*% as.vector(beta)
 
 
-  u        <- runif(nval)
+  u        <- stats::runif(nval)
   t        <- -log(u)/((lambda) * exp(eta) )
 
   censor   <- rep(1,nval)
-  cutoff   <- quantile(t, 1- p.censor)
+  cutoff   <- stats::quantile(t, 1- p.censor)
   censor[t > cutoff]=0
   ptrue <- mean(censor) ;ptrue; cutoff
 
@@ -75,7 +75,7 @@ expected_cs_survival <- function(n, p, c, n.predictors, nsim = 1000, nval = 2500
 
   xval           <- mvtnorm::rmvnorm(nval, rep(0, n.predictors), sigma = sigma)
 
-  a<- foreach::foreach(i = 1:nsim, .packages=c('mvtnorm','RcppNumerical', 'ggplot2', 'survival' )) %dopar% {
+  a<- foreach::foreach(i = 1:nsim, .packages=c('mvtnorm','RcppNumerical', 'ggplot2', 'survival', 'stats' )) %dopar% {
 
     set.seed(i)
 
@@ -88,7 +88,7 @@ expected_cs_survival <- function(n, p, c, n.predictors, nsim = 1000, nval = 2500
     u                    <- stats::runif(n)
     t                    <- -log(u)/((lambda) * exp(eta) )
     censor               <- rep(1,n)
-    cutoff               <- quantile(t, 1- p.censor)
+    cutoff               <- stats::quantile(t, 1- p.censor)
     censor[t > cutoff]   <- 0
     status               <- censor
     eventtime            <- t
@@ -98,7 +98,7 @@ expected_cs_survival <- function(n, p, c, n.predictors, nsim = 1000, nval = 2500
 
     xvars       <- paste("X", seq(1:n.predictors), sep = "")
     measurevar  <- "Surv(eventtime, status)"
-    formula     <- as.formula(paste(measurevar, paste(xvars, collapse=" + "), sep=" ~ "))
+    formula     <- stats::as.formula(paste(measurevar, paste(xvars, collapse=" + "), sep=" ~ "))
     fit         <- survival::coxph(formula, data=data, x=TRUE, y=TRUE)
     fit
 

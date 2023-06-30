@@ -55,11 +55,11 @@ samplesizedev_survival <- function(S, p, c,  n.predictors, nval = 25000, nsim = 
   eta       <- x %*% as.vector(beta)
 
 
-  u         <- runif(nval)
+  u         <- stats::runif(nval)
   t         <- -log(u)/( (lambda) * exp(eta) )
 
   censor   <- rep(1,nval)
-  cutoff   <- quantile(t, 1- p.censor)
+  cutoff   <- stats::quantile(t, 1- p.censor)
   censor[t > cutoff]=0
   ptrue    <- mean(censor) ;ptrue; cutoff
 
@@ -69,8 +69,8 @@ samplesizedev_survival <- function(S, p, c,  n.predictors, nval = 25000, nsim = 
   xvars      <- paste( "X", seq(1 : n.predictors), sep = "")
   measurevar <- "survival::Surv(t, censor)"
   etavar     <- "eta"
-  formula    <- as.formula  (paste( measurevar, paste(xvars, collapse=" + "), sep=" ~ "))
-  formula    <- as.formula  (paste( measurevar, etavar, sep=" ~ "))
+  formula    <- stats::as.formula  (paste( measurevar, paste(xvars, collapse=" + "), sep=" ~ "))
+  formula    <- stats::as.formula  (paste( measurevar, etavar, sep=" ~ "))
 
   big <- survival::coxph(formula, data=data, x=TRUE, y=TRUE)
 

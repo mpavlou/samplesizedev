@@ -28,6 +28,7 @@ Imports:
     doParallel,
     foreach, 
     rms, 
-    survival
+    survival,
+    pec
 URL: https://github.com/mpavlou/samplesizedev
 BugReports: https://github.com/mpavlou/samplesizedev/issues

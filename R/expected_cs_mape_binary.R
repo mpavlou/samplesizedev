@@ -13,6 +13,7 @@
 #' @param parallel (logical) parallel processing to speed up computations (default=TRUE)
 #' @param method (character) the fitting method. "MLE" is the default and currently only option, but others will be added in future versions
 #' @param parallel (numeric) relative strength of predictor variables (same length as n_predictors)
+#' @param beta (numeric) Strength of predictors (same length as n.predictors)
 
 #'
 #' @return df: the expected calibration slope and mape
@@ -100,36 +101,12 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
           eta_est    <- as.matrix(cbind(1,data[,-1]))%*%coef(fitbs)
           fitcal     <- speedglm::speedglm(data[,1]~eta_est, family=binomial())
-          cal[j]     <- as.vector(coef(fitcal)[2])
+          cal[j]     <- as.vector(stats::coef(fitcal)[2])
 
       }
       return(stats::median(cal,na.rm=TRUE))
     }
 
-
-    bootsf_parallel <-function(data, nboot=100){
-      cal <-NULL
-      cores <- parallel::detectCores()
-      cl    <- parallel::makeCluster(cores[1]-2)
-
-      doParallel::registerDoParallel(cl)
-
-      a<-   foreach::foreach(j = 1:nboot, packages="stats","speedglm") %dopar% {
-        bs <- sample(nrow(data), replace=T)
-        databs=data[bs,]
-        xvarsbs=databs[,-1];ybs<-databs[,1]
-        fitbs <- speedglm::speedglm(ybs~xvarsbs, family=binomial())
-
-        eta_est    <- as.matrix(cbind(1,data[,-1]))%*%coef(fitbs)
-        fitcal     <- speedglm::speedglm(data[,1]~eta_est, family=binomial())
-        cal[j]     <- as.vector(coef(fitcal)[2])
-      }
-
-      parallel::stopCluster(cl)
-
-      cs <- matrix(unlist(a), byrow=TRUE, nrow=nboot)
-      return(stats::median(cs,na.rm=TRUE))
-    }
 
     a<- foreach::foreach(i = 1:nsim, .packages=c('mvtnorm','RcppNumerical', 'ggplot2', 'speedglm' )) %dopar% {
 
@@ -145,8 +122,8 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
       datasf    <- cbind(y, x)
       sf        <- bootsf(datasf, 100)
       betasf    <- c(1,rep(sf,n.predictors))*a$coef
-      off       <- speedglm(y~1,offset=cbind(1,x)%*%betasf,family=binomial())
-      betasf[1] <- betasf[1]+coef(off)
+      off       <- speedglm::speedglm(y~1,offset=cbind(1,x)%*%betasf,family=binomial())
+      betasf[1] <- betasf[1]+stats::coef(off)
       eta_est   <- cbind(1, xval)%*%betasf
       p_est     <- as.vector(invlogit(eta_est))
 

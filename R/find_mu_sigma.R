@@ -173,7 +173,7 @@ find_mu_sigma <- function(target.prev, target.c, min.opt = c(-10,0), max.opt = c
  # Build formula
  measurevar <- "Surv(t, censor)"
  etavar     <- "eta"
- formula    <- as.formula  (paste("Surv(t, censor)", etavar, sep=" ~ "))
+ formula    <- stats::as.formula  (paste("Surv(t, censor)", etavar, sep=" ~ "))
 
 
    cfun <- function(x) {
@@ -207,12 +207,12 @@ find_sigma_quick <- function(target.c,  min.opt = 0.1, max.opt = 8, tol=0.0001){
   # Build formula
   measurevar <- "survival::Surv(t, censor)"
   etavar     <- "eta"
-  formula    <- as.formula(paste( measurevar, etavar, sep=" ~ "))
+  formula    <- stats::as.formula(paste( measurevar, etavar, sep=" ~ "))
 
 
   cfun <- function(x) {
     set.seed(2)
-    u      <- runif(n)
+    u      <- stats::runif(n)
     eta    <- stats::rnorm(n, mean = 0, sd = sqrt(x))
     t      <- -log(u)/((lambda) * exp(eta) )
     c      <- 1 - survival::concordance(t ~ eta)$concordance; c

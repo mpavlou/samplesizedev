@@ -43,7 +43,7 @@ a <- foreach::foreach(i = 1: nsim, .packages = c('mvtnorm','RcppNumerical', 'ggp
     u                   <- stats::runif(n)
     t                   <- -log(u)/((lambda) * exp(eta) )
     censor              <- rep(1,n)
-    cutoff              <- quantile(t, 1 - p.censor)
+    cutoff              <- stats::quantile(t, 1 - p.censor)
     censor[t > cutoff]  <- 0
     status              <- censor
     eventtime           <- t
@@ -54,7 +54,7 @@ a <- foreach::foreach(i = 1: nsim, .packages = c('mvtnorm','RcppNumerical', 'ggp
 
     xvars              <- paste("X", seq(1 : n.predictors), sep = "")
     measurevar         <- "survival::Surv(eventtime, status)"
-    formula            <- as.formula(paste(measurevar, paste(xvars, collapse=" + "), sep=" ~ "))
+    formula            <- stats::as.formula(paste(measurevar, paste(xvars, collapse=" + "), sep=" ~ "))
     fit                <- survival::coxph(formula, data = data, x = TRUE, y = TRUE)
 
 

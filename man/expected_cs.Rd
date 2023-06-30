@@ -28,7 +28,7 @@ expected_cs(
 
 \item{n.predictors}{(numeric) The number of candidate predictor variables}
 
-\item{beta}{(numeric) Strength of predictors (same lenght as n.predictors)}
+\item{beta}{(numeric) Strength of predictors (same length as n.predictors)}
 
 \item{nval}{(numeric) Size of validation data (at least 10000)}
 
