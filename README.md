@@ -28,7 +28,7 @@ sample size to achieve a taregt expected shrinkage of S=0.9
 ``` r
 library(samplesizedev)
 
-expected_cs_mape_binary(n = 400, p = 0.2, c = 0.85, n.predictors = 10, nsim = 1000, parallel = TRUE)
+expected_cs(outcome="Binary", n = 400, p = 0.2, c = 0.85, n.predictors = 10, nsim = 1000)
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" />
@@ -38,7 +38,7 @@ expected_cs_mape_binary(n = 400, p = 0.2, c = 0.85, n.predictors = 10, nsim = 10
     #>   C-Statistic  # Predictors
     #> 1        0.85            10
 
-    samplesizedev(outcome="Binary", S = 0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 1000, parallel = TRUE)
+    samplesizedev(outcome="Binary", S = 0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 1000)
     #> [1] "Optimisation Starting ~ 1 min left..."
 
 <img src="man/figures/README-example-2.png" width="100%" /><img src="man/figures/README-example-3.png" width="100%" /><img src="man/figures/README-example-4.png" width="100%" /><img src="man/figures/README-example-5.png" width="100%" /><img src="man/figures/README-example-6.png" width="100%" /><img src="man/figures/README-example-7.png" width="100%" />
