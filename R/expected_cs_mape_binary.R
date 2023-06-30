@@ -16,7 +16,7 @@
 #' @export
 #'
 #' @examples
-#' expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = FALSE)
+#' expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, beta= c(0.9,0.1 ,0,0,0, rep(0,5)), nsim = 100, parallel = FALSE)
 #'
 #' # Prefer parallel computing with >2 cores that ensure faster running
 #' # expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = TRUE)
@@ -26,7 +26,7 @@
 
 #'
 #'
-expected_cs_mape_binary <- function(n, p, c, n.predictors, nsim = 1000, nval = 25000, method ="MLE", parallel=TRUE){
+expected_cs_mape_binary <- function(n, p, c, n.predictors, beta = rep(1/n.predictors, n.predictors), nsim = 1000, nval = 25000, method ="MLE", parallel=TRUE){
 
   # Find mean and variance of for Normal linear predictor
 
@@ -38,7 +38,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, nsim = 1000, nval = 2
 
   # Find beta that corresponds to that variance
 
-  beta    <- rep(1, n.predictors)
+  #beta    <- rep(1, n.predictors)
   beta    <- beta * sqrt(mean_var[2]/sum(beta^2))
   sigma   <- diag(1, n.predictors)
 
@@ -181,7 +181,8 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, nsim = 1000, nval = 2
   df        <- stats::na.omit(df)
   mape_plot <- ggplot2::ggplot(df,  ggplot2::aes(x = mape), size=12) +
     ggplot2::geom_density() + ggplot2::ggtitle(paste("Expected MAPE = ", round(mean(mape,na.rm=TRUE),3), sep = "")) +
-    ggplot2::geom_vline( ggplot2::aes(xintercept=stats::median(mape, na.rm = TRUE)), color="blue", linetype = "dashed", size=1) + ggplot2::ylab("Density") +  ggplot2::theme(text =  ggplot2::element_text(size = 13))
+    ggplot2::geom_vline( ggplot2::aes(xintercept=stats::median(mape, na.rm = TRUE)), color="blue", linetype = "dashed", size=1) + ggplot2::ylab("Density") +
+    ggplot2::theme(text =  ggplot2::element_text(size = 13)) +     ggplot2::xlab("MAPE")
 
   figure  <- ggpubr::ggarrange(cs_plot, mape_plot,
                        ncol = 2, nrow = 1, common.legend = TRUE, legend="bottom")
@@ -208,7 +209,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, nsim = 1000, nval = 2
                              round(prev, 2),
                              round(cstat, 2 ),
                              n.predictors)
-  names(df) <- c("N", "Expected CS", "SD(CS)", "RMSD(CS)", "Pr(CS<0.8)", "Expected MAPE",  "RMSD(MAPE)", "Prevalence", "C-Statistic", " # Predictors")
+  names(df) <- c("N", "Expected CS", "SD(CS)", "RMSD(CS)", "Pr(CS<0.8)", "Expected MAPE",  "SD(MAPE)", "Prevalence", "C-Statistic", " # Predictors")
 
   #performance <- df[,-3]
   performance <- df
@@ -216,3 +217,11 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, nsim = 1000, nval = 2
   performance
 
 }
+
+
+# expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 2000, parallel = TRUE)
+# expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, beta= c(0.5,0.3,0.2,0.1,0.1, rep(0,5)), nsim = 2000, parallel = TRUE)
+# expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, beta= c(0.9,0.1 ,0,0,0, rep(0,5)), nsim = 2000, parallel = TRUE)
+#
+
+

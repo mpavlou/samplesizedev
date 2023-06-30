@@ -31,12 +31,16 @@ devtools::install_github("mpavlou/samplesizedev")
 
 ## Example
 
-This is a basic example which shows how to calculate the sample size for a binary outcome
+This is a basic example which shows 
+a) how to calculate the expected shrinkage and MAPE for a given sample size, and 
+b) To calculate the sample size to achieve a taregt expected shrinkage of S=0.9
 
 ```{r example}
 library(samplesizedev)
 
-samplesizedev(outcome="Binary", S = 0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 500, parallel = TRUE)
+expected_cs_mape_binary(n = 400, p = 0.2, c = 0.85, n.predictors = 10, nsim = 1000, parallel = TRUE)
+
+samplesizedev(outcome="Binary", S = 0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 1000, parallel = TRUE)
 ```
 
 

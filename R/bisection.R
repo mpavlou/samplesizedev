@@ -26,7 +26,7 @@ bisection <- function(f, a, b, iter = 10, tol = 10, nsim = 1000) {
     fc <- f(c, nsim = nsim)
 
     #print(c(k, a, b, c, fa, fb, fc ))
-    print(c(k))
+    #print(c(k))
 
 
     # If the function equals 0 at the midpoint or the midpoint is below the desired tolerance, stop the
