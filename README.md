@@ -28,21 +28,18 @@ sample size to achieve a taregt expected shrinkage of S=0.9
 ``` r
 library(samplesizedev)
 
-expected_cs(outcome="Binary", n = 400, p = 0.2, c = 0.85, n.predictors = 10, nsim = 1000)
+expected_cs(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = TRUE)
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" />
 
     #>     N Expected CS SD(CS) RMSD(CS) Pr(CS<0.8) Expected MAPE SD(MAPE) Prevalence
-    #> 1 400       0.875 0.1131   0.1694       0.27        0.0445   0.0102        0.2
+    #> 1 530         0.9 0.0927   0.1357       0.15         0.038   0.0088        0.2
     #>   C-Statistic  # Predictors
     #> 1        0.85            10
 
     samplesizedev(outcome="Binary", S = 0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 1000)
     #> [1] "Optimisation Starting ~ 1 min left..."
-
-<img src="man/figures/README-example-2.png" width="100%" /><img src="man/figures/README-example-3.png" width="100%" /><img src="man/figures/README-example-4.png" width="100%" /><img src="man/figures/README-example-5.png" width="100%" /><img src="man/figures/README-example-6.png" width="100%" /><img src="man/figures/README-example-7.png" width="100%" />
-
     #> $riley
     #> [1] 305
     #> 

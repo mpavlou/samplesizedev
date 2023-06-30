@@ -61,7 +61,7 @@ expected_s_n_binary <- function(n, S, mean_eta, variance_eta,  p, c, n.predictor
     ggplot2::xlab("Calibration Slope")
 
   if ( abs(mean(cs, na.rm=TRUE)- 0.9) > 0.005)   cs_plot <-  cs_plot + ggplot2::geom_vline( ggplot2::aes(xintercept = 0.9), color="red", linetype ="dashed", size = 1)
-  print(cs_plot)
+  #print(cs_plot)
   c(round(mean(cs,na.rm=TRUE)/0.0025)*0.0025, sqrt(stats::var(cs)/nsim))
 
 
