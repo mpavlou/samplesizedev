@@ -7,10 +7,10 @@
 expected_cs(
   outcome = "Binary",
   n,
-  p,
+  phi,
   c,
-  n.predictors,
-  beta = rep(1/n.predictors, n.predictors),
+  p,
+  gamma = rep(1/p, p),
   nval = 25000,
   nsim = 1000,
   parallel = TRUE,
@@ -22,13 +22,11 @@ expected_cs(
 
 \item{n}{(numeric) The sample size}
 
-\item{p}{(numeric) The anticipated outcome prevalence (binary outcome) or proportion of events (survival outcome)}
-
 \item{c}{(numeric) The anticipated C-statistic (binary outcome) or C-Index (survival outcome)}
 
-\item{n.predictors}{(numeric) The number of candidate predictor variables}
+\item{p}{(numeric) The anticipated outcome prevalence (binary outcome) or proportion of events (survival outcome)}
 
-\item{beta}{(numeric) Strength of predictors (same length as n.predictors)}
+\item{gamma}{(numeric) Relative strength of predictors (same length as n.predictors, sums up to 1)}
 
 \item{nval}{(numeric) Size of validation data (at least 10000)}
 
@@ -37,6 +35,8 @@ expected_cs(
 \item{parallel}{(logical) parallel processing to speed up computations (default=TRUE)}
 
 \item{method}{(character) the fitting method. "MLE" is the default and currently only option, but others will be added in future versions}
+
+\item{n.predictors}{(numeric) The number of candidate predictor variables}
 }
 \value{
 df: the expected calibration slope (and MAPE for binary outcomes)

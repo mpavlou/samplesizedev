@@ -14,7 +14,7 @@
 #' @param nval (numeric) Size of validation data (at least 10000)
 #' @param parallel (logical) parallel processing to speed up computations (default=TRUE)
 #' @param method (character) the fitting method. "MLE" is the default and currently only option, but others will be added in future versions
-#' @param beta (numeric) Strength of predictors (same length as n.predictors)
+#' @param gamma (numeric) Relative strength of predictors (same length as n.predictors, sums up to 1)
 
 
 #'
@@ -32,7 +32,11 @@
 
 #'
 #'
-expected_cs <- function(outcome="Binary", n, p, c,  n.predictors,  beta = rep(1/n.predictors, n.predictors), nval = 25000, nsim = 1000, parallel = TRUE, method = "MLE"){
+expected_cs <- function(outcome="Binary", n, phi, c,  p,  gamma = rep(1/p, p), nval = 25000, nsim = 1000, parallel = TRUE, method = "MLE"){
+
+  beta          <- gamma
+  n.predictors  <- p
+  p             <- phi
 
   if (outcome=="Binary")   performance <- expected_cs_mape_binary (n=n,  p=p, c=c,  n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel, method = method)
 

@@ -12,6 +12,7 @@
 #' @param p (numeric) The anticipated censoring proportion at the time-point of interest
 #' @param c (numeric) The anticipated C-index
 #' @param n.predictors (numeric) The number of candidate predictor variables
+#' @param beta (numeric) The relative strength of predictors (0 for noise)
 #' @param nsim (numeric) The number of simulations (at least 500, default value 1000 to ensure small simulation error)
 #' @param nval (numeric) Size of validation data (at least 10000 )
 #' @param parallel (logical) parallel processing to speed up computations (default=TRUE)
@@ -35,7 +36,7 @@
 #' expected_cs_mape_binary
 
 
-samplesizedev_survival <- function(S, p, c,  n.predictors, nval = 25000, nsim = 1000, parallel = TRUE){
+samplesizedev_survival <- function(S, p, c,  n.predictors, beta, nval = 25000, nsim = 1000, parallel = TRUE){
 
   set.seed(1)
   lambda <-1
@@ -46,7 +47,7 @@ samplesizedev_survival <- function(S, p, c,  n.predictors, nval = 25000, nsim = 
   # check
   # Size - big data
 
-  beta      <- rep(1, n.predictors)
+  #beta      <- rep(1, n.predictors)
   f         <- sqrt(variance_eta / sum(beta^2))
   beta      <- f * beta
 

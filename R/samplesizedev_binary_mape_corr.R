@@ -8,7 +8,7 @@
 #'It takes approximately one minute to run. Ideally it should be followed by checking also
 #' the Mean Absolute Prediction Error that corresponds to the calculated sample size.
 
-#' @param S (numeric) The target expected calibration slope
+#' @param MAPE (numeric) The target expected calibration slope
 #' @param p (numeric) The anticipated outcome prevalence
 #' @param c (numeric) The anticipated C-statistic
 #' @param n.predictors (numeric) The number of candidate predictor variables
@@ -35,36 +35,62 @@
 #' expected_cs_mape
 
 
-samplesizedev_binary_s <- function(S, p, c,  n.predictors, nval = 25000, nsim = 1000, parallel = TRUE){
+samplesizedev_binary_mape_corr <- function(MAPE, p, c,  n.predictors, beta, nval = 25000, nsim = 1000, parallel = TRUE, cor0=0, cor1=0){
 
-  set.seed(1)
+  set.seed(2022)
 
-  mean_var_eta     <- find_mu_sigma(p, c)
-  mean_eta         <- mean_var_eta[1]
-  variance_eta     <- mean_var_eta[2]
+  mean_var         <- find_mu_sigma(p,c)
+  mean_eta         <- mean_var[1]
+  variance_eta     <- mean_var[2]
 
-  r2   <- as.numeric(approximate_R2(c, p, n = 100000)[2])
+  # Find beta that corresponds to that variance
 
-  n_init <- round((n.predictors)/ ((S-1)*log(1-r2/S)))
+  if (cor0==0 & cor1 ==0) {
 
-  min.opt                              <- n_init*0.6
-  if (c<=0.7)            inflation_f   <- 1.3
-  if (c>0.7  & c<=0.8)   inflation_f   <- 1.5
-  if (c>0.8  & c<=0.85)  inflation_f   <- 2
-  if (c>0.85 & c<=0.9)   inflation_f   <- 2.8
-  max.opt                              <- inflation_f*n_init
+    betan    <- beta * sqrt(mean_var[2]/sum(beta^2))
+    sigma   <- diag(1, n.predictors)} else
 
-  tol = ceiling(round(n_init/100)/10) * 10
+    {
+
+      betan  <- adjust_multiplier_correlated(c=c, mean = mean_eta, beta = beta, n.predictors = n.predictors, cor0=cor0, cor1=cor1)
+
+      n.noise <- length(beta[beta==0])
+      n.true  <- n.predictors-n.noise
+
+
+      # Specify correlation matrix
+      sigma <- matrix(0, nrow = n.predictors,  ncol = n.predictors)
+      sigma[1:n.true, 1:n.true] <- cor0
+      if (n.noise>0) {
+        sigma[(n.true+1):n.predictors, (n.true+1):n.predictors] <- cor1}
+      diag(sigma) <- 1
+
+    }
+
+  #r2   <- as.numeric(approximate_R2(c, p, n = 1000000)[2])
+
+  n_init <- exp((-0.508 + 0.259 * log(p) + 0.504 * log(n.predictors) - log(MAPE))/0.544) ;
+
+  min.opt = round(n_init*0.5)
+  max.opt = round(n_init*1.5)
+
+
+  tol = ceiling(round(n_init/200)/5) * 5
   #tol = 20
 
   print("Optimisation Starting ~ 1 min left...")
-  s_est <- function(n, nsim=nsim){
 
-    s <-  expected_s_n_binary(n, S = S, mean_eta = mean_eta, variance_eta = variance_eta,  p = p, c = c, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel)
-    round(s[1]/0.0025)*0.0025 - S
+  mape_est <- function(n, nsim=nsim){
+
+    mape <-  expected_mape_n_binary_corr(n, MAPE = MAPE, mean_eta = mean_eta, variance_eta = variance_eta, beta=betan,  p = p, c = c, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel = parallel, cor0=cor0)
+
+    MAPE-mape[1]
+
   }
 
-  n <- bisection(s_est, min.opt, max.opt, tol = tol, nsim = nsim)
+
+  n <- bisection_mape(mape_est, MAPE=MAPE, min.opt, max.opt, tol = tol, nsim = nsim)
+  tol = ceiling(round(n/200)/5) * 5
   n <- ceiling(n/tol)*tol
 
   #run <- expected_s(n, p=p, c=c, n.true=n.true, n.noise=n.noise, beta = c(0.5,0.3,0.3,0.15,0.15), nsim=1000, nval=50000, cores=2)
@@ -72,8 +98,8 @@ samplesizedev_binary_s <- function(S, p, c,  n.predictors, nval = 25000, nsim = 
   #print(paste("Required sample size: ", n ))
 
   size        <- NULL
-  size$riley  <- as.vector(n_init)
-  size$actual <- as.vector(n)
+  size$rvs2   <- as.vector(round(n_init))
+  size$actual <- as.vector(round(n))
 
   size
 

@@ -29,6 +29,9 @@ Imports:
     foreach, 
     rms, 
     survival,
-    pec
+    pec, 
+    DescTools,
+    bindata,
+    pROC
 URL: https://github.com/mpavlou/samplesizedev
 BugReports: https://github.com/mpavlou/samplesizedev/issues

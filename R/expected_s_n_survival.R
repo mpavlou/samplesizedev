@@ -1,11 +1,11 @@
-expected_s_n_survival <- function(n, S, variance_eta,  p, c, n.predictors, nsim = 1000, nval = 25000, parallel = TRUE){
+expected_s_n_survival <- function(n, S, variance_eta,  p, c, n.predictors, beta, nsim = 1000, nval = 25000, parallel = TRUE){
 
   set.seed(2022)
 
 
   # Find beta that corresponds to that variance
 
-  beta     <- rep(1, n.predictors)
+  #beta     <- rep(1, n.predictors)
   beta     <- beta * sqrt(variance_eta/sum(beta^2))
   beta     <- as.vector(beta)
   sigma    <- diag(1, n.predictors)

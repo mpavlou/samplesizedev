@@ -1,5 +1,5 @@
 #########################################
-# Find mean and varaince of linear predictor for given prevalnce
+# Find mean and variance of linear predictor for given prevalence
 # and C-statistic
 
 invlogit <- function(x) 1/(1+exp(-x))
@@ -39,18 +39,23 @@ find_mu_sigma <- function(target.prev, target.c, min.opt = c(-10,0), max.opt = c
   out      <- stats::optim(par=c(-2.65,0.1), pcfun, c(min.opt, max.opt, tol = tol))$par
   out
 
-  N        <- 1000000
+  N        <- 2000000
   lp       <- stats::rnorm(N, mean = out[1], sd = sqrt(out[2]))
   p        <- (1 + exp(-lp)) ^ (-1)
   y        <- stats::rbinom(N, 1, prob = p)
   prev     <- mean(y)
   #c        <- as.vector(pROC::roc(y, lp, quiet = TRUE)$auc)
-  c         <-quickcstat(y, lp)
+  c        <- quickcstat(y, lp)
   c(out[1], out[2], prev, c)
 }
 
 # Check
-#round(find_mu_sigma(0.174, 0.7, tol=0.00001),4)
+# round(find_mu_sigma(0.1, 0.65, tol=0.00001),4)
+
+#####################################################
+
+
+
 
 
 #########################################

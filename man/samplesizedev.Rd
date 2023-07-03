@@ -6,10 +6,12 @@
 \usage{
 samplesizedev(
   outcome = "Binary",
-  S = 0.9,
-  p,
+  S = NULL,
+  MAPE = NULL,
+  phi,
   c,
-  n.predictors,
+  p,
+  gamma = rep(1/p, p),
   nval = 25000,
   nsim = 1000,
   parallel = TRUE
@@ -20,17 +22,19 @@ samplesizedev(
 
 \item{S}{(numeric) The target expected calibration slope}
 
-\item{p}{(numeric) The anticipated outcome prevalence (binary outcome) or proportion of events (survival outcome)}
-
 \item{c}{(numeric) The anticipated c-statistic (binary outcome) or c-Index (survival outcome)}
 
-\item{n.predictors}{(numeric) The number of candidate predictor variables}
+\item{p}{(numeric) The anticipated outcome prevalence (binary outcome) or proportion of events (survival outcome)}
 
 \item{nval}{(numeric) Size of validation data (at least 10000)}
 
 \item{nsim}{(numeric) The number of simulations (at least 500, default value 1000 to ensure small simulation error)}
 
 \item{parallel}{(logical) parallel processing to speed up computations (default=TRUE)}
+
+\item{n.predictors}{(numeric) The number of candidate predictor variables}
+
+\item{beta}{(vector) The relative strength of predictors (0 for noise)}
 }
 \value{
 n: the required sample size

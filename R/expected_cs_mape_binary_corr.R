@@ -8,6 +8,8 @@
 #' @param p (numeric) The anticipated outcome prevalence
 #' @param c (numeric) The C-statistic
 #' @param n.predictors (numeric) The number of candidate predictor variables
+#' @param cor0 (numeric) correlation between true predictors
+#' @param cor1 (numeric) Correlation between noise predictors
 #' @param nsim (numeric) The number of simulations (at least 500, default value 1000)
 #' @param nval (numeric) Size of validation data
 #' @param parallel (logical) parallel processing to speed up computations (default=TRUE)
@@ -29,22 +31,44 @@
 
 #'
 #'
-expected_cs_mape_binary <- function(n, p, c,  n.predictors, beta = rep(1, n.predictors), nsim = 1000, nval = 25000, method ="MLE", parallel=TRUE){
+expected_cs_mape_binary_corr <- function(n, p, c, beta = rep(1/n.predictors, n.predictors), n.predictors, nsim = 1000, nval = 25000, cor0=0, cor1=0, method ="MLE", parallel=TRUE){
 
   # Find mean and variance of for Normal linear predictor
 
   set.seed(2022)
 
-  mean_var     <- find_mu_sigma(p,c)
+  mean_var     <- find_mu_sigma(p, c, tol = 0.0001)
   mean         <- mean_var[1]
   variance     <- mean_var[2]
 
   # Find beta that corresponds to that variance
 
-  beta    <- beta * sqrt(mean_var[2]/sum(beta^2))
-  sigma   <- diag(1, n.predictors)
+  if (cor0==0 & cor1 ==0) {
+
+    beta    <- beta * sqrt(mean_var[2]/sum(beta^2))
+    sigma   <- diag(1, n.predictors)} else
+
+      {
+
+    beta  <- adjust_multiplier_correlated(c=c, mean = mean, beta = beta, n.predictors = n.predictors, cor0=cor0, cor1=cor1)
+    beta
+
+      n.noise <- length(beta[beta==0])
+      n.true  <- n.predictors-n.noise
+
+
+      # Specify correlation matrix
+        sigma <- matrix(0, nrow = n.predictors,  ncol = n.predictors)
+        sigma[1:n.true, 1:n.true] <- cor0
+        if (n.noise>0) {
+        sigma[(n.true+1):n.predictors, (n.true+1):n.predictors] <- cor1}
+        diag(sigma) <- 1
+
+      }
+
 
   xval    <- mvtnorm::rmvnorm(nval, rep(0, n.predictors), sigma = sigma)
+  #yval     <- stats::rbinom(nval, 1, invlogit(mean + xval%*%beta))
 
 
   if (parallel==TRUE) {
@@ -57,8 +81,9 @@ expected_cs_mape_binary <- function(n, p, c,  n.predictors, beta = rep(1, n.pred
   `%dopar%` <- foreach::`%dopar%`
   `%do%` <- foreach::`%do%`
 
-  cs   <- NULL
-  mape <- NULL
+  cs        <- NULL
+  mape      <- NULL
+  cstat_est <- NULL
   i    <- 0
 
   if (method== "MLE") {
@@ -80,8 +105,11 @@ expected_cs_mape_binary <- function(n, p, c,  n.predictors, beta = rep(1, n.pred
     fit      <- RcppNumerical::fastLR(cbind(1,eta_est), yval, start = c(0,0.9) )
     cs[i]    <- fit$coef[2]
     mape[i]  <- mean(abs(p_true-p_est))
+    #NEW
+     # cstat_est[i] <- quickcstat(yval, p_est)
+    cstat_est[i] <- pROC::roc(as.vector(yval), as.vector(eta_est), quiet=TRUE)$auc
 
-    c(cs[i],mape[i])
+    c(cs[i],mape[i], cstat_est[i])
 
   }
 
@@ -129,8 +157,10 @@ expected_cs_mape_binary <- function(n, p, c,  n.predictors, beta = rep(1, n.pred
       fit      <- RcppNumerical::fastLR(cbind(1,eta_est), yval )
       cs[i]    <- fit$coef[2]
       mape[i]  <- mean(abs(p_true-p_est))
+      #NEW
+      cstat_est[i] <-quickcstat(yval, p_est)
 
-      c(cs[i],mape[i])
+      c(cs[i],mape[i], cstat_est[i])
     }
     }
 
@@ -141,15 +171,17 @@ expected_cs_mape_binary <- function(n, p, c,  n.predictors, beta = rep(1, n.pred
   b      <- matrix(unlist(a), byrow=TRUE, nrow=nsim)
   cs     <- b[,1]
   mape   <- b[,2]
+  #NEW
+  cstat_est  <- b[,3]
 
 
   df        <- data.frame(cs)
   df        <- stats::na.omit(df)
   cs_plot   <- ggplot2:: ggplot(df,  ggplot2::aes(x = cs), size=12) +
-    ggplot2::geom_density() +  ggplot2::ggtitle(paste("Mean Calibration Slope = ",round(mean(cs,na.rm=TRUE),3))) +
+    ggplot2::geom_density() +  ggplot2::ggtitle(paste("Mean Calibration Slope = ",round(mean(cs,na.rm=TRUE)/0.0025)*0.0025)) +
     ggplot2::geom_vline( ggplot2::aes(xintercept = mean(cs, na.rm = TRUE)), color="blue", linetype ="dashed", size = 1) +
     ggplot2::ylab("Density") +  ggplot2::theme(text =  ggplot2::element_text(size = 13)) +
-    ggplot2::xlab("Calibration Slope") +  theme_bw()+ theme(legend.position="bottom")
+    ggplot2::xlab("Calibration Slope")
 
   if ( abs(mean(cs, na.rm=TRUE)- 0.9) > 0.005)   cs_plot <-  cs_plot + ggplot2::geom_vline( ggplot2::aes(xintercept = 0.9), color="red", linetype ="dashed", size = 1)
 
@@ -160,7 +192,7 @@ expected_cs_mape_binary <- function(n, p, c,  n.predictors, beta = rep(1, n.pred
   mape_plot <- ggplot2::ggplot(df,  ggplot2::aes(x = mape), size=12) +
     ggplot2::geom_density() + ggplot2::ggtitle(paste("Mean MAPE = ", round(mean(mape,na.rm=TRUE),3), sep = "")) +
     ggplot2::geom_vline( ggplot2::aes(xintercept=mean(mape, na.rm = TRUE)), color="blue", linetype = "dashed", size=1) + ggplot2::ylab("Density") +
-    ggplot2::theme(text =  ggplot2::element_text(size = 13)) +     ggplot2::xlab("MAPE") +   theme_bw()+ theme(legend.position="bottom")
+    ggplot2::theme(text =  ggplot2::element_text(size = 13)) +     ggplot2::xlab("MAPE")
 
   figure  <- ggpubr::ggarrange(cs_plot, mape_plot,
                        ncol = 2, nrow = 1, common.legend = TRUE, legend="bottom")
@@ -173,19 +205,19 @@ expected_cs_mape_binary <- function(n, p, c,  n.predictors, beta = rep(1, n.pred
 
   set.seed(2022)
 
-  xval      <- mvtnorm::rmvnorm(200000, rep(0,n.predictors), sigma = sigma)
-  yval      <- stats::rbinom(200000, 1, invlogit(mean + xval %*% beta))
+  xval      <- mvtnorm::rmvnorm(2000000, rep(0,n.predictors), sigma = sigma)
+  yval      <- stats::rbinom(2000000, 1, invlogit(mean + xval %*% beta))
   prev      <- mean(yval)
   cstat     <- quickcstat(yval, invlogit(mean + xval %*% beta))
 
-  df        <- data.frame(n, round(mean(cs, na.rm = TRUE),3),
+  df        <- data.frame(n, ceiling(mean(cs, na.rm = TRUE)/0.0025) * 0.0025,
                              round(sqrt(stats::var(cs,na.rm = TRUE)), 4),
                              round(sqrt( mean( ((cs-1)^2), na.rm=TRUE) ), 4),
                              round(mean(ifelse( (cs < 0.8), 1, 0),na.rm=TRUE), 2),
-                             round(stats::median(mape, na.rm = TRUE),4),
+                             round(mean(mape, na.rm = TRUE),4),
                              round(sqrt(stats::var(mape,na.rm = TRUE)), 4),
-                             round(prev, 2),
-                             round(cstat, 2 ),
+                             round(prev, 4),
+                             round(cstat, 4 ),
                              n.predictors)
   names(df) <- c("N", "Mean_CS", "SD_CS", "RMSD_CS", "Pr(CS<0.8)", "Mean_MAPE",  "SD_MAPE", "Prev.", "C-Stat.", " # Predictors")
 
@@ -194,7 +226,17 @@ expected_cs_mape_binary <- function(n, p, c,  n.predictors, beta = rep(1, n.pred
 
   performance
 
+  #long format for simulations
+  performance <- data.frame(n, n.predictors,  round(cstat,3), round(prev, 3), cs, mape, cstat_est)
+  names(performance) = c("n", "npred", "cstat","prev","cs_est","mape_est","cstat_est")
+  performance
+
 }
+
+#expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, beta = c(0.5,0.3,0.3,0.15,0.15, rep(0,7)), n.predictors = 12, nsim = 2000, parallel = TRUE)
+
+
+#expected_cs_mape_binary_corr(n = 530, p = 0.2, c = 0.85, beta = c(0.5,0.3,0.3,0.15,0.15, rep(0,7)), n.predictors = 12, nsim = 2000, parallel = TRUE, cor0=0.5, cor1=0.05)
 
 
 # expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 2000, parallel = TRUE)

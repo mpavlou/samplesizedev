@@ -9,6 +9,7 @@ expected_cs_survival(
   p,
   c,
   n.predictors,
+  beta,
   nsim = 1000,
   nval = 25000,
   parallel = TRUE

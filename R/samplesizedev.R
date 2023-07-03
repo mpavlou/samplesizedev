@@ -21,6 +21,7 @@
 #' @param p (numeric) The anticipated outcome prevalence (binary outcome) or proportion of events (survival outcome)
 #' @param c (numeric) The anticipated c-statistic (binary outcome) or c-Index (survival outcome)
 #' @param n.predictors (numeric) The number of candidate predictor variables
+#' @param beta (vector) The relative strength of predictors (0 for noise)
 #' @param nsim (numeric) The number of simulations (at least 500, default value 1000 to ensure small simulation error)
 #' @param nval (numeric) Size of validation data (at least 10000)
 #' @param parallel (logical) parallel processing to speed up computations (default=TRUE)
@@ -50,11 +51,16 @@
 #' expected_cs
 
 
-samplesizedev <- function(outcome="Binary", S=0.9, p, c,  n.predictors, nval = 25000, nsim = 1000, parallel = TRUE){
+samplesizedev <- function(outcome="Binary", S = NULL, MAPE = NULL, phi, c,  p, gamma = rep(1/p, p), nval = 25000, nsim = 1000, parallel = TRUE){
 
-  if (outcome=="Binary")   n <- samplesizedev_binary(S=S, p=p, c=c,  n.predictors = n.predictors, nval = nval, nsim = nsim, parallel = parallel)
+  beta          <- gamma
+  n.predictors  <- p
+  p             <- phi
 
-  if (outcome=="Survival") n <- samplesizedev_survival(S=S, p=p, c=c,  n.predictors = n.predictors, nval = nval, nsim = nsim, parallel = parallel)
+  if (outcome=="Binary")   { if (length(MAPE)==0)       n <- samplesizedev_binary_s(S=S, p=p, c=c,  n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel) else
+                             if (length(S)==0)          n <- samplesizedev_binary_mape(MAPE=MAPE, p=p, c=c,  n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel)}
+
+  if (outcome=="Survival") n <- samplesizedev_survival(S=S, p=p, c=c,   n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel)
 
   n
 

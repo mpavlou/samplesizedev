@@ -25,7 +25,7 @@
 
 #'
 #'
-expected_cs_survival <- function(n, p, c, n.predictors, nsim = 1000, nval = 25000, parallel=TRUE){
+expected_cs_survival <- function(n, p, c, n.predictors, beta, nsim = 1000, nval = 25000, parallel=TRUE){
 
   # Find mean and variance of for Normal linear predictor
 
@@ -40,7 +40,7 @@ expected_cs_survival <- function(n, p, c, n.predictors, nsim = 1000, nval = 2500
   # check
   # Size - big data
 
-  beta      <-  rep(1, n.predictors)
+  #beta      <-  rep(1, n.predictors)
   f         <-  sqrt(variance/sum(beta^2))
   beta      <-  f * beta
 

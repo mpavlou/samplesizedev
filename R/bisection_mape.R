@@ -1,6 +1,6 @@
 # Function for bisection method
 
-bisection <- function(f, a, b, iter = 10, tol = ceiling(round(a/200)/5) * 5, nsim = 1000) {
+bisection_mape <- function(f, a, b, MAPE = 0.0001, iter = 10, tol = ceiling(round(a/200)/5) * 5, nsim = 1000) {
   # If the signs of the function at the evaluated points, a and b, stop the function and return message.
 
   tol = ceiling(round(a/200)/5) * 5
@@ -8,7 +8,6 @@ bisection <- function(f, a, b, iter = 10, tol = ceiling(round(a/200)/5) * 5, nsi
   nsim1 <- nsim
 
   if (nsim>=1000) divide <- 2 else divide <- 1
-
   nsim  <- round(nsim/divide)
 
   fa <- f(a, nsim = nsim)
@@ -34,9 +33,8 @@ bisection <- function(f, a, b, iter = 10, tol = ceiling(round(a/200)/5) * 5, nsi
 
     # If the function equals 0 at the midpoint or the midpoint is below the desired tolerance, stop the
     # function and return the root.
-   if (  ((abs(fc) <= 0.0025) || ((b - a) / 2) < tol)   &  (k >=2 )) {
-    #if (  abs(fc) <= 0.0025 &  (k >=2 )) {
-
+    if (  ((abs(fc) <= MAPE/200) || ((b - a) / 2) < tol)   &  (k >=2 )) {
+    # if (  abs(fc) <= MAPE/200 &  (k >=2 )) {
       return(c)
     }
 

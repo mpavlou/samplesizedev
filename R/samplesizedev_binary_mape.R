@@ -35,7 +35,7 @@
 #' expected_cs_mape
 
 
-samplesizedev_binary_s <- function(S, p, c,  n.predictors, nval = 25000, nsim = 1000, parallel = TRUE){
+samplesizedev_binary_mape <- function(MAPE, p, c,  n.predictors, beta, nval = 25000, nsim = 1000, parallel = TRUE){
 
   set.seed(1)
 
@@ -43,28 +43,31 @@ samplesizedev_binary_s <- function(S, p, c,  n.predictors, nval = 25000, nsim = 
   mean_eta         <- mean_var_eta[1]
   variance_eta     <- mean_var_eta[2]
 
-  r2   <- as.numeric(approximate_R2(c, p, n = 100000)[2])
+  #r2   <- as.numeric(approximate_R2(c, p, n = 1000000)[2])
 
-  n_init <- round((n.predictors)/ ((S-1)*log(1-r2/S)))
+  n_init <- exp((-0.508 + 0.259 * log(p) + 0.504 * log(n.predictors) - log(MAPE))/0.544) ;
 
-  min.opt                              <- n_init*0.6
-  if (c<=0.7)            inflation_f   <- 1.3
-  if (c>0.7  & c<=0.8)   inflation_f   <- 1.5
-  if (c>0.8  & c<=0.85)  inflation_f   <- 2
-  if (c>0.85 & c<=0.9)   inflation_f   <- 2.8
-  max.opt                              <- inflation_f*n_init
 
-  tol = ceiling(round(n_init/100)/10) * 10
+  min.opt = round(n_init*0.5)
+  max.opt = round(n_init*1.5)
+
+
+  tol = ceiling(round(n_init/200)/10) * 10
   #tol = 20
 
   print("Optimisation Starting ~ 1 min left...")
-  s_est <- function(n, nsim=nsim){
 
-    s <-  expected_s_n_binary(n, S = S, mean_eta = mean_eta, variance_eta = variance_eta,  p = p, c = c, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel)
-    round(s[1]/0.0025)*0.0025 - S
+  mape_est <- function(n, nsim=nsim){
+
+    mape <-  expected_mape_n_binary(n, MAPE = MAPE, mean_eta = mean_eta, variance_eta = variance_eta,  p = p, c = c, beta = beta, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel = parallel)
+
+    MAPE-round(mape[1]/0.00025)*0.00025
+
   }
 
-  n <- bisection(s_est, min.opt, max.opt, tol = tol, nsim = nsim)
+
+  n <- bisection(mape_est, min.opt, max.opt, tol = tol, nsim = nsim)
+  tol = ceiling(round(n_init/200)/5) * 5
   n <- ceiling(n/tol)*tol
 
   #run <- expected_s(n, p=p, c=c, n.true=n.true, n.noise=n.noise, beta = c(0.5,0.3,0.3,0.15,0.15), nsim=1000, nval=50000, cores=2)
@@ -72,7 +75,7 @@ samplesizedev_binary_s <- function(S, p, c,  n.predictors, nval = 25000, nsim = 
   #print(paste("Required sample size: ", n ))
 
   size        <- NULL
-  size$riley  <- as.vector(n_init)
+  size$rvs2   <- as.vector(round(n_init))
   size$actual <- as.vector(n)
 
   size
