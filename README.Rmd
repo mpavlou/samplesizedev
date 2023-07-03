@@ -31,9 +31,9 @@ devtools::install_github("mpavlou/samplesizedev")
 
 ## Example
 
-This is a basic example which shows \n
-a) how to calculate the expected shrinkage and MAPE for a given sample size, and \n
-b) To calculate the sample size to achieve a taregt expected shrinkage of S=0.9
+This is a basic example which shows how to \n
+a) to calculate the expected shrinkage and MAPE for a given sample size, and \n
+b) To calculate the sample size to achieve a target expected shrinkage of S=0.9 for a binary outcome
 
 ```{r example}
 library(samplesizedev)
