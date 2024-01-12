@@ -27,7 +27,7 @@ Imports:
     parallel,
     doParallel,
     foreach, 
-    rms, 
+    rms,
     survival,
     pec, 
     prodlim,
