@@ -12,7 +12,8 @@ expected_cs_survival(
   beta,
   nsim = 1000,
   nval = 25000,
-  parallel = TRUE
+  parallel = TRUE,
+  method = "MLE"
 )
 }
 \arguments{

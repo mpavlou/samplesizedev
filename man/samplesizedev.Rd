@@ -55,19 +55,19 @@ check also provides the expected Mean Absolute Prediction Error (MAPE) that corr
 }
 \examples{
 # Binary Outcome: Find the sample size required for an average calibration slope of S = 0.9
-# samplesizedev(outcome="Binary", S = 0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 500, parallel = FALSE)
+# samplesizedev(outcome="Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10,  nsim = 500, parallel = FALSE)
 
 # Binary Outcome: Prefer parallel computing with >2 cores that ensure faster running
-# samplesizedev(outcome="Binary", S = 0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 500, parallel = TRUE)
+# samplesizedev(outcome="Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10,  nsim = 500, parallel = TRUE)
 
 # Binary Outcome: Check the expected MAPE and Calibration Slope for the selected size
-# expected_cs (outcome= "Binary", n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 500, parallel = TRUE)
+# expected_cs (outcome= "Binary", n = 530, phi= 0.2, c = 0.85, p = 10, nsim = 500, parallel = TRUE)
 
 # Survival Outcome: Find the sample size required for an average calibration slope of S = 0.9
-# samplesizedev(outcome = "Survival", S = 0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 500, parallel = TRUE)
+# samplesizedev(outcome = "Survival", S = 0.9, phi = 0.2, c = 0.85, p = 10,  nsim = 500, parallel = TRUE)
 
 # Survival  Outcome: Check the expected MAPE and Calibration Slope for the selected size
-# expected_cs(outcome = "Survival", n = 390, p = 0.2, c = 0.85, n.predictors = 10, nsim = 500, parallel = TRUE)
+# expected_cs(outcome = "Survival", n = 390, phi = 0.2, c = 0.85, p = 10, nsim = 500, parallel = TRUE)
 
 
 }

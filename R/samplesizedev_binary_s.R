@@ -39,8 +39,7 @@ samplesizedev_binary_s <- function(S, p, c,   n.predictors, beta = rep(1/n.predi
 
   set.seed(2022)
 
-
-  mean_var_eta     <- find_mu_sigma(p, c, tol =0.00001)
+  mean_var_eta     <- find_mu_sigma(p, c, tol = 0.00001)
   mean_eta         <- mean_var_eta[1]
   variance_eta     <- mean_var_eta[2]
 
@@ -58,6 +57,29 @@ samplesizedev_binary_s <- function(S, p, c,   n.predictors, beta = rep(1/n.predi
   tol = ceiling(round(n_init/200)/5) * 5
 
   print("Optimisation Starting ~ 1 min left...")
+
+  A   <- 2*p*(1-p)*stats::qnorm(c)^2
+  app <- sqrt(1/(A* max.opt)+2/(max.opt-2) )
+
+  if (app/sqrt(nsim)>0.0027) nsim = ceiling(app^2/0.0025^2/100)*100
+
+
+
+  # s_est_quick <- function(n, nsim=100){
+  #
+  #   s <-  expected_s_n_binary_quick(n, S = S, mean_eta = mean_eta, variance_eta = variance_eta,  beta = beta, p = p, c = c, n.predictors = n.predictors, nval = nval, nsim = 100,  parallel=parallel)
+  #   #(round(s[1]/0.0025)*0.0025-s[2]) - S
+  #   s[1] - S
+  # }
+  #
+  # n <- bisection(s_est_quick, min.opt, max.opt, tol = tol, nsim = 100)
+  # tol = ceiling(round(n_init/200)/10) * 10
+  # n <- ceiling(n/tol)*tol
+  #
+  # max.opt <- n*1.15
+  # min.opt <- n*0.9
+
+
   s_est <- function(n, nsim=nsim){
 
     s <-  expected_s_n_binary(n, S = S, mean_eta = mean_eta, variance_eta = variance_eta,  beta = beta, p = p, c = c, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel)
@@ -69,14 +91,15 @@ samplesizedev_binary_s <- function(S, p, c,   n.predictors, beta = rep(1/n.predi
   tol = ceiling(round(n_init/200)/5) * 5
   n <- ceiling(n/tol)*tol
 
-  # run <- expected_s(n, p=p, c=c, n.true=n.true, n.noise=n.noise, beta = c(0.5,0.3,0.3,0.15,0.15), nsim=1000, nval=50000, cores=2)
+#   # run <- expected_s(n, p=p, c=c, n.true=n.true, n.noise=n.noise, beta = c(0.5,0.3,0.3,0.15,0.15), nsim=1000, nval=50000, cores=2)
 
   #print(paste("Required sample size: ", n ))
 
   size        <- NULL
   size$rvs1   <- as.vector(n_init)
   size$actual <- as.vector(n)
-  size$correct_to_nearest <- as.vector(tol)
+  size$nsim   <- nsim
+  # size$correct_to_nearest <- as.vector(tol)
 
   size
 

@@ -744,8 +744,14 @@ find_mu_sigma <- function(target.prev, target.c, min.opt = c(-10,0), max.opt = c
     abs( c - target.c)^2 + abs(prev - target.prev )^2
   }
 
-  out      <- stats::optim(par=c(-2.65,0.1), pcfun, c(min.opt, max.opt, tol = tol))$par
-  out
+  if (target.c>0.65) {
+    out      <- stats::optim(par=c(-2.65,0.1), pcfun, c(min.opt, max.opt, tol = tol))$par} else
+
+    { sigma_c <- sqrt(2) * stats::qnorm(target.c)
+    mu      <- 0.5 * (2 * target.prev - 1) * (sigma_c^2) + log(target.prev / (1 - target.prev))
+    sigma   <- sqrt((sigma_c^2) * (1 + target.prev * (1 - target.prev) * (sigma_c^2)))
+    out     <- c(mu, sigma^2)
+    }
 
   N        <- 2000000
   lp       <- stats::rnorm(N, mean = out[1], sd = sqrt(out[2]))

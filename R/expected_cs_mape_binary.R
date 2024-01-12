@@ -149,7 +149,7 @@ expected_cs_mape_binary <- function(n, p, c,  n.predictors, beta = rep(1, n.pred
     ggplot2::geom_density() +  ggplot2::ggtitle(paste("Mean Calibration Slope = ",round(mean(cs,na.rm=TRUE),3))) +
     ggplot2::geom_vline( ggplot2::aes(xintercept = mean(cs, na.rm = TRUE)), color="blue", linetype ="dashed", size = 1) +
     ggplot2::ylab("Density") +  ggplot2::theme(text =  ggplot2::element_text(size = 13)) +
-    ggplot2::xlab("Calibration Slope") +  theme_bw()+ theme(legend.position="bottom")
+    ggplot2::xlab("Calibration Slope") + ggplot2::theme_bw()+  ggplot2::theme(legend.position="bottom")
 
   if ( abs(mean(cs, na.rm=TRUE)- 0.9) > 0.005)   cs_plot <-  cs_plot + ggplot2::geom_vline( ggplot2::aes(xintercept = 0.9), color="red", linetype ="dashed", size = 1)
 
@@ -160,7 +160,8 @@ expected_cs_mape_binary <- function(n, p, c,  n.predictors, beta = rep(1, n.pred
   mape_plot <- ggplot2::ggplot(df,  ggplot2::aes(x = mape), size=12) +
     ggplot2::geom_density() + ggplot2::ggtitle(paste("Mean MAPE = ", round(mean(mape,na.rm=TRUE),3), sep = "")) +
     ggplot2::geom_vline( ggplot2::aes(xintercept=mean(mape, na.rm = TRUE)), color="blue", linetype = "dashed", size=1) + ggplot2::ylab("Density") +
-    ggplot2::theme(text =  ggplot2::element_text(size = 13)) +     ggplot2::xlab("MAPE") +   theme_bw()+ theme(legend.position="bottom")
+    ggplot2::theme(text =  ggplot2::element_text(size = 13)) +ggplot2::xlab("MAPE") +
+    ggplot2::theme_bw()+ ggplot2::theme(legend.position="bottom")
 
   figure  <- ggpubr::ggarrange(cs_plot, mape_plot,
                        ncol = 2, nrow = 1, common.legend = TRUE, legend="bottom")
@@ -178,6 +179,9 @@ expected_cs_mape_binary <- function(n, p, c,  n.predictors, beta = rep(1, n.pred
   prev      <- mean(yval)
   cstat     <- quickcstat(yval, invlogit(mean + xval %*% beta))
 
+  A <- 2*p*(1-p)*qnorm(c)^2
+  app <- sqrt(1/(A*n)+2/(n-2) )
+
   df        <- data.frame(n, round(mean(cs, na.rm = TRUE),3),
                              round(sqrt(stats::var(cs,na.rm = TRUE)), 4),
                              round(sqrt( mean( ((cs-1)^2), na.rm=TRUE) ), 4),
@@ -186,8 +190,8 @@ expected_cs_mape_binary <- function(n, p, c,  n.predictors, beta = rep(1, n.pred
                              round(sqrt(stats::var(mape,na.rm = TRUE)), 4),
                              round(prev, 2),
                              round(cstat, 2 ),
-                             n.predictors)
-  names(df) <- c("N", "Mean_CS", "SD_CS", "RMSD_CS", "Pr(CS<0.8)", "Mean_MAPE",  "SD_MAPE", "Prev.", "C-Stat.", " # Predictors")
+                             n.predictors, app)
+  names(df) <- c("N", "Mean_CS", "SD_CS", "RMSD_CS", "Pr(CS<0.8)", "Mean_MAPE",  "SD_MAPE", "Prev.", "C-Stat.", " # Predictors", "app")
 
   performance <- df[,-3]
   performance <- df
