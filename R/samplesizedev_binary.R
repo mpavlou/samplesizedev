@@ -72,8 +72,8 @@ samplesizedev_binary_s <- function(S, p, c,  n.predictors, nval = 25000, nsim = 
   #print(paste("Required sample size: ", n ))
 
   size        <- NULL
-  size$riley  <- as.vector(n_init)
-  size$actual <- as.vector(n)
+  size$rvs  <- as.vector(n_init)
+  size$sim <- as.vector(n)
 
   size
 

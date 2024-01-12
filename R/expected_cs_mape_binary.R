@@ -179,8 +179,8 @@ expected_cs_mape_binary <- function(n, p, c,  n.predictors, beta = rep(1, n.pred
   prev      <- mean(yval)
   cstat     <- quickcstat(yval, invlogit(mean + xval %*% beta))
 
-  A <- 2*p*(1-p)*qnorm(c)^2
-  app <- sqrt(1/(A*n)+2/(n-2) )
+  # A <- 2*p*(1-p)*qnorm(c)^2
+  # app <- sqrt(1/(A*n)+2/(n-2) )
 
   df        <- data.frame(n, round(mean(cs, na.rm = TRUE),3),
                              round(sqrt(stats::var(cs,na.rm = TRUE)), 4),
@@ -189,14 +189,8 @@ expected_cs_mape_binary <- function(n, p, c,  n.predictors, beta = rep(1, n.pred
                              round(stats::median(mape, na.rm = TRUE),4),
                              round(sqrt(stats::var(mape,na.rm = TRUE)), 4),
                              round(prev, 2),
-                             round(cstat, 2 ),
-<<<<<<< HEAD
-                             n.predictors, app)
+                             round(cstat, 2 ))
   names(df) <- c("N", "Mean_CS", "SD_CS", "RMSD_CS", "Pr(CS<0.8)", "Mean_MAPE",  "SD_MAPE", "Prev.", "C-Stat.", " # Predictors", "app")
-=======
-                             n.predictors)
-  names(df) <- c("N", "Mean_CS", "SD_CS", "RMSD_CS", "Pr(CS<0.8)", "Mean_MAPE",  "SD_MAPE", "Prev.", "C-Stat.", " # Predictors")
->>>>>>> 4f7663a360c5f6eb6d8e47166aa96034eeb4f678
 
   performance <- df[,-3]
   performance <- df
