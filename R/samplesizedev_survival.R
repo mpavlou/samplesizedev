@@ -109,18 +109,19 @@ samplesizedev_survival <- function(S, p, c,  n.predictors, beta=rep(1/n.predicto
 
   s_est <- function(n, nsim = nsim) {
 
-    s <-  expected_s_n_survival(n, S = S, variance_eta = variance_eta,  p = p, c = c, beta=beta, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel)
-    round(s[1]/0.0025)*0.0025 - S
+    s <-  expected_s_n_survival(n, S = S, variance_eta = variance_eta,  p = p, c = c, beta = beta, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel)
+    s[1] - S
   }
 
   n <- bisection(s_est, min.opt, max.opt, tol = tol, nsim = nsim)
+  tol = ceiling(round(n_init/200)/5) * 5
   n <- ceiling(n/tol)*tol
 
   #run <- expected_s(n, p=p, c=c, n.true=n.true, n.noise=n.noise, beta = c(0.5,0.3,0.3,0.15,0.15), nsim=1000, nval=50000, cores=2)
 
   size        <- NULL
   size$riley  <- as.vector(n_init)
-  size$actual <- as.vector(n)
+  size$sim <- as.vector(n)
 
   size
 
@@ -130,7 +131,7 @@ samplesizedev_survival <- function(S, p, c,  n.predictors, beta=rep(1/n.predicto
 # system.time ( as <- samplesizedev_survival(S = 0.9, p = 0.5, c = 0.75, n.predictors = 12,  nsim = 1000, parallel = TRUE, nval = 10000))
 #
 #
-# system.time(e_actual <- expected_cs_survival(n = as$actual, p = 0.5, c = 0.75, n.predictors = 12, nsim = 1000, nval = 25000, parallel = TRUE))
+ #system.time(e_actual <- expected_cs_survival(n = as$actual, p = 0.5, c = 0.75, n.predictors = 12, nsim = 1000, nval = 25000, parallel = TRUE))
 # e_actual
 #
 # system.time(e_riley <- expected_cs_survival(n = as$riley, p = 0.5, c = 0.75, n.predictors = 12, nsim = 1000, nval = 25000, parallel = TRUE))

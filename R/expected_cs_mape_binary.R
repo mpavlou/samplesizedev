@@ -29,7 +29,12 @@
 
 #'
 #'
-expected_cs_mape_binary <- function(n, p, c,  n.predictors, beta = rep(1, n.predictors), nsim = 1000, nval = 25000, method ="MLE", parallel=TRUE){
+expected_cs_mape_binary <- function(n, phi, c,  p, gamma = rep(1/p, p), nsim = 1000, nval = 25000, method ="MLE", parallel=TRUE){
+
+  beta          <- gamma
+  n.predictors  <- p
+  p             <- phi
+
 
   # Find mean and variance of for Normal linear predictor
 
@@ -200,7 +205,7 @@ expected_cs_mape_binary <- function(n, p, c,  n.predictors, beta = rep(1, n.pred
 }
 
 
-# expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 2000, parallel = TRUE)
+# expected_cs_mape_binary(n = 530, phi = 0.2, c = 0.85, p=10, nsim = 2000, parallel = TRUE)
 # expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, beta= c(0.5,0.3,0.2,0.1,0.1,
 # rep(0,5)), nsim = 2000, parallel = TRUE)
 # expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, beta= c(0.9,0.1 ,0,0,0,

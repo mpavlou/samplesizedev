@@ -299,6 +299,8 @@ find_sigma_quick <- function(target.c,  min.opt = 0.1, max.opt = 8, tol=0.0001){
   out      <- stats::optimize(cfun, lower=min.opt, upper=max.opt, tol = tol)$minimum
   out
 }
+
+
 Hist <- function (time, event, entry = NULL, id = NULL, cens.code = "0",
           addInitialState = FALSE)
 {
