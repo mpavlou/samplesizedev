@@ -190,8 +190,13 @@ expected_cs_mape_binary <- function(n, p, c,  n.predictors, beta = rep(1, n.pred
                              round(sqrt(stats::var(mape,na.rm = TRUE)), 4),
                              round(prev, 2),
                              round(cstat, 2 ),
+<<<<<<< HEAD
                              n.predictors, app)
   names(df) <- c("N", "Mean_CS", "SD_CS", "RMSD_CS", "Pr(CS<0.8)", "Mean_MAPE",  "SD_MAPE", "Prev.", "C-Stat.", " # Predictors", "app")
+=======
+                             n.predictors)
+  names(df) <- c("N", "Mean_CS", "SD_CS", "RMSD_CS", "Pr(CS<0.8)", "Mean_MAPE",  "SD_MAPE", "Prev.", "C-Stat.", " # Predictors")
+>>>>>>> 4f7663a360c5f6eb6d8e47166aa96034eeb4f678
 
   performance <- df[,-3]
   performance <- df
