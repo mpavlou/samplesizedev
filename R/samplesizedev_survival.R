@@ -36,7 +36,7 @@
 #' expected_cs_mape_binary
 
 
-samplesizedev_survival <- function(S, p, c,  n.predictors, beta, nval = 25000, nsim = 1000, parallel = TRUE){
+samplesizedev_survival <- function(S, p, c,  n.predictors, beta=rep(1/n.predictors, n.predictors), nval = 25000, nsim = 1000, parallel = TRUE){
 
   set.seed(1)
   lambda <-1
@@ -105,11 +105,11 @@ samplesizedev_survival <- function(S, p, c,  n.predictors, beta, nval = 25000, n
   tol = ceiling(round(n_init/100)/10)*10
   #tol = 20
 
-  print("Optimisation Starting ~ 2 min left...")
+  print("Optimisation Starting ~ 4 min left...")
 
   s_est <- function(n, nsim = nsim) {
 
-    s <-  expected_s_n_survival(n, S = S, variance_eta = variance_eta,  p = p, c = c, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel)
+    s <-  expected_s_n_survival(n, S = S, variance_eta = variance_eta,  p = p, c = c, beta=beta, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel)
     round(s[1]/0.0025)*0.0025 - S
   }
 

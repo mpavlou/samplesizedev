@@ -292,7 +292,7 @@ find_sigma_quick <- function(target.c,  min.opt = 0.1, max.opt = 8, tol=0.0001){
     u      <- runif(n)
     eta    <- stats::rnorm(n, mean = 0, sd = sqrt(x))
     t      <- -log(u)/((lambda) * exp(eta) )
-    c      <- 1 - concordance(t ~ eta)$concordance; c
+    c      <- 1 - survival::concordance(t ~ eta)$concordance; c
     abs(c - target.c)
   }
 
