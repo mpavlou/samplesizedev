@@ -1,27 +1,28 @@
 
-#' Sample Size Required to Develop a Risk Prediction model for Binary and Survival outcomes
+#' Sample Size Required to Develop a Risk Prediction model for Binary Outcomes
 #'
 #' @description
-#' This function calculates the sample size required to achieve an expected Calibration Slope (S), given anticipated features of the data and the model. These
-#' features are the outcome prevalence (p) and c-statistic (c) for a Binary outcome  or the proportion of events at a given time point (p) and c-index (c)  for a survival outcome,
-#' and the number of candidate predictor variables (n.predictors).
+#' This function calculates the sample size required to achieve an expected Calibration Slope (S), given anticipated features of the data and the model. For a binary outcome these
+#' features are the outcome prevalence (phi) and c-statistic (c) and the number of candidate predictor variables (p).
+#' Future versions will  accept the anticipated proportion of events at a given time point (phi) and c-index (c)  for a Survival outcome.
 #'
 #' The required value for the (average) calibration slope should be at least S=0.9. On the other hand, the input
-#' values for p, c, and n.predictors are application-dependent.
+#' values for p, c, and n.predictors are study-dependent.
 #'
 #'
-#' The calculation takes approximately one minute for binary outcomes and 2-4 minutes for survival outcome (depending on the number of predictors).
+#' The calculation takes approximately one-two minutes for binary outcomes (longer, 2-4 minutes for survival outcome).
 #'
-#' We suggest that the variability in the calibration
-#' slope, which is an indicator of model stability for the calculated sample size, be subsequently checked using the function 'expected_cs'. For binary outcomes, this
-#' check also provides the expected Mean Absolute Prediction Error (MAPE) that corresponds to the calculated sample size.
+#' We suggest that the variability in the calibration slope, which is an indicator of model stability
+#' for the calculated sample size, be subsequently checked using the function 'expected_cs'. For Binary
+#' outcomes, this check also provides the expected Mean Absolute Prediction Error (MAPE) that corresponds
+#' to the calculated sample size.
 
-#' @param outcome (character) The type of outcome (''Binary'' or ''Survival'')
+#' @param outcome (character) The type of outcome (''Binary'' ; ''Survival'' to be added in later versions)
 #' @param S (numeric) The target expected calibration slope
-#' @param p (numeric) The anticipated outcome prevalence (binary outcome) or proportion of events (survival outcome)
-#' @param c (numeric) The anticipated c-statistic (binary outcome) or c-Index (survival outcome)
-#' @param n.predictors (numeric) The number of candidate predictor variables
-#' @param beta (vector) The relative strength of predictors (0 for noise)
+#' @param phi (numeric) The anticipated outcome prevalence of the binary outcome (or proportion of events for survival outcome)
+#' @param c (numeric) The anticipated c-statistic for binary outcome (or c-index for survival outcome)
+#' @param p (numeric) The number of candidate predictor variables
+#' @param gamma (vector) The relative strength of predictors (0 for noise)
 #' @param nsim (numeric) The number of simulations (at least 500, default value 1000 to ensure small simulation error)
 #' @param nval (numeric) Size of validation data (at least 10000)
 #' @param parallel (logical) parallel processing to speed up computations (default=TRUE)
@@ -34,8 +35,8 @@
 #' # Binary Outcome: Find the sample size required for an average calibration slope of S = 0.9
 #' # samplesizedev(outcome="Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, parallel = FALSE)
 #'
-#' # Binary Outcome: Prefer parallel computing with >2 cores that ensure faster running
-#' # samplesizedev(outcome="Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10)
+#' # Binary Outcome: Prefer parallel computing  that ensures faster run
+#' # samplesizedev(outcome="Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, parallel=TRUE)
 #'
 #' # Binary Outcome: Check the expected MAPE and Calibration Slope for the selected size
 #' # expected_cs (outcome= "Binary", n = 530, phi= 0.2, c = 0.85, p = 10, nsim = 1000)
