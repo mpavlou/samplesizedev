@@ -36,7 +36,7 @@
 #' expected_cs_mape_binary
 
 
-samplesizedev_survival <- function(S, p, c,  n.predictors, beta=beta, nval = 25000, nsim = 1000, parallel = TRUE){
+samplesizedev_survival <- function(S, p, c,  n.predictors, beta, nval = 25000, nsim = 1000, parallel = TRUE){
 
   set.seed(1)
   lambda <-1

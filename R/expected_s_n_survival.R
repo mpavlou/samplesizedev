@@ -92,7 +92,7 @@ a <- foreach::foreach(i = 1: nsim, .packages = c('mvtnorm','RcppNumerical', 'ggp
  df        <- data.frame(cs)
  df        <- stats::na.omit(df)
  cs_plot   <- ggplot2:: ggplot(df,  ggplot2::aes(x = cs), size=12) +
-   ggplot2::geom_density() +  ggplot2::ggtitle(paste("N = ", n, ", Expected CS = ", round(mean(cs,na.rm=TRUE)/0.0025)*0.0025, ", SD(CS) = ", round(sqrt(stats::var(cs)),3))) +
+   ggplot2::geom_density() +  ggplot2::ggtitle(paste("N = ", n, ", Mean CS = ", round(mean(cs,na.rm=TRUE)/0.0025)*0.0025, ", SD(CS) = ", round(sqrt(stats::var(cs)),3))) +
    ggplot2::geom_vline( ggplot2::aes(xintercept = mean(cs, na.rm = TRUE)), color="blue", linetype ="dashed", size = 1) +
    ggplot2::ylab("Density") +  ggplot2::theme(text =  ggplot2::element_text(size = 13)) +
    ggplot2::xlab("Calibration Slope")

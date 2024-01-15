@@ -57,7 +57,7 @@ expected_s_n_binary <- function(n, S, mean_eta, variance_eta,  p, c, n.predictor
   df        <- data.frame(cs)
   df        <- stats::na.omit(df)
   cs_plot   <- ggplot2:: ggplot(df,  ggplot2::aes(x = cs), size=12) +
-    ggplot2::geom_density() +  ggplot2::ggtitle(paste("N = ", round(n), ", Expected CS = ", round(mean(cs,na.rm=TRUE),3), ", SD(CS) = ", round(sqrt(stats::var(cs,na.rm=TRUE)),3))) +
+    ggplot2::geom_density() +  ggplot2::ggtitle(paste("N = ", round(n), ", Mean CS = ", round(mean(cs,na.rm=TRUE),3), ", SD(CS) = ", round(sqrt(stats::var(cs,na.rm=TRUE)),3))) +
     ggplot2::geom_vline( ggplot2::aes(xintercept = mean(cs, na.rm = TRUE)), color="blue", linetype ="dashed", size = 1) +
     ggplot2::ylab("Density") +  ggplot2::theme(text =  ggplot2::element_text(size = 13)) +
     ggplot2::xlab("Calibration Slope")

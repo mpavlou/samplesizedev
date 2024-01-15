@@ -61,6 +61,7 @@ samplesizedev <- function(outcome="Binary", S = NULL, MAPE = NULL, phi, c,  p, g
   if (outcome=="Binary")   { if (length(MAPE)==0)       n <- samplesizedev_binary_s(S=S, p=p, c=c,  n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel) else
                              if (length(S)==0)          n <- samplesizedev_binary_mape(MAPE=MAPE, p=p, c=c,  n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel)}
 
+  if (outcome=="Survival") nval = 10000
   if (outcome=="Survival") n <- samplesizedev_survival(S=S, p=p, c=c,   n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel)
 
   n
