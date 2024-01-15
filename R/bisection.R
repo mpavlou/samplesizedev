@@ -25,7 +25,7 @@ bisection <- function(f, a, b, iter = 10, tol = ceiling(round(a/200)/5) * 5, nsi
     # a <- round(a/tol)*tol
     # b <- round(b/tol)*tol
 
-    c  <- (a + b) / 2 # Calculate midpoint
+    c  <- round((a + b) / 2) # Calculate midpoint
     fc <- f(c, nsim = nsim)
 
     #print(c(k, a, b, c, fa, fb, fc ))

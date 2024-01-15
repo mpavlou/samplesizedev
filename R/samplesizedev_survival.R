@@ -121,7 +121,7 @@ samplesizedev_survival <- function(S, p, c,  n.predictors, beta, nval = 25000, n
 
   size        <- NULL
   size$rvs    <- as.vector(n_init)
-  size$sim    <- as.vector(n)
+  size$sim    <- as.vector(round(n))
 
   size
 
