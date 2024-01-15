@@ -45,12 +45,12 @@ features are the outcome prevalence (phi) and c-statistic (c) and the number of 
 Future versions will  accept the anticipated proportion of events at a given time point (phi) and c-index (c)  for a Survival outcome.
 
 The required value for the (average) calibration slope should be at least S=0.9. On the other hand, the input
-values for p, c, and n.predictors are study-dependent.
+values for phi, c, and p are study-dependent.
 
-The calculation takes approximately one-two minutes for binary outcomes (longer, 2-4 minutes for survival outcome).
+The calculation takes usually takes 1-2 minutes for a binary outcome.
 
-We suggest that the variability in the calibration slope, which is an indicator of model stability
-for the calculated sample size, be subsequently checked using the function 'expected_cs'. For Binary
+The variability in the calibration slope, can be seen as an indicator of model stability
+for the calculated sample size. This can be evaluated using the function 'expected_cs'. For Binary
 outcomes, this check also provides the expected Mean Absolute Prediction Error (MAPE) that corresponds
 to the calculated sample size.
 }

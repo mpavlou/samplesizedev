@@ -9,7 +9,7 @@ samplesizedev_survival(
   p,
   c,
   n.predictors,
-  beta,
+  beta = beta,
   nval = 25000,
   nsim = 1000,
   parallel = TRUE
@@ -18,7 +18,7 @@ samplesizedev_survival(
 \arguments{
 \item{S}{(numeric) The target expected calibration slope}
 
-\item{p}{(numeric) The anticipated censoring proportion at the time-point of interest}
+\item{p}{(numeric) The anticipated proportion of events (at the time-point of interest)}
 
 \item{c}{(numeric) The anticipated C-index}
 

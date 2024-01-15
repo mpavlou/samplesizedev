@@ -9,7 +9,7 @@ expected_cs_mape_binary(
   p,
   c,
   n.predictors,
-  beta = rep(1, n.predictors),
+  beta,
   nsim = 1000,
   nval = 25000,
   method = "MLE",
