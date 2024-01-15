@@ -28,7 +28,9 @@
 #' @param parallel (logical) parallel processing to speed up computations (default=TRUE)
 
 #'
-#' @return n: the required sample size
+#' @return n$sim: the required sample size by simulation
+#' @return n$rvs: the required sample size by the RvS formulae (only for comparison)
+
 #' @export
 #'
 #' @examples

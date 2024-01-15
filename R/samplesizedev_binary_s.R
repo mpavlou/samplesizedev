@@ -58,10 +58,11 @@ samplesizedev_binary_s <- function(S, p, c,   n.predictors, beta = rep(1/n.predi
 
   print("Optimisation Starting, ~ 1-2 min left...")
 
+  #Automatically adjust number of simulations to ensure MCSE is not too high
   A   <- 2*p*(1-p)*stats::qnorm(c)^2
   app <- sqrt(1/(A* max.opt)+2/(max.opt-2) )
 
-  if (app/sqrt(nsim)>0.0027) nsim = ceiling(app^2/0.0025^2/100)*100
+  # if (app/sqrt(nsim)>0.0027) nsim = ceiling(app^2/0.0025^2/100)*100
 
   # s_est_quick <- function(n, nsim=100){
   #
@@ -96,7 +97,7 @@ samplesizedev_binary_s <- function(S, p, c,   n.predictors, beta = rep(1/n.predi
   size               <- NULL
   size$rvs           <- as.vector(n_init)
   size$sim           <- as.vector(n)
-  size$n_simulations <- nsim
+  # size$n_simulations <- nsim
   # size$correct_to_nearest <- as.vector(tol)
 
   size

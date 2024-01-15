@@ -37,7 +37,9 @@ samplesizedev(
 \item{parallel}{(logical) parallel processing to speed up computations (default=TRUE)}
 }
 \value{
-n: the required sample size
+n$sim: the required sample size by simulation
+
+n$rvs: the required sample size by the RvS formulae (only for comparison)
 }
 \description{
 This function calculates the sample size required to achieve an expected Calibration Slope (S), given anticipated features of the data and the model. For a binary outcome these
