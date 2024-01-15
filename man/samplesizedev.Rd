@@ -30,9 +30,9 @@ samplesizedev(
 
 \item{gamma}{(vector) The relative strength of predictors (0 for noise)}
 
-\item{nval}{(numeric) Size of validation data (at least 10000)}
+\item{nval}{(numeric) Size of validation data (default value 25000)}
 
-\item{nsim}{(numeric) The number of simulations (at least 500, default value 1000 to ensure small simulation error)}
+\item{nsim}{(numeric) The number of simulations (default value 1000 to ensure small simulation error; lower values are not recommended)}
 
 \item{parallel}{(logical) parallel processing to speed up computations (default=TRUE)}
 }

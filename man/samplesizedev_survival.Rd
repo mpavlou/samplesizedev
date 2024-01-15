@@ -9,7 +9,7 @@ samplesizedev_survival(
   p,
   c,
   n.predictors,
-  beta = beta,
+  beta,
   nval = 25000,
   nsim = 1000,
   parallel = TRUE
