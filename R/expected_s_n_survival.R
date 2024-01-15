@@ -11,10 +11,8 @@ expected_s_n_survival <- function(n, S, variance_eta,  p, c, n.predictors, beta,
   # f         <-  sqrt(variance_eta/sum(beta^2))
   # beta      <-  f * beta
   # beta     <- as.vector(beta)
-  # sigma    <- diag(1, n.predictors)
-
-
-  xval    <- mvtnorm::rmvnorm(nval, rep(0, n.predictors), sigma = sigma)
+    sigma    <- diag(1, n.predictors)
+    xval    <- mvtnorm::rmvnorm(nval, rep(0, n.predictors), sigma = sigma)
 
 
   if (parallel==TRUE) {
@@ -64,7 +62,7 @@ a <- foreach::foreach(i = 1: nsim, .packages = c('mvtnorm','RcppNumerical', 'ggp
 
     # Validation
 
-    xval               <- mvtnorm::rmvnorm(nval, rep(0, n.predictors), sigma = sigma)
+    # xval               <- mvtnorm::rmvnorm(nval, rep(0, n.predictors), sigma = sigma)
     eta_val            <- xval %*% as.vector(beta)
     names(xval)        <- paste("x", seq(1:n.predictors), sep = "")
     u                  <- stats::runif(nval)

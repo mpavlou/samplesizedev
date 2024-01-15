@@ -102,7 +102,7 @@ samplesizedev_survival <- function(S, p, c,  n.predictors, beta, nval = 25000, n
   if (c>0.85 & c<=0.9)   inflation_f   <- 4
   max.opt                              <- round(inflation_f*n_init)
 
-  tol = ceiling(round(n_init/100)/10)*10
+  tol = ceiling(round(n_init/200)/5)*5
   #tol = 20
 
   print("Optimisation Starting ~ 4 min left...")
@@ -115,13 +115,13 @@ samplesizedev_survival <- function(S, p, c,  n.predictors, beta, nval = 25000, n
 
   n <- bisection(s_est, min.opt, max.opt, tol = tol, nsim = nsim)
   tol = ceiling(round(n_init/200)/5) * 5
-  n <- ceiling(n/tol)*tol
+  # n <- ceiling(n/tol)*tol
 
   #run <- expected_s(n, p=p, c=c, n.true=n.true, n.noise=n.noise, beta = c(0.5,0.3,0.3,0.15,0.15), nsim=1000, nval=50000, cores=2)
 
   size        <- NULL
-  size$rvs  <- as.vector(n_init)
-  size$sim <- as.vector(n)
+  size$rvs    <- as.vector(n_init)
+  size$sim    <- as.vector(n)
 
   size
 
