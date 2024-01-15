@@ -120,7 +120,7 @@ samplesizedev_survival <- function(S, p, c,  n.predictors, beta, nval = 25000, n
   #run <- expected_s(n, p=p, c=c, n.true=n.true, n.noise=n.noise, beta = c(0.5,0.3,0.3,0.15,0.15), nsim=1000, nval=50000, cores=2)
 
   size        <- NULL
-  size$riley  <- as.vector(n_init)
+  size$rvs  <- as.vector(n_init)
   size$sim <- as.vector(n)
 
   size
