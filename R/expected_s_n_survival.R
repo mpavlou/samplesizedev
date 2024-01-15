@@ -1,16 +1,18 @@
 expected_s_n_survival <- function(n, S, variance_eta,  p, c, n.predictors, beta, nsim = 1000, nval = 25000, parallel = TRUE){
 
   set.seed(2022)
+  n<-round(n)
 
 
   # Find beta that corresponds to that variance
 
   #beta     <- rep(1, n.predictors)
-  beta     <- beta * sqrt(variance_eta/sum(beta^2))
-  beta     <- as.vector(beta)
-  sigma    <- diag(1, n.predictors)
-  lambda   <- 1
-  p.censor <- 1 - p
+  #beta     <- beta * sqrt(variance_eta/sum(beta^2))
+  # f         <-  sqrt(variance_eta/sum(beta^2))
+  # beta      <-  f * beta
+  # beta     <- as.vector(beta)
+  # sigma    <- diag(1, n.predictors)
+
 
   xval    <- mvtnorm::rmvnorm(nval, rep(0, n.predictors), sigma = sigma)
 
@@ -35,6 +37,8 @@ a <- foreach::foreach(i = 1: nsim, .packages = c('mvtnorm','RcppNumerical', 'ggp
     set.seed(i)
 
     # Predictors and Outcome
+    lambda   <- 1
+    p.censor <- 1 - p
 
     sigma               <- diag(1, n.predictors)
     x                   <- mvtnorm::rmvnorm(n, rep(0, n.predictors), sigma = sigma)
@@ -43,7 +47,7 @@ a <- foreach::foreach(i = 1: nsim, .packages = c('mvtnorm','RcppNumerical', 'ggp
     u                   <- stats::runif(n)
     t                   <- -log(u)/((lambda) * exp(eta) )
     censor              <- rep(1,n)
-    cutoff              <- stats::quantile(t, 1 - p.censor)
+    cutoff              <- stats::quantile(t, p)
     censor[t > cutoff]  <- 0
     status              <- censor
     eventtime           <- t
@@ -94,7 +98,7 @@ a <- foreach::foreach(i = 1: nsim, .packages = c('mvtnorm','RcppNumerical', 'ggp
    ggplot2::xlab("Calibration Slope")
 
  if ( abs(mean(cs, na.rm=TRUE)- 0.9) > 0.005)   cs_plot <-  cs_plot + ggplot2::geom_vline( ggplot2::aes(xintercept = 0.9), color="red", linetype ="dashed", size = 1)
-print(cs_plot)
+  print(cs_plot)
 
   # graphics::hist(cs, main = paste("CS=", round( mean(cs, na.rm = TRUE) / 0.0025) * 0.0025, "N=",n))
    c(round(mean(cs, na.rm = TRUE) / 0.0025) * 0.0025, sqrt(stats::var(cs) / nsim))

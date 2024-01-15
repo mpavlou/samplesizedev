@@ -53,7 +53,7 @@ expected_cs_survival <- function(n, p, c, n.predictors, beta=rep(1/n.predictors,
   t        <- -log(u)/((lambda) * exp(eta) )
 
   censor   <- rep(1,nval)
-  cutoff   <- stats::quantile(t, 1- p.censor)
+  cutoff   <- stats::quantile(t, p)
   censor[t > cutoff]=0
   ptrue <- mean(censor) ;ptrue; cutoff
 
@@ -112,6 +112,7 @@ expected_cs_survival <- function(n, p, c, n.predictors, beta=rep(1/n.predictors,
     u                  <- stats::runif(nval)
     t                  <- -log(u)/((lambda) * exp(eta_val) )
     censor             <- rep(1,nval)
+    #cut_off ok for val?
     censor[t > cutoff] <- 0
     status             <- censor
     eventtime          <- t

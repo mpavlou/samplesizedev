@@ -9,7 +9,7 @@
 #' the Mean Absolute Prediction Error that corresponds to the calculated sample size.
 
 #' @param S (numeric) The target expected calibration slope
-#' @param p (numeric) The anticipated censoring proportion at the time-point of interest
+#' @param p (numeric) The anticipated proportion of events (at the time-point of interest)
 #' @param c (numeric) The anticipated C-index
 #' @param n.predictors (numeric) The number of candidate predictor variables
 #' @param beta (numeric) The relative strength of predictors (0 for noise)
@@ -36,7 +36,7 @@
 #' expected_cs_mape_binary
 
 
-samplesizedev_survival <- function(S, p, c,  n.predictors, beta=rep(1/n.predictors, n.predictors), nval = 25000, nsim = 1000, parallel = TRUE){
+samplesizedev_survival <- function(S, p, c,  n.predictors, beta=beta, nval = 25000, nsim = 1000, parallel = TRUE){
 
   set.seed(1)
   lambda <-1
