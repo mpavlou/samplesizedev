@@ -1,4 +1,4 @@
-expected_s_n_binary <- function(n, S, mean_eta, variance_eta,  p, c, n.predictors, beta, nsim = 1000, nval = 25000, parallel = TRUE){
+expected_s_n_binary <- function(n, S, mean_eta, variance_eta,  p, c, n.predictors, beta, nsim, nval, parallel){
 
   set.seed(2022)
 

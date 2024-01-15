@@ -1,4 +1,4 @@
-expected_s_n_survival <- function(n, S, variance_eta,  p, c, n.predictors, beta, nsim = 1000, nval = 25000, parallel = TRUE){
+expected_s_n_survival <- function(n, S, variance_eta,  p, c, n.predictors, beta, nsim, nval, parallel){
 
   set.seed(2022)
   n<-round(n)
@@ -11,8 +11,8 @@ expected_s_n_survival <- function(n, S, variance_eta,  p, c, n.predictors, beta,
   # f         <-  sqrt(variance_eta/sum(beta^2))
   # beta      <-  f * beta
   # beta     <- as.vector(beta)
-    sigma    <- diag(1, n.predictors)
-    xval    <- mvtnorm::rmvnorm(nval, rep(0, n.predictors), sigma = sigma)
+  sigma    <- diag(1, n.predictors)
+  xval    <- mvtnorm::rmvnorm(nval, rep(0, n.predictors), sigma = sigma)
 
 
   if (parallel==TRUE) {
