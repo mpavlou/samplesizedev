@@ -19,9 +19,13 @@ knitr::opts_chunk$set(
 <!-- badges: end -->
 
 The package samplesizedev performs unbiased sample size calculations (using simulation) for the development of risk models for binary outcomes. It requires information on the anticipate values of the:
+
   outcome prevalence
+  
   c-statistic
+  
   number of predictor variables.
+
 
 ## Installation
 
