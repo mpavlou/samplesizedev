@@ -59,7 +59,7 @@ samplesizedev_binary_s <- function(S, p, c,  n.predictors, nval = 25000, nsim = 
   tol = ceiling(round(n_init/100)/10) * 10
   #tol = 20
 
-  print("Optimisation Starting ~ 1-2 min left...")
+  print("Optimisation Starting ~ 1 min left...")
   s_est <- function(n, nsim=nsim){
 
     s <-  expected_s_n_binary(n, S = S, mean_eta = mean_eta, variance_eta = variance_eta,  p = p, c = c, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel)
