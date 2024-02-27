@@ -35,7 +35,8 @@ This is a basic example which shows how to:
 ``` r
 library(samplesizedev)
 
-# Sample size=500; Prevalence=0.2; c-statistic=0.8; number of predictors=10; 
+# Sample size=500; Prevalence=0.2; cC-statistic=0.8; Number of predictors=10; 
+# Calculate expected calibration slope and MAPE
 
 expected_cs(n = 500, phi = 0.2, c = 0.85, p = 10, nsim = 1000)
 ```
@@ -44,6 +45,10 @@ expected_cs(n = 500, phi = 0.2, c = 0.85, p = 10, nsim = 1000)
 
     #>     N Mean_CS  SD_CS Pr(CS<0.8) Mean_MAPE SD_MAPE Prev. C-Stat.  # Predictors
     #> 1 500   0.902 0.1002       0.16    0.0393  0.0087   0.2    0.85            10
+
+
+    # Target Calibration slope=0.9; Prevalence=0.2; c-statistic=0.8; Number of predictors=10; 
+    # Calculate sample size
 
     samplesizedev(outcome="Binary", S = 0.9, phi = 0.2, c = 0.85, p= 10,  nsim = 1000)
     #> [1] "Optimisation Starting, ~ 1-2 min left..."
