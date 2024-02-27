@@ -28,6 +28,7 @@ You can install the development version of samplesizedev from [GitHub](https://g
 # If package 'devtools is not installed, first install it'
 # install.packages("devtools")
 # require("devtools")
+
 devtools::install_github("mpavlou/samplesizedev")
 require(samplesizedev)
 ```
@@ -43,7 +44,7 @@ b) To calculate the sample size to achieve a target expected shrinkage of S=0.9 
 ```{r example}
 library(samplesizedev)
 
-# Sample size=500; Prevalence=0.2; cC-statistic=0.8; Number of predictors=10; 
+# Sample size=500; Prevalence=0.2; C-statistic=0.8; Number of predictors=10; 
 # Calculate expected calibration slope and MAPE
 
 expected_cs(n = 500, phi = 0.2, c = 0.85, p = 10, nsim = 1000)
@@ -53,5 +54,6 @@ expected_cs(n = 500, phi = 0.2, c = 0.85, p = 10, nsim = 1000)
 # Calculate sample size
 
 samplesizedev(outcome="Binary", S = 0.9, phi = 0.2, c = 0.85, p= 10,  nsim = 1000)
+
 ```
 

@@ -18,6 +18,7 @@ You can install the development version of samplesizedev from
 # If package 'devtools is not installed, first install it'
 # install.packages("devtools")
 # require("devtools")
+
 devtools::install_github("mpavlou/samplesizedev")
 require(samplesizedev)
 ```
@@ -35,7 +36,7 @@ This is a basic example which shows how to:
 ``` r
 library(samplesizedev)
 
-# Sample size=500; Prevalence=0.2; cC-statistic=0.8; Number of predictors=10; 
+# Sample size=500; Prevalence=0.2; C-statistic=0.8; Number of predictors=10; 
 # Calculate expected calibration slope and MAPE
 
 expected_cs(n = 500, phi = 0.2, c = 0.85, p = 10, nsim = 1000)
