@@ -10,7 +10,7 @@
 #' values for phi, c, and p are study-dependent.
 #'
 #'
-#' The calculation takes usually takes 1-2 minutes for a binary outcome.
+#' The calculation takes usually takes less than one minutes for a binary outcome.
 #'
 #' The variability in the calibration slope, can be seen as an indicator of model stability
 #' for the calculated sample size. This can be evaluated using the function 'expected_cs'. For Binary
@@ -34,21 +34,12 @@
 #' @export
 #'
 #' @examples
-#' # Binary Outcome: Find the sample size required for an average calibration slope of S = 0.9
-#' # samplesizedev(outcome="Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, parallel = FALSE)
 #'
 #' # Binary Outcome: Prefer parallel computing  that ensures faster run
-#' # samplesizedev(outcome="Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, parallel=TRUE)
+#' # samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, parallel=TRUE)
 #'
 #' # Binary Outcome: Check the expected MAPE and Calibration Slope for the selected size
-#' # expected_cs (outcome= "Binary", n = 530, phi= 0.2, c = 0.85, p = 10, nsim = 1000)
-#'
-#' # Survival Outcome: Find the sample size required for an average calibration slope of S = 0.9
-#' # samplesizedev(outcome = "Survival", S = 0.9, phi = 0.2, c = 0.85, p = 10,  nsim = 500, parallel = TRUE)
-#'
-#' # Survival  Outcome: Check the expected MAPE and Calibration Slope for the selected size
-#' # expected_cs(outcome = "Survival", n = 390, phi = 0.2, c = 0.85, p = 10, nsim = 500, parallel = TRUE)
-#'
+#' # expected_cs (outcome = "Binary", n = 530, phi= 0.2, c = 0.85, p = 10)
 #'
 #' @seealso
 #' expected_cs
@@ -59,6 +50,8 @@ samplesizedev <- function(outcome="Binary", S = NULL, MAPE = NULL, phi, c,  p, g
   beta          <- gamma
   n.predictors  <- p
   p             <- phi
+  if (p>0.5) p  <- 1-p
+
 
   if (outcome=="Binary")   { if (length(MAPE)==0)       n <- samplesizedev_binary_s(S=S, p=p, c=c,  n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel) else
                              if (length(S)==0)          n <- samplesizedev_binary_mape(MAPE=MAPE, p=p, c=c,  n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel)}

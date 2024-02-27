@@ -9,10 +9,10 @@ samplesizedev_survival(
   p,
   c,
   n.predictors,
-  beta,
-  nval = 25000,
-  nsim = 1000,
-  parallel = TRUE
+  beta = rep(1/n.predictors, n.predictors),
+  nval,
+  nsim,
+  parallel
 )
 }
 \arguments{

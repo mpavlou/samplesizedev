@@ -25,8 +25,11 @@ The package samplesizedev performs unbiased sample size calculations for the dev
 You can install the development version of samplesizedev from [GitHub](https://github.com/) with:
 
 ``` r
+# If package 'devtools is not installed, first install it'
 # install.packages("devtools")
+# require("devtools")
 devtools::install_github("mpavlou/samplesizedev")
+require(samplesizedev)
 ```
 
 ## Example
@@ -38,8 +41,8 @@ b) To calculate the sample size to achieve a target expected shrinkage of S=0.9 
 ```{r example}
 library(samplesizedev)
 
-expected_cs(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 1000, parallel = TRUE)
+expected_cs(n = 530, phi = 0.2, c = 0.85, p = 10, nsim = 1000)
 
-samplesizedev(outcome="Binary", S = 0.9, p = 0.2, c = 0.85, n.predictors = 10,  nsim = 1000)
+samplesizedev(outcome="Binary", S = 0.9, phi = 0.2, c = 0.85, p= 10,  nsim = 1000)
 ```
 

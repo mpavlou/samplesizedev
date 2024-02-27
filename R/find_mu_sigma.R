@@ -210,22 +210,71 @@ find_sigma <- function(target.c,  min.opt = 0.1, max.opt = 15, tol=0.0001){
   out
 }
 
-
-
-#system.time(x <- find_sigma(target.c=0.8, min.opt=6, max.opt=15))
-# x
-# n <-50000
-# u      <- runif(n)
-# eta    <- stats::rnorm(n, mean = 0, sd = sqrt(x))
-# t      <- -log(u)/((lambda) * exp(eta) )
-# censor <- rep(1,n)
-# c      <- 1 - concordance(t ~ eta)$concordance; c
-# # Build formula
-# measurevar <- "Surv(t, censor)"
-# etavar     <- "eta"
-# formula    <- as.formula  (paste( measurevar, etavar, sep=" ~ "))
+# system.time(x <- find_sigma(target.c=0.82, min.opt=1, max.opt=15))
+#  x
+#  n <-50000
+#  u      <- runif(n)
+#  eta    <- stats::rnorm(n, mean = 0, sd = sqrt(x))
+#  t      <- -log(u)/((lambda) * exp(eta) )
+#  censor <- rep(1,n)
+#  c      <- 1 - concordance(t ~ eta)$concordance; c
+#  # Build formula
+#  measurevar <- "Surv(t, censor)"
+#  etavar     <- "eta"
+#  formula    <- as.formula  (paste( measurevar, etavar, sep=" ~ "))
 #
-# data <- data.frame(t, censor, eta)
+#  data <- data.frame(t, censor, eta)
+#
+# #
+#  big <- coxph(formula, data=data, x=TRUE, y=TRUE)
+#
+#  A1  <- pec::cindex(list("Cox X1"= big), formula=Surv(t, censor)~eta, data=data, eval.times=1)
+#
+#  cest <- A1$AppCindex[["Cox X1"]]
+#  cest
+
+
+ #####################################################
+
+ find_sigma_quick <- function(target.c,  min.opt = 0.1, max.opt = 15, tol=0.0001){
+
+   n       <- 50000
+   lambda  <- 1
+
+   # Build formula
+   measurevar <- "Surv(t, censor)"
+   etavar     <- "eta"
+   formula    <- as.formula  (paste( measurevar, etavar, sep=" ~ "))
+
+
+   cfun <- function(x) {
+     set.seed(2)
+     u      <- runif(n)
+     eta    <- stats::rnorm(n, mean = 0, sd = sqrt(x))
+     t      <- -log(u)/((lambda) * exp(eta) )
+     c      <- 1 - survival::concordance(t ~ eta)$concordance; c
+     abs(c - target.c)
+   }
+
+   out      <- stats::optimize(cfun, lower=min.opt, upper=max.opt, tol = tol)$minimum
+   out
+ }
+
+
+# system.time(x <- find_sigma(target.c=0.7, min.opt=0.1, max.opt=15))
+#  x
+#  n <-50000
+#  u      <- runif(n)
+#  eta    <- stats::rnorm(n, mean = 0, sd = sqrt(x))
+#  t      <- -log(u)/((lambda) * exp(eta) )
+#  censor <- rep(1,n)
+#  c      <- 1 - concordance(t ~ eta)$concordance; c
+#  # Build formula
+#  measurevar <- "Surv(t, censor)"
+#  etavar     <- "eta"
+#  formula    <- as.formula  (paste( measurevar, etavar, sep=" ~ "))
+#
+#  data <- data.frame(t, censor, eta)
 #
 # #
 #  big <- coxph(formula, data=data, x=TRUE, y=TRUE)
@@ -274,31 +323,7 @@ find_mu_sigma_sim <- function(target.prev, target.c, min.opt = c(-10,0), max.opt
    # round(find_mu_sigma(0.17, 0.63, tol=0.00001),4)
    # round(find_mu_sigma_sim(0.17, 0.63, tol=0.001),4)
 
-#####################################################
 
-find_sigma_quick <- function(target.c,  min.opt = 0.1, max.opt = 8, tol=0.0001){
-
-  n       <- 50000
-  lambda  <- 1
-
-  # Build formula
-  measurevar <- "Surv(t, censor)"
-  etavar     <- "eta"
-  formula    <- as.formula  (paste( measurevar, etavar, sep=" ~ "))
-
-
-  cfun <- function(x) {
-    set.seed(2)
-    u      <- runif(n)
-    eta    <- stats::rnorm(n, mean = 0, sd = sqrt(x))
-    t      <- -log(u)/((lambda) * exp(eta) )
-    c      <- 1 - survival::concordance(t ~ eta)$concordance; c
-    abs(c - target.c)
-  }
-
-  out      <- stats::optimize(cfun, lower=min.opt, upper=max.opt, tol = tol)$minimum
-  out
-}
 
 
 Hist <- function (time, event, entry = NULL, id = NULL, cens.code = "0",

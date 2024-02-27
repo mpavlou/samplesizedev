@@ -36,30 +36,31 @@
 #' expected_cs_mape_binary
 
 
-samplesizedev_survival <- function(S, p, c,  n.predictors, beta, nval = 25000, nsim = 1000, parallel = TRUE){
+samplesizedev_survival <- function(S, p, c,  n.predictors, beta=rep(1/n.predictors, n.predictors), nval, nsim, parallel){
 
   set.seed(1)
   lambda <-1
 
-  if (c<=0.8) variance_eta <-  find_sigma_quick(c)[1]  else variance_eta <-  find_sigma(c)[1]
+  if (c<0.65) variance_eta <-  find_sigma_quick(c)[1]  else variance_eta <-  find_sigma(c)[1]
   p.censor <- 1 - p
 
   # check
   # Size - big data
-
-  #beta      <- rep(1, n.predictors)
-  f         <- sqrt(variance_eta / sum(beta^2))
+  ncalc <- 100000
+  set.seed(1)
+  beta      <- rep(1/n.predictors, n.predictors)
+  f         <-  sqrt(variance_eta/sum(beta^2))
   beta      <- f * beta
 
   sigma     <- diag(1, length(beta))
-  x         <- mvtnorm::rmvnorm(nval, rep(0, length(beta)), sigma = sigma)
+  x         <- mvtnorm::rmvnorm(ncalc , rep(0, length(beta)), sigma = sigma)
   eta       <- x %*% as.vector(beta)
 
 
-  u         <- stats::runif(nval)
+  u         <- stats::runif(ncalc)
   t         <- -log(u)/( (lambda) * exp(eta) )
 
-  censor   <- rep(1,nval)
+  censor   <- rep(1, ncalc)
   cutoff   <- stats::quantile(t, 1- p.censor)
   censor[t > cutoff]=0
   ptrue    <- mean(censor) ;ptrue; cutoff
@@ -73,15 +74,14 @@ samplesizedev_survival <- function(S, p, c,  n.predictors, beta, nval = 25000, n
   formula    <- stats::as.formula  (paste( measurevar, paste(xvars, collapse=" + "), sep=" ~ "))
   formula    <- stats::as.formula  (paste( measurevar, etavar, sep=" ~ "))
 
-  big <- survival::coxph(formula, data=data, x=TRUE, y=TRUE)
 
-  #A1  <- pec::cindex(list("Cox X1"= big),
-  ##                  formula=formula,
-  #                  data=data,
-  #                  eval.times=2)
+   big <- survival::coxph(formula, data=data, x=TRUE, y=TRUE)
 
-  #cest <- A1$AppCindex[["Cox X1"]]
-  #cest
+  # A1  <- pec::cindex(list("Cox X1"= big), formula=Surv(t, censor)~eta, data=data, eval.times=1)
+  #
+  # cest <- A1$AppCindex[["Cox X1"]]
+  # cest
+   summary(big)
 
 
   logtest   <- -2 * (big$loglik[1] - big$loglik[2])
@@ -90,7 +90,6 @@ samplesizedev_survival <- function(S, p, c,  n.predictors, beta, nval = 25000, n
   r2cens    <- rsq[1]
   r2cens
   mean(censor)
-
 
   n_init  <- ceiling((n.predictors)/ ((S-1)*log(1-r2cens/S))); n_init
 
