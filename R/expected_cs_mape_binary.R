@@ -186,13 +186,14 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
   df        <- data.frame(n, round(mean(cs, na.rm = TRUE),3),
                              round(sqrt(stats::var(cs,na.rm = TRUE)), 4),
-                             round(sqrt( mean( ((cs-1)^2), na.rm=TRUE) ), 4),
+                             # round(sqrt( mean( ((cs-1)^2), na.rm=TRUE) ), 4),
                              round(mean(ifelse( (cs < 0.8), 1, 0),na.rm=TRUE), 2),
                              round(stats::median(mape, na.rm = TRUE),4),
                              round(sqrt(stats::var(mape,na.rm = TRUE)), 4),
                              round(prev, 2),
                              round(cstat, 2 ), n.predictors)
-  names(df) <- c("N", "Mean_CS", "SD_CS", "RMSD_CS", "Pr(CS<0.8)", "Mean_MAPE",  "SD_MAPE", "Prev.", "C-Stat.", " # Predictors")
+  # names(df) <- c("N", "Mean_CS", "SD_CS", "RMSD_CS", "Pr(CS<0.8)", "Mean_MAPE",  "SD_MAPE", "Prev.", "C-Stat.", " # Predictors")
+  names(df) <- c("N", "Mean_CS", "SD_CS", "Pr(CS<0.8)", "Mean_MAPE",  "SD_MAPE", "Prev.", "C-Stat.", " # Predictors")
 
   performance <- df[,-3]
   performance <- df
