@@ -32,6 +32,8 @@ outcome
 ``` r
 library(samplesizedev)
 
+# Prevalence=0.2; c-statistic=0.8; number of predictors=10; sample size=500 
+
 expected_cs(n = 500, phi = 0.2, c = 0.85, p = 10, nsim = 1000)
 ```
 
