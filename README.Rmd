@@ -41,7 +41,7 @@ b) To calculate the sample size to achieve a target expected shrinkage of S=0.9 
 ```{r example}
 library(samplesizedev)
 
-# Prevalence=0.2; c-statistic=0.8; number of predictors=10; sample size=500 
+# Sample size=500; Prevalence=0.2; c-statistic=0.8; number of predictors=10; 
 
 expected_cs(n = 500, phi = 0.2, c = 0.85, p = 10, nsim = 1000)
 
