@@ -20,11 +20,11 @@ knitr::opts_chunk$set(
 
 The package samplesizedev performs unbiased sample size calculations (using simulation) for the development of risk models for binary outcomes. It requires information on the anticipate values of the:
 
-  outcome prevalence
+   outcome prevalence
   
-  c-statistic
+   c-statistic
   
-  number of predictor variables.
+   number of predictor variables.
 
 
 ## Installation
@@ -51,14 +51,14 @@ b) To calculate the sample size to achieve a target expected shrinkage of S=0.9 
 ```{r example}
 library(samplesizedev)
 
+# Calculate the expected calibration slope and MAPE
 # Sample size=500; Prevalence=0.2; C-statistic=0.8; Number of predictors=10; 
-# Calculate expected calibration slope and MAPE
+
 
 expected_cs(n = 500, phi = 0.2, c = 0.85, p = 10, nsim = 1000)
 
-
+# Calculate sample size for target calibration slope
 # Target Calibration slope=0.9; Prevalence=0.2; c-statistic=0.8; Number of predictors=10; 
-# Calculate sample size
 
 samplesizedev(outcome="Binary", S = 0.9, phi = 0.2, c = 0.85, p= 10,  nsim = 1000)
 

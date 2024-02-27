@@ -56,7 +56,7 @@ samplesizedev_binary_s <- function(S, p, c,   n.predictors, beta = rep(1/n.predi
 
   tol = ceiling(round(n_init/200)/5) * 5
 
-  print("Optimisation Starting, ~ 1-2 min left...")
+  print("Optimisation Starting, ~ 1 min left...")
 
   #Automatically adjust number of simulations to ensure MCSE is not too high
   A   <- 2*p*(1-p)*stats::qnorm(c)^2

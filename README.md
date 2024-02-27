@@ -51,8 +51,10 @@ expected_cs(n = 500, phi = 0.2, c = 0.85, p = 10, nsim = 1000)
 
 <img src="man/figures/README-example-1.png" width="100%" />
 
-    #>     N Mean_CS  SD_CS Pr(CS<0.8) Mean_MAPE SD_MAPE Prev. C-Stat.  # Predictors
-    #> 1 500   0.902 0.1002       0.16    0.0393  0.0087   0.2    0.85            10
+    #>     N Mean_CS  SD_CS RMSD_CS Pr(CS<0.8) Mean_MAPE SD_MAPE Prev. C-Stat.
+    #> 1 500   0.902 0.1002  0.1404       0.16    0.0393  0.0087   0.2    0.85
+    #>    # Predictors
+    #> 1            10
 
 
     # Target Calibration slope=0.9; Prevalence=0.2; c-statistic=0.8; Number of predictors=10; 
