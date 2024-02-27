@@ -41,7 +41,7 @@ b) To calculate the sample size to achieve a target expected shrinkage of S=0.9 
 ```{r example}
 library(samplesizedev)
 
-expected_cs(n = 530, phi = 0.2, c = 0.85, p = 10, nsim = 1000)
+expected_cs(n = 500, phi = 0.2, c = 0.85, p = 10, nsim = 1000)
 
 samplesizedev(outcome="Binary", S = 0.9, phi = 0.2, c = 0.85, p= 10,  nsim = 1000)
 ```
