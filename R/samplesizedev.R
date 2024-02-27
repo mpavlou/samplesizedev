@@ -50,7 +50,7 @@ samplesizedev <- function(outcome="Binary", S = NULL, MAPE = NULL, phi, c,  p, g
   beta          <- gamma
   n.predictors  <- p
   p             <- phi
-  if (p>0.5) p  <- 1-p
+
 
 
   if (outcome=="Binary")   { if (length(MAPE)==0)       n <- samplesizedev_binary_s(S=S, p=p, c=c,  n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel) else

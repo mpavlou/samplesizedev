@@ -33,6 +33,8 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
   # Find mean and variance of for Normal linear predictor
 
+  if (p>0.5) p  <- 1-p
+
   set.seed(2022)
 
   mean_var     <- find_mu_sigma(p,c)

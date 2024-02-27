@@ -37,6 +37,8 @@
 
 samplesizedev_binary_mape <- function(MAPE, p, c,  n.predictors, beta, nval = 25000, nsim = 1000, parallel = TRUE){
 
+  if (p>0.5) p  <- 1-p
+
   set.seed(1)
 
   mean_var_eta     <- find_mu_sigma(p, c)
