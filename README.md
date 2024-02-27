@@ -44,9 +44,6 @@ expected_cs(n = 500, phi = 0.2, c = 0.85, p = 10, nsim = 1000)
 
     samplesizedev(outcome="Binary", S = 0.9, phi = 0.2, c = 0.85, p= 10,  nsim = 1000)
     #> [1] "Optimisation Starting, ~ 1-2 min left..."
-
-<img src="man/figures/README-example-2.png" width="100%" /><img src="man/figures/README-example-3.png" width="100%" /><img src="man/figures/README-example-4.png" width="100%" /><img src="man/figures/README-example-5.png" width="100%" /><img src="man/figures/README-example-6.png" width="100%" /><img src="man/figures/README-example-7.png" width="100%" />
-
     #> $rvs
     #> [1] 308
     #> 
