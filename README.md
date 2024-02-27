@@ -24,10 +24,13 @@ require(samplesizedev)
 
 ## Example
 
-This is a basic example which shows how to a) to calculate the expected
-shrinkage and MAPE for a given sample size, and b) To calculate the
-sample size to achieve a target expected shrinkage of S=0.9 for a binary
-outcome
+This is a basic example which shows how to:
+
+1)  to calculate the expected shrinkage and MAPE for a given sample
+    size, and
+
+2)  To calculate the sample size to achieve a target expected shrinkage
+    of S=0.9 for a binary outcome
 
 ``` r
 library(samplesizedev)
