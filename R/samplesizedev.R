@@ -4,7 +4,7 @@
 #' @description
 #' This function calculates the sample size required to achieve an expected Calibration Slope (S), given anticipated features of the data and the model. For a binary outcome these
 #' features are the outcome prevalence (phi) and c-statistic (c) and the number of candidate predictor variables (p).
-#' Future versions will  accept the anticipated proportion of events at a given time point (phi) and c-index (c)  for a Survival outcome.
+#' Future versions will  accept the anticipated proportion of events at a given time point (phi) and c-index (c)  for a time to event outcome.
 #'
 #' The required value for the (average) calibration slope should be at least S=0.9. On the other hand, the input
 #' values for phi, c, and p are study-dependent.
