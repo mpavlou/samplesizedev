@@ -46,9 +46,9 @@ This is a basic example which shows how to:
 ``` r
 library(samplesizedev)
 
-?samplesizedev
-#> starting httpd help server ... done
-?expected_cs
+# Explore the two main commands:
+# ?samplesizedev
+# ?expected_cs
 
 # Calculate the expected calibration slope and MAPE
 # Sample size=500; Prevalence=0.2; C-statistic=0.8; Number of predictors=10; 
