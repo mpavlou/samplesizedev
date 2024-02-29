@@ -53,8 +53,9 @@ b) To calculate the sample size to achieve a target expected shrinkage of S=0.9 
 ```{r example}
 library(samplesizedev)
 
-?samplesizedev
-?expected_cs
+# Explore the two main commands:
+# ?samplesizedev
+# ?expected_cs
 
 # Calculate the expected calibration slope and MAPE
 # Sample size=500; Prevalence=0.2; C-statistic=0.8; Number of predictors=10; 
