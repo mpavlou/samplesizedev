@@ -24,7 +24,9 @@ The package samplesizedev performs unbiased sample size calculations (using simu
 
 * c-statistic (AUC)
 
-* number of predictor variables.
+* number of predictor variables
+
+to calculate the sample size required to achieve an calibration slope (S) or Mean Absolute Prediction Error, on average. 
 
 
 ## Installation
@@ -51,6 +53,9 @@ b) To calculate the sample size to achieve a target expected shrinkage of S=0.9 
 ```{r example}
 library(samplesizedev)
 
+?samplesizedev
+?expected_cs
+
 # Calculate the expected calibration slope and MAPE
 # Sample size=500; Prevalence=0.2; C-statistic=0.8; Number of predictors=10; 
 
@@ -58,7 +63,7 @@ library(samplesizedev)
 expected_cs(n = 500, phi = 0.2, c = 0.85, p = 10, nsim = 1000)
 
 # Calculate sample size for target calibration slope
-# Target Calibration slope=0.9; Prevalence=0.2; c-statistic=0.8; Number of predictors=10; 
+# Target Calibration slope S=0.9; Prevalence=0.2; c-statistic=0.8; Number of predictors=10; 
 
 samplesizedev(outcome="Binary", S = 0.9, phi = 0.2, c = 0.85, p= 10,  nsim = 1000)
 
