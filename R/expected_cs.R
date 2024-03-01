@@ -18,7 +18,7 @@
 
 
 #'
-#' @return df: the expected calibration slope (and MAPE for binary outcomes)
+#' @return df: the mean calibration slope (with SD),the probability of calibration slope<0.8,  and mean MAPE (with SD) for binary outcomes.
 #' @export
 #'
 #' @examples
