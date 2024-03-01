@@ -22,9 +22,9 @@
 #' @param phi (numeric) The anticipated outcome prevalence of the binary outcome (or proportion of events for survival outcome)
 #' @param c (numeric) The anticipated c-statistic for binary outcome (or c-index for survival outcome)
 #' @param p (numeric) The number of candidate predictor variables
-#' @param gamma (vector) The relative strength of predictors (0 for noise)
-#' @param nsim (numeric) The number of simulations (default value 1000 to ensure small simulation error; lower values are not recommended)
-#' @param nval (numeric) Size of validation data (default value 25000)
+#' @param gamma (numeric) The Relative strength of predictors (default=rep(1/p,p); same length as p, must sum up to 1)
+#' @param nsim (numeric) The number of simulations (default=1000; use at least 500 to ensure small simulation error)
+#' @param nval (numeric) Size of validation data (default=25000; use at least 10000)
 #' @param parallel (logical) parallel processing to speed up computations (default=TRUE)
 
 #'
