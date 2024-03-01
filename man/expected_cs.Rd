@@ -39,7 +39,7 @@ expected_cs(
 \item{n.predictors}{(numeric) The number of candidate predictor variables}
 }
 \value{
-df: the expected calibration slope (and MAPE for binary outcomes)
+df: the mean calibration slope (with SD),the probability of calibration slope<0.8,  and mean MAPE (with SD) for binary outcomes.
 }
 \description{
 This function calculates the expected calibration slope and MAPE given key data and model characteristics
