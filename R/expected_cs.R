@@ -3,18 +3,18 @@
 #'
 #' @description
 #' This function calculates the expected calibration slope and MAPE given key data and model characteristics
-#' (outcome prevalence/, C-statistic and number of predictors). It takes approximately 15 seconds to run (binary outcome).
+#' (outcome prevalence/, c-statistic and number of predictors). It takes approximately 15 seconds to run (binary outcome).
 #'
 #' @param outcome (character) The type of outcome (''Binary'' or ''Survival'')
 #' @param n (numeric) The sample size
 #' @param p (numeric) The anticipated outcome prevalence (binary outcome) or proportion of events (survival outcome)
 #' @param c (numeric) The anticipated C-statistic (binary outcome) or C-Index (survival outcome)
 #' @param n.predictors (numeric) The number of candidate predictor variables
-#' @param nsim (numeric) The number of simulations (at least 500, default value 1000 to ensure small simulation error)
-#' @param nval (numeric) Size of validation data (at least 10000)
+#' @param nsim (numeric) The number of simulations (default=1000; use at least 500 to ensure small simulation error)
+#' @param nval (numeric) Size of validation data (default=25000; use at leat 10000)
 #' @param parallel (logical) parallel processing to speed up computations (default=TRUE)
-#' @param method (character) the fitting method. "MLE" is the default and currently only option, but others will be added in future versions
-#' @param gamma (numeric) Relative strength of predictors (same length as n.predictors, sums up to 1)
+#' @param method (character) the fitting method (default="MLE"; currently the only option. Other fitting methods will be added in future versions)
+#' @param gamma (numeric) Relative strength of predictors (default=rep(1/p,p); same length as p, must sums up to 1)
 
 
 #'
