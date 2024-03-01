@@ -16,8 +16,8 @@ outcomes. It requires information on the anticipate values of the:
 
 - number of predictor variables
 
-to calculate the sample size required to achieve a target calibration slope
-(S) or Mean Absolute Prediction Error, on average.
+to calculate the sample size required to achieve an calibration slope
+(S) or Mean Absolute Prediction Error (MAPE), on average.
 
 ## Installation
 
