@@ -31,7 +31,7 @@ to calculate the sample size required to achieve an calibration slope (S) or Mea
 
 ## Installation
 
-The development version of samplesizedev from [GitHub](https://github.com/) with:
+The development version of samplesizedev can be installed from [GitHub](https://github.com/) with:
 
 ``` r
 # If package 'devtools is not installed, first install it'
