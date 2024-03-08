@@ -10,7 +10,7 @@
 #' values for phi, c, and p are study-dependent.
 #'
 #'
-#' The calculation takes usually takes less than one minutes for a binary outcome.
+#' The calculation usually takes  a minute or less for a binary outcome.
 #'
 #' The variability in the calibration slope, can be seen as an indicator of model stability
 #' for the calculated sample size. This can be evaluated using the function 'expected_cs'. For Binary

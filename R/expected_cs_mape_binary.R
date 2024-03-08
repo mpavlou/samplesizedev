@@ -32,7 +32,7 @@
 expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nval = 25000, method ="MLE", parallel=TRUE){
 
   # Find mean and variance of for Normal linear predictor
-
+  # beta=rep(1/n.predictors, n.predictors)
   if (p>0.5) p  <- 1-p
 
   set.seed(2022)
@@ -91,7 +91,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
   {
 
-    bootsf<-function(data,n=100){
+    bootsf <- function(data,n=100){
       #first column outcome
       cal<-NULL
       for (j in 1:n){

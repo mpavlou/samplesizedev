@@ -3,7 +3,7 @@
 #'
 #' @description
 #' This function calculates the expected calibration slope and MAPE given key data and model characteristics
-#' (outcome prevalence/, c-statistic and number of predictors). It takes approximately 15 seconds to run (binary outcome).
+#' (outcome prevalence, c-statistic and number of predictors). It takes approximately 15 seconds to run (binary outcome).
 #'
 #' @param outcome (character) The type of outcome (''Binary'' or ''Survival'')
 #' @param n (numeric) The sample size
