@@ -46,9 +46,9 @@ require(samplesizedev)
 
 This is a basic example which shows how to:
 
-a) to calculate the expected shrinkage and MAPE for a given sample size, and 
+a) to calculate the expected calibration slope and MAPE for a given sample size, and 
 
-b) To calculate the sample size to achieve a target expected shrinkage of S=0.9 for a binary outcome
+b) To calculate the sample size to achieve a target expected calibration slope of S=0.9 for a binary outcome
 
 ```{r example}
 library(samplesizedev)
