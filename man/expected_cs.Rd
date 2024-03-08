@@ -22,19 +22,19 @@ expected_cs(
 
 \item{n}{(numeric) The sample size}
 
-\item{c}{(numeric) The anticipated C-statistic (binary outcome) or C-Index (survival outcome)}
+\item{c}{(numeric) The anticipated c-statistic (binary outcome) or c-index (survival outcome)}
 
 \item{p}{(numeric) The anticipated outcome prevalence (binary outcome) or proportion of events (survival outcome)}
 
-\item{gamma}{(numeric) Relative strength of predictors (same length as n.predictors, sums up to 1)}
+\item{gamma}{(numeric) Relative strength of predictors (default=rep(1/p,p); same length as p, must sums up to 1)}
 
-\item{nval}{(numeric) Size of validation data (at least 10000)}
+\item{nval}{(numeric) Size of validation data (default=25000; use at least 10000)}
 
-\item{nsim}{(numeric) The number of simulations (at least 500, default value 1000 to ensure small simulation error)}
+\item{nsim}{(numeric) The number of simulations (default=1000; use at least 500 to ensure small simulation error)}
 
 \item{parallel}{(logical) parallel processing to speed up computations (default=TRUE)}
 
-\item{method}{(character) the fitting method. "MLE" is the default and currently only option, but others will be added in future versions}
+\item{method}{(character) the fitting method (default="MLE"; currently the only option. Other fitting methods will be added in future versions)}
 
 \item{n.predictors}{(numeric) The number of candidate predictor variables}
 }
@@ -43,7 +43,7 @@ df: the mean calibration slope (with SD),the probability of calibration slope<0.
 }
 \description{
 This function calculates the expected calibration slope and MAPE given key data and model characteristics
-(outcome prevalence/, C-statistic and number of predictors). It takes approximately 15 seconds to run (binary outcome).
+(outcome prevalence, c-statistic and number of predictors). It takes approximately 15 seconds to run (binary outcome).
 }
 \examples{
 # expected_cs(outcome="Binary", n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = FALSE)

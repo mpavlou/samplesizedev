@@ -28,11 +28,11 @@ samplesizedev(
 
 \item{p}{(numeric) The number of candidate predictor variables}
 
-\item{gamma}{(vector) The relative strength of predictors (0 for noise)}
+\item{gamma}{(numeric) The Relative strength of predictors (default=rep(1/p,p); same length as p, must sum up to 1)}
 
-\item{nval}{(numeric) Size of validation data (default value 25000)}
+\item{nval}{(numeric) Size of validation data (default=25000; use at least 10000)}
 
-\item{nsim}{(numeric) The number of simulations (default value 1000 to ensure small simulation error; lower values are not recommended)}
+\item{nsim}{(numeric) The number of simulations (default=1000; use at least 500 to ensure small simulation error)}
 
 \item{parallel}{(logical) parallel processing to speed up computations (default=TRUE)}
 }
@@ -49,7 +49,7 @@ Future versions will  accept the anticipated proportion of events at a given tim
 The required value for the (average) calibration slope should be at least S=0.9. On the other hand, the input
 values for phi, c, and p are study-dependent.
 
-The calculation takes usually takes less than one minutes for a binary outcome.
+The calculation usually takes  a minute or less for a binary outcome.
 
 The variability in the calibration slope, can be seen as an indicator of model stability
 for the calculated sample size. This can be evaluated using the function 'expected_cs'. For Binary
