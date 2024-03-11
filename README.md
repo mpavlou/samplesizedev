@@ -65,6 +65,7 @@ expected_cs(n = 500, phi = 0.2, c = 0.85, p = 10)
     # Calculate sample size for target calibration slope
     # Target Calibration slope S=0.9; Prevalence=0.2; c-statistic=0.8; Number of predictors=10; 
 
+
     samplesizedev(outcome="Binary", S = 0.9, phi = 0.2, c = 0.85, p= 10)
     #> [1] "Optimisation Starting, ~ 1 min left..."
     #> $rvs
@@ -72,3 +73,6 @@ expected_cs(n = 500, phi = 0.2, c = 0.85, p = 10)
     #> 
     #> $sim
     #> [1] 500
+
+    # n$sim is the sample size calculated by simulation
+    # n$rvs is the sample size calculated using the approach of Riley et al. (2019) (Criterion 1 - overfitting)
