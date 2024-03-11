@@ -74,5 +74,5 @@ expected_cs(n = 500, phi = 0.2, c = 0.85, p = 10)
     #> $sim
     #> [1] 500
 
-    # n$sim is the sample size calculated by simulation
-    # n$rvs is the sample size calculated using the approach of Riley et al. (2019) (Criterion 1 - overfitting)
+    # $sim is the sample size calculated by simulation
+    # $rvs is the sample size calculated using the approach of Riley et al. (2019) (Criterion 1 - overfitting)
