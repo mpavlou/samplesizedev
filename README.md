@@ -8,7 +8,7 @@
 
 The package samplesizedev performs unbiased sample size calculations
 (using simulation) for the development of risk models for binary
-outcomes. It requires information on the anticipate values of the:
+outcomes. It requires information on the anticipated values of the:
 
 - outcome prevalence
 
