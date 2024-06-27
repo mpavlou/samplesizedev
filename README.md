@@ -6,6 +6,13 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
+
+This package relates to the article
+
+#### "An evaluation of sample size requirements for developing risk prediction models with binary outcomes"
+published in the BMC Medical Research Methodology https://doi.org/10.1186/s12874-024-02268-5
+
+
 The package samplesizedev performs unbiased sample size calculations
 (using simulation) for the development of risk models for binary
 outcomes. It requires information on the anticipated values of the:
