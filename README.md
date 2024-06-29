@@ -58,7 +58,7 @@ library(samplesizedev)
 # ?expected_cs
 
 # Calculate the expected calibration slope and MAPE
-# Sample size=500; Prevalence=0.2; C-statistic=0.8; Number of predictors=10; 
+# Sample size=500; Prevalence=0.2; C-statistic=0.85; Number of predictors=10
 
 
 expected_cs(n = 500, phi = 0.2, c = 0.85, p = 10)
