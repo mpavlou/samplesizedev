@@ -40,7 +40,7 @@ devtools::install_github("mpavlou/samplesizedev")
 require(samplesizedev)
 ```
 
-Please get in touch (m.pavlou@ucl.ac.uk) for any bugs you spot and or any suggestions you may have. 
+Please get in touch (m.pavlou@ucl.ac.uk) for any bugs you spot and or any suggestions for improvement you may have. 
 
 ## Example
 
