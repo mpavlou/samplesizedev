@@ -40,6 +40,8 @@ devtools::install_github("mpavlou/samplesizedev")
 require(samplesizedev)
 ```
 
+Please get in touch (m.pavlou@ucl.ac.uk) for any bugs you spot and or any suggestions you may have. 
+
 ## Example
 
 This is a basic example which shows how to calculate:
