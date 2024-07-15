@@ -73,7 +73,7 @@ expected_cs(n = 500, phi = 0.2, c = 0.85, p = 10)
     #>     N Mean_CS  SD_CS Pr(CS<0.8) Mean_MAPE SD_MAPE Prev. C-Stat.  # Predictors
     #> 1 500   0.902 0.1002       0.16    0.0393  0.0087   0.2    0.85            10
 
-Note that altough the calibration slope is on average 0.9, we are not guaranteed to achieve that performance for every development sample of size 500 in this case...
+Note that although the calibration slope is on average 0.9, *we are not guaranteed* to achieve that performance for every development sample of size 500 in this case...
 
 
     # Calculate sample size for target calibration slope
