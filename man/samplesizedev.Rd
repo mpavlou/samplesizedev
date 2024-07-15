@@ -40,6 +40,8 @@ samplesizedev(
 n$sim: the required sample size by simulation
 
 n$rvs: the required sample size by the RvS formulae (only for comparison)
+
+n$r2_cs: Cox-Snell R square for the input values of phi and p
 }
 \description{
 This function calculates the sample size required to achieve an expected Calibration Slope (S), given anticipated features of the data and the model. For a binary outcome these
