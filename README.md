@@ -53,7 +53,7 @@ This is a basic example which shows how to calculate:
     sample size, and
 
 2)  the **sample size** to achieve a target expected
-    calibration slope (e.g. S=0.9) for a binary outcome
+    calibration slope (e.g. S=0.9)
 
 ``` r
 library(samplesizedev)
