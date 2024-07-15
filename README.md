@@ -65,7 +65,7 @@ library(samplesizedev)
 # Sample size=500; Prevalence=0.2; C-statistic=0.85; Number of predictors=10
 
 
-expected_cs(n = 500, phi = 0.2, c = 0.85, p = 10)
+expected_cs(outcome="Binary", n = 500, phi = 0.2, c = 0.85, p = 10)
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" />
