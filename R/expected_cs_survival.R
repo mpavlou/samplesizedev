@@ -35,7 +35,11 @@ expected_cs_survival <- function(n, p, c, n.predictors, beta=rep(1/n.predictors,
   #n       <- 50000
   lambda  <- 1
 
-  if (c<0.8) variance <-  find_sigma_quick(c)  else variance <-  find_sigma(c)
+  # if (c>0.9) variance <-  find_sigma_quick(c)  else variance <-  find_sigma(c)
+
+  load("mapping_c_x.Rdata")
+
+  variance <-  as.numeric(mapping_c_x[mapping_c_x[,1]==c,])[2]
 
   # check
   # Size - big data
@@ -112,7 +116,6 @@ expected_cs_survival <- function(n, p, c, n.predictors, beta=rep(1/n.predictors,
     u                  <- stats::runif(nval)
     t                  <- -log(u)/((lambda) * exp(eta_val) )
     censor             <- rep(1,nval)
-    #cut_off ok for val?
     censor[t > cutoff] <- 0
     status             <- censor
     eventtime          <- t

@@ -9,7 +9,7 @@ Authors@R:
            comment = c(ORCID = "0000-0003-1161-1440"))
 Description: Estimation of the required sample size to develop a risk model for binary and Survival outcomes, based on the sample size equations proposed by Pavlou et al. (2023) <> to minimise model overfitting. The user is required to enter the anticipated values of the C-statistic and the outcome prevalence (binary outcome)  or the C-index and proportion of events at time point of interest (time-to-event outcome) and the number of candidate predictor variables. The user also needs to specify the target calibration slope which is measure of model overfitting. 
 License: MIT + file LICENSE
-LazyData: false
+LazyData: true
 Roxygen: list(markdown = TRUE)
 Encoding: UTF-8
 RoxygenNote: 7.2.3

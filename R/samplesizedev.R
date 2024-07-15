@@ -30,6 +30,7 @@
 #'
 #' @return n$sim: the required sample size by simulation
 #' @return n$rvs: the required sample size by the RvS formulae (only for comparison)
+#' @return n$r2_cs: Cox-Snell R square for the input values of phi and p
 
 #' @export
 #'

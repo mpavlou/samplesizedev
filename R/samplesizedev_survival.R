@@ -41,7 +41,13 @@ samplesizedev_survival <- function(S, p, c,  n.predictors, beta=rep(1/n.predicto
   set.seed(1)
   lambda <-1
 
-  if (c<0.65) variance_eta <-  find_sigma_quick(c)[1]  else variance_eta <-  find_sigma(c)[1]
+  # if (c<0.65) variance_eta <-  find_sigma_quick(c)[1]  else variance_eta <-  find_sigma(c)[1]
+
+  load("mapping_c_x.Rdata")
+
+  variance_eta <-  as.numeric(mapping_c_x[mapping_c_x[,1]==c,])[2]
+
+
   p.censor <- 1 - p
 
   # check
@@ -104,7 +110,7 @@ samplesizedev_survival <- function(S, p, c,  n.predictors, beta=rep(1/n.predicto
   tol = ceiling(round(n_init/200)/5)*5
   #tol = 20
 
-  print("Optimisation Starting ~ 4 min left...")
+  print("Optimisation Starting ~ 2-3 min left...")
 
   s_est <- function(n, nsim = nsim) {
 
@@ -121,6 +127,7 @@ samplesizedev_survival <- function(S, p, c,  n.predictors, beta=rep(1/n.predicto
   size        <- NULL
   size$rvs    <- as.vector(n_init)
   size$sim    <- as.vector(round(n))
+  size$r2_cs  <- r2cens
 
   size
 
