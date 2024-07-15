@@ -27,7 +27,7 @@ to calculate the sample size required to achieve a target calibration slope
 (S) or Mean Absolute Prediction Error (MAPE), on average. 
 
 There is functionality for analogous calculations
-for *time to event outcomes*, which will be made available in due course. 
+for **time to event outcomes**, which will be made available in due course. 
 
 ## Installation
 
