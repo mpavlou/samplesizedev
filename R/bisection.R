@@ -2,6 +2,7 @@
 
 bisection <- function(f, a, b, iter = 10, tol = ceiling(round(a/200)/5) * 5, nsim = 1000) {
   # If the signs of the function at the evaluated points, a and b, stop the function and return message.
+  ##ch
 
   tol = ceiling(round(a/200)/5) * 5
 

@@ -28,6 +28,7 @@
 expected_cs_survival <- function(n, p, c, n.predictors, beta=rep(1/n.predictors, n.predictors), nsim = 1000, nval = 25000, parallel=TRUE, method="MLE"){
 
   # Find mean and variance of for Normal linear predictor
+  ## Chhh
 
   set.seed(2022)
   p.censor <- 1 - p
