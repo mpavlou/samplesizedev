@@ -49,11 +49,11 @@ Please get in touch (m.pavlou@ucl.ac.uk) for any bugs you spot and or any sugges
 
 This is a basic example which shows how to calculate:
 
-1)  the expected calibration slope and MAPE for a given
+1)  the **expected calibration slope and MAPE** for a given
     sample size, and
 
-2)  the sample size to achieve a target expected
-    calibration slope of S=0.9 for a binary outcome
+2)  the **sample size** to achieve a target expected
+    calibration slope (e.g. S=0.9) for a binary outcome
 
 ``` r
 library(samplesizedev)
