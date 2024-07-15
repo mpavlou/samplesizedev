@@ -35,8 +35,8 @@ The development version of samplesizedev can be installed from
 
 ``` r
 # If package 'devtools is not installed, first install it'
-# install.packages("devtools")
-# require("devtools")
+ install.packages("devtools")
+ require("devtools")
 
 devtools::install_github("mpavlou/samplesizedev")
 require(samplesizedev)
