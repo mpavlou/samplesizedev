@@ -15,7 +15,7 @@ published in BMC Medical Research Methodology https://doi.org/10.1186/s12874-024
 In the paper above we evaluated existing sample size formulae for the development of risk models. While the formula which aims to control model overfitting (e.g. target calibration slope 0.9) was found to perform
 work well for models with C-statistic/C-index<0.8, it tended to ***underestimate*** the sample size when the predictive strength of the model was higher. Often the sample sizes needed to be increased by 50% or even doubled to hit the calibration targets.
 
-Hence, we developed the new package 'samplesizedev' which performs ***unbiased sample size calculations*** regardless of model strength. Our software uses simulation in the background so calculations take around a minute or two. Currently allows calculations for the development of risk models for binary outcomes. Functionality for **time to event outcomes** will be made available in due course. 
+Hence, we developed the new package 'samplesizedev' which performs ***unbiased sample size calculations*** regardless of model strength. Our software uses simulation in the background so calculations take around a minute or two. It currently performs calculations for the development of risk models for binary outcomes. Functionality for ***time to event outcomes*** will be made available in due course. 
 
 The software requires information on the anticipated values of the:
 
