@@ -65,7 +65,7 @@ library(samplesizedev)
 # ?expected_cs
 ```
 
-### Calculation of sample size for given model characteristics, aiming for expected calibration slope S=0.9 
+#### Calculation of sample size for given model characteristics, aiming for expected calibration slope S=0.9 
 
 ``` r
 # Calculate sample size for target calibration slope
@@ -90,7 +90,7 @@ the RvS overfitting formula  **underestimates** the sample size for high C-stati
 be in fact lower than we had aim for.  We can verify this using the second command of our package 'expected_cs'.
 
 
-### Calculation of expected model performance (CS, MAPE etc) for a given sample size and model characteristics
+#### Calculation of expected model performance (CS, MAPE etc) for a given sample size and model characteristics
 
 ``` r
 # Calculate the expected calibration slope and MAPE
