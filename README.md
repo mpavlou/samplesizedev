@@ -104,14 +104,13 @@ expected_cs(outcome="Binary", n = 308, phi = 0.2, c = 0.85, p = 10)
 As expected, the expected calibration slope for n$rvs=308 is 0.844, smaller than 0.9. The variability is high and translates to 
 38% chance of actually getting a model with CS<0.8 when we develop a model with data of that size. Hence, larger size is required.  To get an expected calibration slope of 0.9 we need to inflate n$rvs size by 60%! We can confirm that we size=500 we get the desired expected calibration slope:  
 
-![README-example-1](https://github.com/user-attachments/assets/fe41d81d-e49f-4ef9-a30c-51cac1d3e512)
-
-
 ``` r
 expected_cs(outcome="Binary", n = 308, phi = 0.2, c = 0.85, p = 10)
 #>     N Mean_CS  SD_CS Pr(CS<0.8) Mean_MAPE SD_MAPE Prev. C-Stat.  # Predictors
 #> 1 500   0.902 0.1002       0.16    0.0393  0.0087   0.2    0.85            10
 ```
+
+![README-example-1](https://github.com/user-attachments/assets/fe41d81d-e49f-4ef9-a30c-51cac1d3e512)
 
 Note that although the mean calibration slope is 0.9 (and Probability of CS<0.8 has reduced to 16%) still  *we are not guaranteed* 
 to achieve that performance for every development sample of size 500 in this case...
