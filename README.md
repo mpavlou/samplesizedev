@@ -70,7 +70,7 @@ library(samplesizedev)
 # Target Calibration slope S=0.9; Prevalence=0.2; c-statistic=0.85; Number of predictors=10;
 # Calculation takes about a minute 
 
-samplesizedev(outcome="Binary", S = 0.9, phi = 0.2, c = 0.85, p= 10)
+samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10)
 #> [1] "Optimisation Starting, ~ 1 min left..."
 #> $rvs
 #> [1] 308
@@ -95,7 +95,8 @@ be in fact lower than we had aim for this size.  We can verify this using the se
 # Sample size=308; Prevalence=0.2; C-statistic=0.85; Number of predictors=10
 # Calculation takes a few seconds
 
-expected_cs(outcome="Binary", n = 308, phi = 0.2, c = 0.85, p = 10)
+expected_cs(outcome = "Binary", n = 308, phi = 0.2, c = 0.85, p = 10)
+
 #>    N Mean_CS SD_CS Pr(CS<0.8) Mean_MAPE SD_MAPE Prev. C-Stat.  # Predictors
 #> 1 308   0.844 0.127       0.38    0.0509  0.0118   0.2    0.85            10
 ```
@@ -105,14 +106,15 @@ As expected, the expected calibration slope for n$rvs=308 is 0.844, smaller than
 38% chance of actually getting a model with CS<0.8 when we develop a model with data of that size. Hence, larger size is required.  To get an expected calibration slope of 0.9 we need to inflate n$rvs size by 60%! We can confirm that we size=500 we get the desired expected calibration slope:  
 
 ``` r
-expected_cs(outcome="Binary", n = 308, phi = 0.2, c = 0.85, p = 10)
+expected_cs(outcome = "Binary", n = 308, phi = 0.2, c = 0.85, p = 10)
+
 #>     N Mean_CS  SD_CS Pr(CS<0.8) Mean_MAPE SD_MAPE Prev. C-Stat.  # Predictors
 #> 1 500   0.902 0.1002       0.16    0.0393  0.0087   0.2    0.85            10
 ```
 
 ![README-example-1](https://github.com/user-attachments/assets/fe41d81d-e49f-4ef9-a30c-51cac1d3e512)
 
-Note that although the mean calibration slope is 0.9 (and Probability of CS<0.8 has reduced to 16%) still  *we are not guaranteed* 
-to achieve that performance for every development sample of size 500 in this case...
+N.B. Although the mean calibration slope is now indeed 0.9 (Probability of CS<0.8 has reduced to 16%) bare in mind that still there is variability in the CS
+and *we are not guaranteed* to achieve that performance for every development sample of size 500 ...
 
 
