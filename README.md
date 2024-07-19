@@ -67,7 +67,7 @@ library(samplesizedev)
 ``` r
 # Calculate sample size for target calibration slope
 # Target Calibration slope S=0.9; Prevalence=0.2; c-statistic=0.85; Number of predictors=10;
-# Calcualtion takes about a minute 
+# Calculation takes about a minute 
 
 samplesizedev(outcome="Binary", S = 0.9, phi = 0.2, c = 0.85, p= 10)
 #> [1] "Optimisation Starting, ~ 1 min left..."
@@ -96,7 +96,7 @@ be in fact lower than we had aim for. We can check that using the second command
 
 expected_cs(outcome="Binary", n = 308, phi = 0.2, c = 0.85, p = 10)
 #>    N Mean_CS SD_CS Pr(CS<0.8) Mean_MAPE SD_MAPE Prev. C-Stat.  # Predictors
-#>1 308   0.844 0.127       0.38    0.0509  0.0118   0.2    0.85            10
+#> 1 308   0.844 0.127       0.38    0.0509  0.0118   0.2    0.85            10
 ```
 ![example_11](https://github.com/user-attachments/assets/c7f5cce8-71fb-46ee-b709-1853e8622513)
 
