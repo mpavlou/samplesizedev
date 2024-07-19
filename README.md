@@ -7,12 +7,10 @@
 <!-- badges: end -->
 
 
-This package relates to the article
-
-#### "An evaluation of sample size requirements for developing risk prediction models with binary outcomes"
+This package relates to the article *** "An evaluation of sample size requirements for developing risk prediction models with binary outcomes" ***
 published in BMC Medical Research Methodology https://doi.org/10.1186/s12874-024-02268-5
 
-#### Why do we need additional software and how does 'sampsizedev' work?
+### Why do we need additional software and how does 'sampsizedev' work?
 
 In the paper above we evaluated existing sample size formulae for the development of risk models. While the formula which aims to control model overfitting (target calibration slope 0.9) was found to perform
 work well for models with C-statistic/C-index<0.8, it tended to ***underestimate*** the sample size when the predictive strength of the model was higher. Often the sample sizes needed to be increased by 50% or even doubled to hit the calibration targets.
