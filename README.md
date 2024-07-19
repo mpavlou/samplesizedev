@@ -114,7 +114,7 @@ expected_cs(outcome="Binary", n = 308, phi = 0.2, c = 0.85, p = 10)
 #> 1 500   0.902 0.1002       0.16    0.0393  0.0087   0.2    0.85            10
 ```
 
-Note that although the calibration slope is on average 0.9 (and Probability of CS<0.8 has reduced to 16%) still  *we are not guaranteed* 
+Note that although the mean calibration slope is 0.9 (and Probability of CS<0.8 has reduced to 16%) still  *we are not guaranteed* 
 to achieve that performance for every development sample of size 500 in this case...
 
 
