@@ -50,10 +50,10 @@ Please get in touch (m.pavlou@ucl.ac.uk) for any bugs you spot and or any sugges
 This is a basic example which shows how to calculate:
 
 1)  the **sample size** to achieve a target expected
-    calibration slope (e.g. S=0.9)
+    calibration slope (e.g. target expected calibration slope S=0.9)
 
 2)  the **expected calibration slope and MAPE** for a given
-    sample size, and
+    sample size
 
 ``` r
 library(samplesizedev)
