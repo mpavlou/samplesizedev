@@ -7,7 +7,7 @@
 <!-- badges: end -->
 
 
-This package relates to the article **"An evaluation of sample size requirements for developing risk prediction models with binary outcomes"**
+R package which relates to the article **"An evaluation of sample size requirements for developing risk prediction models with binary outcomes"**
 published in BMC Medical Research Methodology https://doi.org/10.1186/s12874-024-02268-5
 
 ### Why do we need additional software and how does 'sampsizedev' work?
