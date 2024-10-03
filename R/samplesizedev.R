@@ -9,7 +9,7 @@
 #' The user first needs to specify the study-depended input values for the outcome prevalence the c-statistic and the number of predictors.
 #'
 #' The user also needs to input a target value for *either* the (expected) calibration slope (S) or the (expected) mean absolute prediction error (MAPE).
-#' The value of S should be at least 0.9, to ensure that teh degree of overfitting will be small.  On the other hand, a suitable target value for the (average) MAPE is study-depended and linked to outcome
+#' The value of S should be at least 0.9, to ensure that the degree of overfitting will be small.  On the other hand, a suitable target value for the (average) MAPE is study-depended and linked to outcome
 #' prevalence; target MAPE=prevalence/10 can be a reasonable choice in many cases.
 #'
 #' The calculation usually takes  a minute or less for a binary outcome.
