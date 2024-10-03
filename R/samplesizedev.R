@@ -22,7 +22,7 @@
 #' @param outcome (character) The type of outcome (''Binary'' ; ''Survival'' to be added in later versions)
 #' @param S (numeric) The target expected calibration slope
 #' @param MAPE (numeric) The target expected mean absolute prediction error
-#' @param phi (numeric) The anticipated outcome prevalence of the binary outcome (or proportion of events for survival outcome)
+#' @param phi (numeric) The anticipated outcome prevalence of the binary outcome (or propdata:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAWElEQVR42mNgGPTAxsZmJsVqQApgmGw1yApwKcQiT7phRBuCzzCSDSHGMKINIeDNmWQlA2IigKJwIssQkHdINgxfmBBtGDEBS3KCxBc7pMQgMYE5c/AXPwAwSX4lV3pTWwAAAABJRU5ErkJggg==ortion of events for survival outcome)
 #' @param c (numeric) The anticipated c-statistic for binary outcome (or c-index for survival outcome)
 #' @param p (numeric) The number of candidate predictor variables
 #' @param gamma (numeric) The Relative strength of predictors (default=rep(1/p,p); same length as p, must sum up to 1)
