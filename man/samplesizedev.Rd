@@ -65,15 +65,15 @@ to the calculated sample size.
 }
 \examples{
 
-# Binary Outcome: Prefer parallel computing  that ensures faster run
+# Binary Outcome
 # Size for target S=0.9
 # samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, parallel=TRUE)
 
-#' # Size for target MAPE=0.04
+#' Size for target MAPE=0.04
 # samplesizedev(outcome = "Binary", MAPE = 0.04, phi = 0.2, c = 0.85, p = 10)
 
-# Binary Outcome: Check the expected MAPE and Calibration Slope for the selected size
-# expected_cs (outcome = "Binary", n = 530, phi= 0.2, c = 0.85, p = 10)
+# Binary Outcome: Check the expected MAPE and Calibration Slope for a given sample size
+# expected_cs(outcome = "Binary", n = 530, phi= 0.2, c = 0.85, p = 10)
 
 }
 \seealso{
