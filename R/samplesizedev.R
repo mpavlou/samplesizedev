@@ -2,13 +2,15 @@
 #' Sample Size Required to Develop a Risk Prediction model for Binary Outcomes
 #'
 #' @description
-#' This function calculates the sample size required to achieve an expected Calibration Slope (S), given anticipated features of the data and the model. For a binary outcome these
+#' This function calculates the sample size required to achieve an expected Calibration Slope (S) or an expected MAPE (MAPE) given anticipated features of the data and the model. For a binary outcome these
 #' features are the outcome prevalence (phi) and c-statistic (c) and the number of candidate predictor variables (p).
 #' Future versions will  accept the anticipated proportion of events at a given time point (phi) and c-index (c)  for a time to event outcome.
 #'
-#' The required value for the (average) calibration slope should be at least S=0.9. On the other hand, the input
-#' values for phi, c, and p are study-dependent.
+#' The user first needs to specify the study-depended input values for the outcome prevalence the c-statistic and the number of predictors.
 #'
+#' The user also needs to input a target value for *either* the (expected) calibration slope (S) or the (expected) mean absolute prediction error (MAPE).
+#' The value of S should be at least 0.9, to ensure that teh degree of overfitting will be small.  On the other hand, a suitable target value for the (average) MAPE is study-depended and linked to outcome
+#' prevalence; target MAPE=prevalence/10 can be a reasonable choice in many cases.
 #'
 #' The calculation usually takes  a minute or less for a binary outcome.
 #'
@@ -19,6 +21,7 @@
 
 #' @param outcome (character) The type of outcome (''Binary'' ; ''Survival'' to be added in later versions)
 #' @param S (numeric) The target expected calibration slope
+#' @param MAPE (numeric) The target expected mean absolute prediction error
 #' @param phi (numeric) The anticipated outcome prevalence of the binary outcome (or proportion of events for survival outcome)
 #' @param c (numeric) The anticipated c-statistic for binary outcome (or c-index for survival outcome)
 #' @param p (numeric) The number of candidate predictor variables
@@ -38,6 +41,9 @@
 #'
 #' # Binary Outcome: Prefer parallel computing  that ensures faster run
 #' # samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, parallel=TRUE)
+#'
+#' #' Binary Outcome: Prefer parallel computing  that ensures faster run
+#' # samplesizedev(outcome = "Binary", MAPE = 0.05, phi = 0.2, c = 0.85, p = 10, parallel=TRUE)
 #'
 #' # Binary Outcome: Check the expected MAPE and Calibration Slope for the selected size
 #' # expected_cs (outcome = "Binary", n = 530, phi= 0.2, c = 0.85, p = 10)
