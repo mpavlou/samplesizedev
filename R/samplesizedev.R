@@ -10,7 +10,7 @@
 #'
 #' The user also needs to input a target value for *either* the (expected) calibration slope (S) or the (expected) mean absolute prediction error (MAPE).
 #' The value of S should be at least 0.9, to ensure that the degree of overfitting will be small.  On the other hand, a suitable target value for the (average) MAPE is study-depended and linked to outcome
-#' prevalence; target MAPE=prevalence/10 can be a reasonable choice in many cases.
+#' prevalence; target MAPE between (prevalence/10 and prevalence/5) can be a reasonable choice in many cases.
 #'
 #' The calculation usually takes  a minute or less for a binary outcome.
 #'
@@ -22,7 +22,7 @@
 #' @param outcome (character) The type of outcome (''Binary'' ; ''Survival'' to be added in later versions)
 #' @param S (numeric) The target expected calibration slope
 #' @param MAPE (numeric) The target expected mean absolute prediction error
-#' @param phi (numeric) The anticipated outcome prevalence of the binary outcome (or propdata:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAWElEQVR42mNgGPTAxsZmJsVqQApgmGw1yApwKcQiT7phRBuCzzCSDSHGMKINIeDNmWQlA2IigKJwIssQkHdINgxfmBBtGDEBS3KCxBc7pMQgMYE5c/AXPwAwSX4lV3pTWwAAAABJRU5ErkJggg==ortion of events for survival outcome)
+#' @param phi (numeric) The anticipated outcome prevalence of the binary outcome (or proportion of events for survival outcome)
 #' @param c (numeric) The anticipated c-statistic for binary outcome (or c-index for survival outcome)
 #' @param p (numeric) The number of candidate predictor variables
 #' @param gamma (numeric) The Relative strength of predictors (default=rep(1/p,p); same length as p, must sum up to 1)
@@ -40,10 +40,11 @@
 #' @examples
 #'
 #' # Binary Outcome: Prefer parallel computing  that ensures faster run
+#' # Size for target S=0.9
 #' # samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, parallel=TRUE)
 #'
-#' #' Binary Outcome: Prefer parallel computing  that ensures faster run
-#' # samplesizedev(outcome = "Binary", MAPE = 0.05, phi = 0.2, c = 0.85, p = 10, parallel=TRUE)
+#'#' # Size for target MAPE=0.04
+#' # samplesizedev(outcome = "Binary", MAPE = 0.04, phi = 0.2, c = 0.85, p = 10)
 #'
 #' # Binary Outcome: Check the expected MAPE and Calibration Slope for the selected size
 #' # expected_cs (outcome = "Binary", n = 530, phi= 0.2, c = 0.85, p = 10)
