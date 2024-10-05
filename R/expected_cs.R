@@ -17,7 +17,7 @@
 #' @param gamma (numeric) Relative strength of predictors (default=rep(1/p,p); same length as p, must sums up to 1)
 #'
 #' @return a data frame df with elements:
-#'             theinut sample size
+#'             the input sample size
 #'             the expected calibration slope (mean_CS)
 #'             the standard deviation of the CS (sd_CS)
 #'             the probability of obtaining a miscalibrated model with calibration slope <0.8 (Pr(CS<0.8))
