@@ -10,7 +10,7 @@
 R package which relates to the article **"An evaluation of sample size requirements for developing risk prediction models with binary outcomes"**
 published in BMC Medical Research Methodology https://doi.org/10.1186/s12874-024-02268-5
 
-### Why do we need additional software and how does 'sampsizedev' work?
+### Why do we need 'sampsizedev' and how does it work?
 
 In the paper above we evaluated existing sample size formulae for the development of risk models. While the formula which aims to control model overfitting (e.g. target calibration slope 0.9) was found to perform
 work well for models with C-statistic/C-index<0.8, it tended to ***underestimate*** the sample size when the predictive strength of the model was higher. Often the sample sizes needed to be increased by 50% or even doubled to hit the calibration targets.
@@ -43,7 +43,7 @@ devtools::install_github("mpavlou/samplesizedev")
 require(samplesizedev)
 ```
 
-Please get in touch (m.pavlou@ucl.ac.uk) for any bugs you spot and or for suggestions for improvement. 
+Please get in touch (m.pavlou@ucl.ac.uk) for any bugs you spot and/or for suggestions for improvement. 
 
 ## Example
 
@@ -108,7 +108,7 @@ In this case, to get a mean calibration slope of 0.9 we need to inflate n$rvs si
 get the desired expected calibration slope:  
 
 ``` r
-expected_cs(outcome = "Binary", n = 308, phi = 0.2, c = 0.85, p = 10)
+expected_cs(outcome = "Binary", n = 500, phi = 0.2, c = 0.85, p = 10)
 
 #>     N Mean_CS  SD_CS Pr(CS<0.8) Mean_MAPE SD_MAPE Prev. C-Stat.  # Predictors
 #> 1 500   0.902 0.1002       0.16    0.0393  0.0087   0.2    0.85            10
