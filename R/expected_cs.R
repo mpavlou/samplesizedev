@@ -16,14 +16,14 @@
 #' @param method (character) the fitting method (default="MLE"; currently the only option. Other fitting methods will be added in future versions)
 #' @param gamma (numeric) Relative strength of predictors (default=rep(1/p,p); same length as p, must sums up to 1)
 #'
-#' @return a data frame df with elements:
-#' @return     the input sample size (n)
-#' @return            the expected calibration slope (mean_CS)
-#' @return            the standard deviation of the CS (sd_CS)
-#' @return           the probability of obtaining a mis-calibrated model with calibration slope <0.8 (Pr(CS<0.8))
-#' @return           the expected MAPE (MAPE)
-#' @return           the standard deviation of the expected MAPE (sd_MAPE)
-#' @return           the expected optimism in R square Nagelgerke (optimism_R2_Nag)
+#' @return a data frame df with the following elements:
+#' @return  input sample size (n)
+#' @return  expected calibration slope (mean_CS)
+#' @return  standard deviation of the CS (sd_CS)
+#' @return  the probability of obtaining a mis-calibrated model with calibration slope <0.8 (Pr(CS<0.8))
+#' @return  the expected MAPE (MAPE)
+#' @return  the standard deviation of the expected MAPE (sd_MAPE)
+#' @return  the expected optimism in R square Nagelgerke (optimism_R2_Nag)
 #'
 #'
 #' @export
