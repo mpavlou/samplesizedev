@@ -22,9 +22,11 @@ expected_cs(
 
 \item{n}{(numeric) The sample size}
 
+\item{phi}{(numeric) The anticipated outcome prevalence (binary outcome) or proportion of events (survival outcome)}
+
 \item{c}{(numeric) The anticipated c-statistic (binary outcome) or c-index (survival outcome)}
 
-\item{p}{(numeric) The anticipated outcome prevalence (binary outcome) or proportion of events (survival outcome)}
+\item{p}{(numeric) The number of candidate predictor variables}
 
 \item{gamma}{(numeric) Relative strength of predictors (default=rep(1/p,p); same length as p, must sums up to 1)}
 
@@ -35,8 +37,6 @@ expected_cs(
 \item{parallel}{(logical) parallel processing to speed up computations (default=TRUE)}
 
 \item{method}{(character) the fitting method (default="MLE"; currently the only option. Other fitting methods will be added in future versions)}
-
-\item{n.predictors}{(numeric) The number of candidate predictor variables}
 }
 \value{
 a data frame df with elements:
@@ -67,7 +67,7 @@ This function calculates the expected calibration slope and MAPE given key data 
 (outcome prevalence, c-statistic and number of predictors). It takes approximately 15 seconds to run (binary outcome).
 }
 \examples{
-# expected_cs(outcome="Binary", n = 530, p = 0.2, c = 0.85, p = 10, nsim = 100, parallel = FALSE)
+# expected_cs(outcome="Binary", n = 530, phi = 0.2, c = 0.85, p = 10, nsim = 100, parallel = FALSE)
 
 # Prefer parallel computing with >2 cores that ensure faster running
 # expected_cs(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = TRUE)
