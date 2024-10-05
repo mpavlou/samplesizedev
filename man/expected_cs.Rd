@@ -39,7 +39,7 @@ expected_cs(
 \item{n.predictors}{(numeric) The number of candidate predictor variables}
 }
 \value{
-a data frame df with elecments:
+a data frame df with elements:
 theinut sample size
 the expected calibration slope (mean_CS)
 the standard deviation of the CS (sd_CS)
