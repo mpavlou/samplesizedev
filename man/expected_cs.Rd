@@ -39,28 +39,21 @@ expected_cs(
 \item{method}{(character) the fitting method (default="MLE"; currently the only option. Other fitting methods will be added in future versions)}
 }
 \value{
-a data frame df with elements:
+a data frame df with the following elements:
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{the input sample size (n)
-}\if{html}{\out{</div>}}
+input sample size (n)
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{       the expected calibration slope (mean_CS)
-}\if{html}{\out{</div>}}
+expected calibration slope (mean_CS)
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{       the standard deviation of the CS (sd_CS)
-}\if{html}{\out{</div>}}
+standard deviation of the CS (sd_CS)
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{      the probability of obtaining a mis-calibrated model with calibration slope <0.8 (Pr(CS<0.8))
-}\if{html}{\out{</div>}}
+the probability of obtaining a mis-calibrated model with calibration slope <0.8 (Pr(CS<0.8))
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{      the expected MAPE (MAPE)
-}\if{html}{\out{</div>}}
+the expected MAPE (MAPE)
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{      the standard deviation of the expected MAPE (sd_MAPE)
-}\if{html}{\out{</div>}}
+the standard deviation of the expected MAPE (sd_MAPE)
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{      the expected optimism in R square Nagelgerke (optimism_R2_Nag)
-}\if{html}{\out{</div>}}
+the expected optimism in R square Nagelgerke (optimism_R2_Nag)
 }
 \description{
 This function calculates the expected calibration slope and MAPE given key data and model characteristics
