@@ -15,10 +15,17 @@
 #' @param parallel (logical) parallel processing to speed up computations (default=TRUE)
 #' @param method (character) the fitting method (default="MLE"; currently the only option. Other fitting methods will be added in future versions)
 #' @param gamma (numeric) Relative strength of predictors (default=rep(1/p,p); same length as p, must sums up to 1)
-
-
 #'
-#' @return df: the mean calibration slope (with SD),the probability of calibration slope<0.8,  and mean MAPE (with SD) for binary outcomes.
+#' @return a data frame df with elecments:
+#'             theinut sample size
+#'             the expected calibration slope (mean_CS)
+#'             the standard deviation of the CS (sd_CS)
+#'             the probability of obtaining a miscalibrated model with calibration slope <0.8 (Pr(CS<0.8))
+#'             the expected MAPE (MAPE)
+#'             the standard deviation of the expected MAPE (sd_MAPE)
+#'             the expected optimism in R square Nagelgerke (optimism_R2_Nag)
+#'
+#'
 #' @export
 #'
 #' @examples
