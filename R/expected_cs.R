@@ -16,7 +16,7 @@
 #' @param method (character) the fitting method (default="MLE"; currently the only option. Other fitting methods will be added in future versions)
 #' @param gamma (numeric) Relative strength of predictors (default=rep(1/p,p); same length as p, must sums up to 1)
 #'
-#' @return a data frame df with elecments:
+#' @return a data frame df with elements:
 #'             theinut sample size
 #'             the expected calibration slope (mean_CS)
 #'             the standard deviation of the CS (sd_CS)
