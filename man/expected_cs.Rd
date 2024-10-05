@@ -40,20 +40,34 @@ expected_cs(
 }
 \value{
 a data frame df with elements:
-theinut sample size
-the expected calibration slope (mean_CS)
-the standard deviation of the CS (sd_CS)
-the probability of obtaining a miscalibrated model with calibration slope <0.8 (Pr(CS<0.8))
-the expected MAPE (MAPE)
-the standard deviation of the expected MAPE (sd_MAPE)
-the expected optimism in R square Nagelgerke (optimism_R2_Nag)
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{the input sample size (n)
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{       the expected calibration slope (mean_CS)
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{       the standard deviation of the CS (sd_CS)
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{      the probability of obtaining a mis-calibrated model with calibration slope <0.8 (Pr(CS<0.8))
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{      the expected MAPE (MAPE)
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{      the standard deviation of the expected MAPE (sd_MAPE)
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{      the expected optimism in R square Nagelgerke (optimism_R2_Nag)
+}\if{html}{\out{</div>}}
 }
 \description{
 This function calculates the expected calibration slope and MAPE given key data and model characteristics
 (outcome prevalence, c-statistic and number of predictors). It takes approximately 15 seconds to run (binary outcome).
 }
 \examples{
-# expected_cs(outcome="Binary", n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = FALSE)
+# expected_cs(outcome="Binary", n = 530, p = 0.2, c = 0.85, p = 10, nsim = 100, parallel = FALSE)
 
 # Prefer parallel computing with >2 cores that ensure faster running
 # expected_cs(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = TRUE)
