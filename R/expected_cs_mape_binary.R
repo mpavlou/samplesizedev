@@ -16,7 +16,14 @@
 #' @param beta (numeric) Strength of predictors (same length as n.predictors)
 
 #'
-#' @return df: the expected calibration slope and mape
+#' @return a data frame df with elecments:
+#'             theinut sample size
+#'             the expected calibration slope (mean_CS)
+#'             the standard deviation of the CS (sd_CS)
+#'             the probability of obtaining a miscalibrated model with calibration slope <0.8 (Pr(CS<0.8))
+#'             the expected MAPE (MAPE)
+#'             the standard deviation of the expected MAPE (sd_MAPE)
+#'             the expected optimism in R square Nagelgerke (optimism_R2_Nag)
 #'
 #' @examples
 #' # expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = FALSE)
@@ -48,11 +55,25 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
   xval    <- mvtnorm::rmvnorm(nval, rep(0, n.predictors), sigma = sigma)
 
+  # True R2
+  MaxR2 <- 1-(((p^(p))*((1-p)^(1-p)))^2)
+  ncalc <- 1000000
+  x        <- mvtnorm::rmvnorm(ncalc, rep(0, n.predictors), sigma = sigma )
+  y        <- stats::rbinom( ncalc,  1, invlogit(mean + x%*%beta))
+  data.calc <- data.frame(y,x)
+
+  fit <- glm(y ~ ., data = data.calc, family = 'binomial')
+
+  LR      <- -2 * (as.numeric(logLik(glm(y ~ 1, data = data.calc,
+                                         family = binomial(link = "logit")))) -
+                     as.numeric(logLik(fit)))
+  r2_cs_true <- 1 - exp(-LR/ncalc)
+
 
   if (parallel==TRUE) {
     cores <- parallel::detectCores()
     cl    <- parallel::makeCluster(cores[1]-2)} else
-    cl    <- parallel::makeCluster(2)
+      cl    <- parallel::makeCluster(2)
 
   doParallel::registerDoParallel(cl)
 
@@ -61,31 +82,44 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
   cs   <- NULL
   mape <- NULL
+  opt  <- NULL
   i    <- 0
 
   if (method== "MLE") {
 
-  a<- foreach::foreach(i = 1:nsim, .packages=c('mvtnorm','RcppNumerical', 'ggplot2' )) %dopar% {
+    a<- foreach::foreach(i = 1:nsim, .packages=c('mvtnorm','RcppNumerical', 'ggplot2' )) %dopar% {
 
-    set.seed(i)
-    invlogit <- function(x) 1/(1+exp(-x))
+      set.seed(i)
+      invlogit <- function(x) 1/(1+exp(-x))
 
-    x        <- mvtnorm::rmvnorm(round(n), rep(0, n.predictors), sigma = sigma )
-    y        <- stats::rbinom(round(n),  1, invlogit(mean + x%*%beta))
-    yval     <- stats::rbinom(nval, 1, invlogit(mean + xval%*%beta))
-    p_true   <- as.vector(invlogit(mean + xval%*%beta))
+      x        <- mvtnorm::rmvnorm(round(n), rep(0, n.predictors), sigma = sigma )
+      y        <- stats::rbinom(round(n),  1, invlogit(mean + x%*%beta))
+      yval     <- stats::rbinom(nval, 1, invlogit(mean + xval%*%beta))
+      p_true   <- as.vector(invlogit(mean + xval%*%beta))
 
-    a        <- RcppNumerical::fastLR(cbind(1,x), y)
-    eta_est  <- cbind(1, xval) %*% as.vector(a$coef)
-    p_est    <- as.vector(invlogit(eta_est))
+      a        <- RcppNumerical::fastLR(cbind(1,x), y)
+      eta_est  <- cbind(1, xval) %*% as.vector(a$coef)
+      p_est    <- as.vector(invlogit(eta_est))
 
-    fit      <- RcppNumerical::fastLR(cbind(1,eta_est), yval, start = c(0,0.9) )
-    cs[i]    <- fit$coef[2]
-    mape[i]  <- mean(abs(p_true-p_est))
 
-    c(cs[i],mape[i])
+      #Opt R2Neg
+      L1        <- a$loglikelihood
+      # a0        <- RcppNumerical::fastLR(as.matrix(rep(1,n)), y)
+      # L0        <- a0$loglikelihood
+      L0        <- sum(y*log(mean(y)) + (1-y)*log(1-mean(y)))
+      LR        <- -2*(L0-L1)
+      r2_cs_app <- 1 - exp(-LR/n)
 
-  }
+
+      fit      <- RcppNumerical::fastLR(cbind(1,eta_est), yval, start = c(0,0.9) )
+      cs[i]    <- fit$coef[2]
+      mape[i]  <- mean(abs(p_true-p_est))
+      opt[i]   <- r2_cs_app/MaxR2 - r2_cs_true/MaxR2
+
+
+      c(cs[i],mape[i], opt[i])
+
+    }
 
   } else if (method == "LSF")
 
@@ -100,9 +134,9 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
         xvarsbs=databs[,-1];ybs<-databs[,1]
         fitbs <- speedglm::speedglm(ybs~xvarsbs, family=binomial())
 
-          eta_est    <- as.matrix(cbind(1,data[,-1]))%*%coef(fitbs)
-          fitcal     <- speedglm::speedglm(data[,1]~eta_est, family=binomial())
-          cal[j]     <- as.vector(stats::coef(fitcal)[2])
+        eta_est    <- as.matrix(cbind(1,data[,-1]))%*%coef(fitbs)
+        fitcal     <- speedglm::speedglm(data[,1]~eta_est, family=binomial())
+        cal[j]     <- as.vector(stats::coef(fitcal)[2])
 
       }
       return(stats::median(cal,na.rm=TRUE))
@@ -134,7 +168,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
       c(cs[i],mape[i])
     }
-    }
+  }
 
 
   parallel::stopCluster(cl)
@@ -143,6 +177,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   b      <- matrix(unlist(a), byrow=TRUE, nrow=nsim)
   cs     <- b[,1]
   mape   <- b[,2]
+  opt    <- b[,3]
 
 
   df        <- data.frame(cs)
@@ -166,11 +201,11 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
     ggplot2::theme_bw()+ ggplot2::theme(legend.position="bottom")
 
   figure  <- ggpubr::ggarrange(cs_plot, mape_plot,
-                       ncol = 2, nrow = 1, common.legend = TRUE, legend="bottom")
+                               ncol = 2, nrow = 1, common.legend = TRUE, legend="bottom")
 
   cs_mape_plot <- ggpubr::annotate_figure(figure,
-                                  top = ggpubr::text_grob(paste("Distribution of the Calibration Slope and MAPE\n","N=", n, ", Prevalence=", p, ", C-stat=",c,sep=""),
-                                                  color = "black", face = "bold", size = 13)) + ggplot2::xlab("MAPE")
+                                          top = ggpubr::text_grob(paste("Distribution of the Calibration Slope and MAPE\n","N=", n, ", Prevalence=", p, ", C-stat=",c,sep=""),
+                                                                  color = "black", face = "bold", size = 13)) + ggplot2::xlab("MAPE")
 
   print(cs_mape_plot)
 
@@ -185,15 +220,16 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   # app <- sqrt(1/(A*n)+2/(n-2) )
 
   df        <- data.frame(n, round(mean(cs, na.rm = TRUE),3),
-                             round(sqrt(stats::var(cs,na.rm = TRUE)), 4),
-                             # round(sqrt( mean( ((cs-1)^2), na.rm=TRUE) ), 4),
-                             round(mean(ifelse( (cs < 0.8), 1, 0),na.rm=TRUE), 2),
-                             round(stats::median(mape, na.rm = TRUE),4),
-                             round(sqrt(stats::var(mape,na.rm = TRUE)), 4),
-                             round(prev, 2),
-                             round(cstat, 2 ), n.predictors)
+                          round(sqrt(stats::var(cs,na.rm = TRUE)), 4),
+                          # round(sqrt( mean( ((cs-1)^2), na.rm=TRUE) ), 4),
+                          round(mean(ifelse( (cs < 0.8), 1, 0),na.rm=TRUE), 2),
+                          round(stats::median(mape, na.rm = TRUE),4),
+                          round(sqrt(stats::var(mape,na.rm = TRUE)), 4),
+                          round(mean(opt, na.rm = TRUE),3),
+                          round(prev, 2),
+                          round(cstat, 2 ), n.predictors)
   # names(df) <- c("N", "Mean_CS", "SD_CS", "RMSD_CS", "Pr(CS<0.8)", "Mean_MAPE",  "SD_MAPE", "Prev.", "C-Stat.", " # Predictors")
-  names(df) <- c("N", "Mean_CS", "SD_CS", "Pr(CS<0.8)", "Mean_MAPE",  "SD_MAPE", "Prev.", "C-Stat.", " # Predictors")
+  names(df) <- c("n", "mean_CS", "sd_CS", "Pr(CS<0.8)", "mean_MAPE",  "sd_MAPE", "optimism_R2_Nag",  "prevalence", "c-Statistic", " # predictors")
 
   performance <- df[,-3]
   performance <- df
@@ -201,7 +237,6 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   performance
 
 }
-
 
 # expected_cs_mape_binary(n = 530, phi = 0.2, c = 0.85, p=10, nsim = 2000, parallel = TRUE)
 # expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, beta= c(0.5,0.3,0.2,0.1,0.1,
