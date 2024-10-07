@@ -36,6 +36,7 @@
 
 #'
 #'
+#'
 expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nval = 25000, method ="MLE", parallel=TRUE){
 
   # Find mean and variance of for Normal linear predictor
@@ -57,17 +58,40 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
   # True R2
   MaxR2 <- 1-(((p^(p))*((1-p)^(1-p)))^2)
-  ncalc <- 1000000
+  ncalc <- 500000
   x        <- mvtnorm::rmvnorm(ncalc, rep(0, n.predictors), sigma = sigma )
-  y        <- stats::rbinom( ncalc,  1, invlogit(mean + x%*%beta))
-  data.calc <- data.frame(y,x)
+  eta      <- mean+x%*% beta
+  y        <- stats::rbinom(ncalc,  1, invlogit(eta))
 
-  fit <- glm(y ~ ., data = data.calc, family = 'binomial')
 
-  LR      <- -2 * (as.numeric(logLik(glm(y ~ 1, data = data.calc,
-                                         family = binomial(link = "logit")))) -
-                     as.numeric(logLik(fit)))
+  a        <- RcppNumerical::fastLR(cbind(1,x), y)
+  L1        <- a$loglikelihood
+  L0        <- sum(y*log(mean(y)) + (1-y)*log(1-mean(y)))
+  LR        <- -2*(L0-L1)
   r2_cs_true <- 1 - exp(-LR/ncalc)
+  r2_cs_true
+
+  # data.calc <- data.frame(y,x)
+  #
+  # system.time(fit <- glm(y ~ ., data = data.calc, family = 'binomial'))
+  #
+  # LR      <- -2 * (as.numeric(logLik(glm(y ~ 1, data = data.calc,
+  #                                        family = binomial(link = "logit")))) -
+  #                    as.numeric(logLik(fit)))
+  # r2_cs_true <- 1 - exp(-LR/ncalc)
+  #
+  # r2_cs_true
+  #
+  # system.time(fit <- glm(y~eta, data = data.calc, family="binomial"))
+  #
+  #
+  # LR      <- -2 * (as.numeric(logLik(glm(y ~ 1, data = data.calc,
+  #                                        family = binomial(link = "logit")))) -
+  #                    as.numeric(logLik(fit)))
+  # r2_cs_true <- 1 - exp(-LR/ncalc)
+  #
+  # r2_cs_true
+  #
 
 
   if (parallel==TRUE) {
@@ -80,9 +104,11 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   `%dopar%` <- foreach::`%dopar%`
   `%do%` <- foreach::`%do%`
 
-  cs   <- NULL
-  mape <- NULL
-  opt  <- NULL
+  cs         <- NULL
+  mape       <- NULL
+  opt        <- NULL
+  r2_app     <- NULL
+  heuristic  <-NULL
   i    <- 0
 
   if (method== "MLE") {
@@ -111,13 +137,14 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
       r2_cs_app <- 1 - exp(-LR/n)
 
 
-      fit      <- RcppNumerical::fastLR(cbind(1,eta_est), yval, start = c(0,0.9) )
-      cs[i]    <- fit$coef[2]
-      mape[i]  <- mean(abs(p_true-p_est))
-      opt[i]   <- r2_cs_app/MaxR2 - r2_cs_true/MaxR2
+      fit          <- RcppNumerical::fastLR(cbind(1,eta_est), yval, start = c(0,0.9) )
+      cs[i]        <- fit$coef[2]
+      mape[i]      <- mean(abs(p_true-p_est))
+      opt[i]       <- r2_cs_app/MaxR2 - r2_cs_true/MaxR2
+      heuristic[i] <- 1-n.predictors/LR
+      r2_app[i]    <- r2_cs_app
 
-
-      c(cs[i],mape[i], opt[i])
+      c(cs[i], mape[i], opt[i], heuristic[i], r2_app[i])
 
     }
 
@@ -174,10 +201,12 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   parallel::stopCluster(cl)
 
 
-  b      <- matrix(unlist(a), byrow=TRUE, nrow=nsim)
-  cs     <- b[,1]
-  mape   <- b[,2]
-  opt    <- b[,3]
+  b          <- matrix(unlist(a), byrow=TRUE, nrow=nsim)
+  cs         <- b[,1]
+  mape       <- b[,2]
+  opt        <- b[,3]
+  heuristic  <- b[,4]
+  r2_app     <- b[,5]
 
 
   df        <- data.frame(cs)
@@ -226,10 +255,14 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
                           round(stats::median(mape, na.rm = TRUE),4),
                           round(sqrt(stats::var(mape,na.rm = TRUE)), 4),
                           round(mean(opt, na.rm = TRUE),3),
+                          # round(mean(heuristic, na.rm = TRUE),3),
+                          # round(r2_cs_true,4),
+                          # round(mean(r2_app,na.rm=TRUE)*mean(cs, na.rm = TRUE),4),
                           round(prev, 2),
                           round(cstat, 2 ), n.predictors)
-  # names(df) <- c("N", "Mean_CS", "SD_CS", "RMSD_CS", "Pr(CS<0.8)", "Mean_MAPE",  "SD_MAPE", "Prev.", "C-Stat.", " # Predictors")
-  names(df) <- c("n", "mean_CS", "sd_CS", "Pr(CS<0.8)", "mean_MAPE",  "sd_MAPE", "optimism_R2_Nag",  "prevalence", "c-statistic", " # predictors")
+  names(df) <- c("n", "mean_CS", "sd_CS", "Pr(CS<0.8)", "mean_MAPE",  "sd_MAPE", "optimism_R2_Nag", "prevalence", "c-statistic", " # predictors")
+
+  # names(df) <- c("n", "mean_CS", "sd_CS", "Pr(CS<0.8)", "mean_MAPE",  "sd_MAPE", "optimism_R2_Nag", "heuristic_SF", "r2_true", "r2_app/cs", "prevalence", "c-statistic", " # predictors")
 
   performance <- df[,-3]
   performance <- df
