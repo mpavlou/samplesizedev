@@ -12,8 +12,7 @@ published in BMC Medical Research Methodology https://doi.org/10.1186/s12874-024
 
 ### Why do we need 'sampsizedev' and how does it work?
 
-In the paper above we evaluated existing sample size formulae for the development of risk models. While the formula which aims to control model overfitting (e.g. target calibration slope 0.9) was found to perform
-relattively well (with small bias) for models with C-statistic/C-index<0.8, it tended to ***underestimate*** the sample size when the predictive strength of the model was higher. Often the sample sizes needed to be increased by 50% or even doubled to hit the calibration targets.
+In the paper above we evaluated existing sample size formulae for the development of risk models. While the formula which aims to control model overfitting in Riley et al. (2019) (e.g. target calibration slope 0.9) was found to perform relatively well for models with C-statistic/C-index<0.8, it substantially ***underestimated*** the sample size when the predictive strength of the model was higher. Often the sample sizes needed to be increased by 50% or even doubled to hit the calibration targets.
 
 Hence, we developed the new package 'samplesizedev' which performs ***unbiased sample size calculations*** regardless of model strength. Our software uses simulation in the background so calculations can take around a minute. It currently performs calculations for the development of risk models for binary outcomes. Functionality for ***time to event outcomes*** will be made available in due course. 
 
