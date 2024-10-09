@@ -25,8 +25,12 @@ The software requires information on the anticipated values of the:
 
 - number of predictor variables
 
-to calculate the sample size required to achieve a target expected calibration slope
-(S) or Mean Absolute Prediction Error (MAPE), on average. 
+Based on the characterisitcs above it can perform two actions:
+
+1.** Calculate the sample size** required to achieve a target expected calibration slope or MAPE (additional input for the target calibration slope / MAPE) or
+
+2. **Calculate the expected model performance at a given sample size** (additional input: the sample size)
+
 
 
 ## Installation
