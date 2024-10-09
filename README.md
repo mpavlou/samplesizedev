@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# samplesizedev
+# samplesizedev : Sample size calculations for the development of risk models
 
 <!-- badges: start -->
 <!-- badges: end -->
