@@ -1,32 +1,33 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# samplesizedev
+# samplesizedev : Sample size calculations for the development of risk models
 
 <!-- badges: start -->
 <!-- badges: end -->
 
 
-R package which relates to the article **"An evaluation of sample size requirements for developing risk prediction models with binary outcomes"**
+R package to calculate the sample size for the development of risk models for binary outcomes
+
+Related paper: **"An evaluation of sample size requirements for developing risk prediction models with binary outcomes"**
 published in BMC Medical Research Methodology https://doi.org/10.1186/s12874-024-02268-5
 
 ### Why do we need 'sampsizedev' and how does it work?
 
-In the paper above we evaluated existing sample size formulae for the development of risk models. While the formula which aims to control model overfitting (e.g. target calibration slope 0.9) was found to perform
-work well for models with C-statistic/C-index<0.8, it tended to ***underestimate*** the sample size when the predictive strength of the model was higher. Often the sample sizes needed to be increased by 50% or even doubled to hit the calibration targets.
+In the paper above we evaluated existing sample size formulae for the development of risk models. While the formula which aims to control model overfitting (calibration formula) in Riley et al. (2019) performed relatively well for models with C-statistic/C-index<0.8, it substantially ***underestimated*** the sample size when the predictive strength of the model was higher. The sample sizes often needed to be increased by 50% or even doubled to meet the calibration targets.
 
-Hence, we developed the new package 'samplesizedev' which performs ***unbiased sample size calculations*** regardless of model strength. Our software uses simulation in the background so calculations take around a minute or two. It currently performs calculations for the development of risk models for binary outcomes. Functionality for ***time to event outcomes*** will be made available in due course. 
+Hence, we developed the **new package 'samplesizedev'** which performs ***unbiased sample size calculations*** regardless of model strength. Our software uses simulation in the background so calculations can take around a minute. Currently it can be used for the development of risk models for binary outcomes; functionality for ***time to event outcomes*** will be made available in due course. 
 
 The software requires information on the anticipated values of the:
 
 - outcome prevalence
-
 - c-statistic (AUC)
-
 - number of predictor variables
 
-to calculate the sample size required to achieve a target expected calibration slope
-(S) or Mean Absolute Prediction Error (MAPE), on average. 
+Based on the characterisitcs above it can perform two actions based on two core functions:
+
+1. **Calculate the required sample size** to achieve a target expected calibration slope or Mean Absolute Prediction Error (MAPE) (function **'samplesizedev'**) or
+2. **Calculate the expected model performance** at a given sample size (function **'expected_cs'**)
 
 
 ## Installation
@@ -45,7 +46,7 @@ require(samplesizedev)
 
 Please get in touch (m.pavlou@ucl.ac.uk) for any bugs you spot and/or for suggestions for improvement. 
 
-## Example
+## Examples
 
 This is a basic example which shows how to calculate:
 
