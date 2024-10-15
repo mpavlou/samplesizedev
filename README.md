@@ -7,7 +7,7 @@
 <!-- badges: end -->
 
 
-**R package to calculate the sample size for the development of risk models for binary outcomes**
+R package to calculate the sample size for the development of risk models for binary outcomes
 
 Related paper: **"An evaluation of sample size requirements for developing risk prediction models with binary outcomes"**
 published in BMC Medical Research Methodology https://doi.org/10.1186/s12874-024-02268-5
