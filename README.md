@@ -21,15 +21,12 @@ Hence, we developed the **new package 'samplesizedev'** which performs ***unbias
 The software requires information on the anticipated values of the:
 
 - outcome prevalence
-
 - c-statistic (AUC)
-
 - number of predictor variables
 
 Based on the characterisitcs above it can perform two actions based on two core functions:
 
 1. **Calculate the required sample size** to achieve a target expected calibration slope or MAPE (function **'samplesizedev'**) or
-
 2. **Calculate the expected model performance** at a given sample size (function **'expected_cs'**)
 
 
