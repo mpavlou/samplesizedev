@@ -14,7 +14,7 @@ published in BMC Medical Research Methodology https://doi.org/10.1186/s12874-024
 
 ### Why do we need 'sampsizedev' and how does it work?
 
-Riley et al. (2019) propose 3 formulae, based on 3 distinct criteria, for calculating the sample size for the development of risk models.
+Riley et al. (2019) proposed 3 formulae, based on 3 distinct criteria, for calculating the sample size for the development of risk models.
 - Criterion 1: control overfitting (target: calibration slope=0.9),
 - Criterion 2: control optimism in R2 Nageleherke (target: opt=0.05)
 - Criterion 3:  precision in the mean predicted risk (target: precision = 0.05).
