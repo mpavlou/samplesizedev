@@ -281,7 +281,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
                           # round(mean(heuristic, na.rm = TRUE),3),
                           # round(r2_cs_true,4),
                           # round(mean(r2_app,na.rm=TRUE)*mean(cs, na.rm = TRUE),4),
-                          round(prev, 2),
+                          round(prev, 3),
                           round(cstat, 2 ), n.predictors)
   names(df) <- c("n", "mean_CS", "sd_CS", "Pr(CS<0.8)", "mean_MAPE",  "sd_MAPE", "optimism_R2_Nag", "c_est", "prevalence", "c-statistic", " # predictors")
 
