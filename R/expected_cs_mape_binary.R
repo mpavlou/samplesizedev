@@ -57,17 +57,17 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   xval    <- mvtnorm::rmvnorm(nval, rep(0, n.predictors), sigma = sigma)
 
   # True R2
-  MaxR2 <- 1-(((p^(p))*((1-p)^(1-p)))^2)
-  ncalc <- 500000
+  MaxR2    <- 1-(((p^(p))*((1-p)^(1-p)))^2)
+  ncalc    <- 500000
   x        <- mvtnorm::rmvnorm(ncalc, rep(0, n.predictors), sigma = sigma )
   eta      <- mean+x%*% beta
   y        <- stats::rbinom(ncalc,  1, invlogit(eta))
 
 
-  a        <- RcppNumerical::fastLR(cbind(1,x), y)
-  L1        <- a$loglikelihood
-  L0        <- sum(y*log(mean(y)) + (1-y)*log(1-mean(y)))
-  LR        <- -2*(L0-L1)
+  a          <- RcppNumerical::fastLR(cbind(1,x), y)
+  L1         <- a$loglikelihood
+  L0         <- sum(y*log(mean(y)) + (1-y)*log(1-mean(y)))
+  LR         <- -2*(L0-L1)
   r2_cs_true <- 1 - exp(-LR/ncalc)
   r2_cs_true
 
@@ -108,7 +108,8 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   mape       <- NULL
   opt        <- NULL
   r2_app     <- NULL
-  heuristic  <-NULL
+  heuristic  <- NULL
+  cest       <- NULL
   i    <- 0
 
   if (method== "MLE") {
@@ -117,6 +118,24 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
       set.seed(i)
       invlogit <- function(x) 1/(1+exp(-x))
+
+      # Approximation of the C-statistic (Large n)
+
+      quickcstat <- function(y, pred, seed=1){
+        #set.seed(seed)
+        casepred=pred[y == 1]
+        conpred=pred[y == 0]
+
+        if (length(conpred)>length(casepred)){
+          conpred=conpred[sample(length(conpred),length(casepred),replace=FALSE)]
+          auc.true=sum(casepred>conpred)/length(casepred)} else
+          {
+            casepred=casepred[sample(length(casepred),length(conpred),replace=FALSE)]
+            auc.true=sum(casepred>conpred)/length(conpred)
+          }
+
+        return(auc.true)
+      }
 
       x        <- mvtnorm::rmvnorm(round(n), rep(0, n.predictors), sigma = sigma )
       y        <- stats::rbinom(round(n),  1, invlogit(mean + x%*%beta))
@@ -143,8 +162,10 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
       opt[i]       <- r2_cs_app/MaxR2 - r2_cs_true/MaxR2
       heuristic[i] <- 1-n.predictors/LR
       r2_app[i]    <- r2_cs_app
+      cest[i]      <- quickcstat(yval, p_est)
 
-      c(cs[i], mape[i], opt[i], heuristic[i], r2_app[i])
+
+      c(cs[i], mape[i], opt[i], heuristic[i], r2_app[i], cest[i])
 
     }
 
@@ -207,6 +228,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   opt        <- b[,3]
   heuristic  <- b[,4]
   r2_app     <- b[,5]
+  cest      <- b[,6]
 
 
   df        <- data.frame(cs)
@@ -255,12 +277,13 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
                           round(stats::median(mape, na.rm = TRUE),4),
                           round(sqrt(stats::var(mape,na.rm = TRUE)), 4),
                           round(mean(opt, na.rm = TRUE),3),
+                          round(mean(cest, na.rm = TRUE),3),
                           # round(mean(heuristic, na.rm = TRUE),3),
                           # round(r2_cs_true,4),
                           # round(mean(r2_app,na.rm=TRUE)*mean(cs, na.rm = TRUE),4),
                           round(prev, 2),
                           round(cstat, 2 ), n.predictors)
-  names(df) <- c("n", "mean_CS", "sd_CS", "Pr(CS<0.8)", "mean_MAPE",  "sd_MAPE", "optimism_R2_Nag", "prevalence", "c-statistic", " # predictors")
+  names(df) <- c("n", "mean_CS", "sd_CS", "Pr(CS<0.8)", "mean_MAPE",  "sd_MAPE", "optimism_R2_Nag", "c_est", "prevalence", "c-statistic", " # predictors")
 
   # names(df) <- c("n", "mean_CS", "sd_CS", "Pr(CS<0.8)", "mean_MAPE",  "sd_MAPE", "optimism_R2_Nag", "heuristic_SF", "r2_true", "r2_app/cs", "prevalence", "c-statistic", " # predictors")
 
