@@ -47,7 +47,8 @@ find_mu_sigma <- function(target.prev, target.c, min.opt = c(-10,0), max.opt = c
     out     <- c(mu, sigma^2)
     }
 
-  N        <- 2000000
+  N        <- 500000
+  #Better 2000000 to check
   lp       <- stats::rnorm(N, mean = out[1], sd = sqrt(out[2]))
   p        <- (1 + exp(-lp)) ^ (-1)
   y        <- stats::rbinom(N, 1, prob = p)
@@ -59,6 +60,9 @@ find_mu_sigma <- function(target.prev, target.c, min.opt = c(-10,0), max.opt = c
 # Check
   # round(find_mu_sigma(0.174, 0.8, tol=0.00001),4)
   # round(find_mu_sigma(0.1, 0.6, tol=0.00001),4)
+
+ # round(find_mu_sigma(0.05, 0.7, tol=0.00001),4)
+
 
 
 

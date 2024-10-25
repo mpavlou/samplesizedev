@@ -262,8 +262,8 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
   set.seed(2022)
 
-  xval      <- mvtnorm::rmvnorm(200000, rep(0,n.predictors), sigma = sigma)
-  yval      <- stats::rbinom(200000, 1, invlogit(mean + xval %*% beta))
+  xval      <- mvtnorm::rmvnorm(500000, rep(0,n.predictors), sigma = sigma)
+  yval      <- stats::rbinom(500000, 1, invlogit(mean + xval %*% beta))
   prev      <- mean(yval)
   cstat     <- quickcstat(yval, invlogit(mean + xval %*% beta))
 
@@ -281,7 +281,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
                           # round(mean(heuristic, na.rm = TRUE),3),
                           # round(r2_cs_true,4),
                           # round(mean(r2_app,na.rm=TRUE)*mean(cs, na.rm = TRUE),4),
-                          round(prev, 3),
+                          round(prev, 2),
                           round(cstat, 2 ), n.predictors)
   names(df) <- c("n", "mean_CS", "sd_CS", "Pr(CS<0.8)", "mean_MAPE",  "sd_MAPE", "optimism_R2_Nag", "c_est", "prevalence", "c-statistic", " # predictors")
 
