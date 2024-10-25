@@ -12,14 +12,21 @@ R package to calculate the sample size for the development of risk models for bi
 Related paper: **"An evaluation of sample size requirements for developing risk prediction models with binary outcomes"**
 published in BMC Medical Research Methodology https://doi.org/10.1186/s12874-024-02268-5
 
-### Why do we need 'sampsizedev' and how does it work?
+### Why do we need 'sampsizedev'?
 
-In the paper above we evaluated existing sample size formulae for the development of risk models. While the formula which aims to control model overfitting (calibration formula) in Riley et al. (2019) performed relatively well for models with C-statistic/C-index<0.8, it substantially ***underestimated*** the sample size when the predictive strength of the model was higher. The sample sizes often needed to be increased by 50% or even doubled to meet the calibration targets.
+Riley et al. (2019) proposed 3 formulae, based on 3 distinct criteria, for calculating the sample size for the development of risk models.
+- Criterion 1: control overfitting (target: calibration slope=0.9),
+- Criterion 2: control optimism in R2 Nageleherke (target: opt=0.05)
+- Criterion 3:  precision in the mean predicted risk (target: precision = 0.05).
+
+The formula which aims to control model overfitting ('calibration' formula - C1) most often gives that highest sample size and our article we focused primarily around this formulae. While the calibration formula performed relatively well for models with C-statistic/C-index<0.8, we found that that it substantially ***underestimated*** the sample size when the predictive strength of the model was higher. The sample sizes often needed to be increased by 50% or even doubled to meet the calibration targets.
 
 Hence, we developed the **new package 'samplesizedev'** which performs ***unbiased sample size calculations*** regardless of model strength. Our software uses simulation in the background so calculations can take around a minute. Currently it can be used for the development of risk models for binary outcomes; functionality for ***time to event outcomes*** will be made available in due course. 
 
-The software requires information on the anticipated values of the:
 
+### How does 'sampsizedev' work?
+
+The software requires information on the anticipated values of the:
 - outcome prevalence
 - c-statistic (AUC)
 - number of predictor variables
