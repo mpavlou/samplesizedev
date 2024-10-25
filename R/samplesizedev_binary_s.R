@@ -47,7 +47,7 @@ samplesizedev_binary_s <- function(S, p, c,   n.predictors, beta = rep(1/n.predi
 
   n_init <- round((n.predictors)/ ((S-1)*log(1-r2/S)))
 
-  if (c<=0.7)            {inflation_f   <- 1.2 ; min.opt  <- n_init*0.6}
+  if (c<=0.7)            {inflation_f   <- 1.2 ; min.opt  <- n_init*0.5}
   if (c>0.7  & c<=0.8)   {inflation_f   <- 1.5  ; min.opt <- n_init*0.7}
   if (c>0.8  & c<=0.85)  {inflation_f   <- 2.1    ; min.opt <- n_init}
   if (c>0.85 & c<=0.9)   {inflation_f   <- 2.8  ; min.opt <- n_init}
