@@ -49,18 +49,18 @@ samplesizedev_binary_s <- function(S, p, c,   n.predictors, beta = rep(1/n.predi
 
   if (c<=0.7  )               {inflation_f   <- 1.1 ; min.opt  <- n_init*0.4}
   if (c>0.7  & c<=0.8 )       {inflation_f   <- 1.5  ; min.opt <- n_init*0.7}
-  if (c>0.8  & c<=0.85)       {inflation_f   <- 2.1    ; min.opt <- n_init}
-  if (c>0.85 & c<=0.9)        {inflation_f   <- 2.8  ; min.opt <- n_init}
+  if (c>0.8  & c<=0.85)       {inflation_f   <- 2.1    ; min.opt <- n_init*0.8}
+  if (c>0.85 & c<=0.9)        {inflation_f   <- 2.8  ; min.opt <- n_init*0.9}
 
 
-  if (c<=0.7  & n.predictors <5)            {inflation_f   <- 0.9 ; min.opt  <- n_init*0.3}
-  if (c>0.7  & c<=0.8  & n.predictors <5)   {inflation_f   <- 1  ; min.opt <- n_init*0.4}
-  if (c>0.8  & c<=0.85 & n.predictors <5)  {inflation_f   <- 2.1    ; min.opt <- n_init *0.5}
-  if (c>0.85 & c<=0.9  & n.predictors <5)   {inflation_f   <- 2.8  ; min.opt <- n_init*0.7}
+  if (c<=0.7  & n.predictors <6)            {inflation_f   <- 0.9 ; min.opt  <- n_init*0.3}
+  if (c>0.7  & c<=0.8  & n.predictors <6)   {inflation_f   <- 1  ; min.opt <- n_init*0.4}
+  if (c>0.8  & c<=0.85 & n.predictors <6)   {inflation_f   <- 2.1    ; min.opt <- n_init *0.5}
+  if (c>0.85 & c<=0.9  & n.predictors <6)   {inflation_f   <- 2.8  ; min.opt <- n_init*0.7}
 
   max.opt <- inflation_f * n_init
 
-  tol = ceiling(round(n_init/200)/5) * 5
+  tol = max(5,ceiling(round(n_init/200)/5) * 5)
 
   print("Optimisation Starting, ~ 1 min left...")
 
@@ -94,7 +94,7 @@ samplesizedev_binary_s <- function(S, p, c,   n.predictors, beta = rep(1/n.predi
 
   n   <- bisection(s_est, min.opt, max.opt, tol = tol, nsim = nsim)
   tol <- ceiling(round(n_init/200)/5) * 5
-  if (tol==0) tol <- 2
+  if (tol==0) tol <- 5
   n   <- ceiling(n/tol)*tol
 
 #   # run <- expected_s(n, p=p, c=c, n.true=n.true, n.noise=n.noise, beta = c(0.5,0.3,0.3,0.15,0.15), nsim=1000, nval=50000, cores=2)
