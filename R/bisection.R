@@ -12,6 +12,9 @@ bisection <- function(f, a, b, iter = 10, tol = ceiling(round(a/200)/5) * 5, nsi
 
   nsim  <- round(nsim/divide)
 
+  if (fa<0.9 & fb<0.9) b<-b*1.5
+  if (fa>0.9 & fb>0.9) a<-a*0.5
+
   fa <- f(a, nsim = nsim)
   fb <- f(b, nsim = nsim)
   if (!(fa < 0) && (fb > 0)) {
@@ -19,6 +22,7 @@ bisection <- function(f, a, b, iter = 10, tol = ceiling(round(a/200)/5) * 5, nsi
   } else if ((fa > 0) && (fb < 0)) {
     stop('signs of f(a) and f(b) differ')
   }
+
 
   for (k in 1:iter) {
 
