@@ -33,6 +33,17 @@ bisection <- function(f, a, b, iter = 10, tol = ceiling(round(a/200)/5) * 5, nsi
     #print(c(k))
 
 
+
+    # If the function equals 0 at the midpoint or the midpoint is below the desired tolerance, stop the
+    # function and return the root.
+
+    if (nsim<=200){
+    if ( ((abs(fc) <= 0.005) || ((b - a) / 2) < tol)   &  (k >=1 )) {
+      #if (  abs(fc) <= 0.0025 &  (k >=2 )) {
+      return(c)
+    }
+    }
+
     # If the function equals 0 at the midpoint or the midpoint is below the desired tolerance, stop the
     # function and return the root.
    if (  ((abs(fc) <= 0.0025) || ((b - a) / 2) < tol)   &  (k >=1 )) {
