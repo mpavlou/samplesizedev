@@ -133,7 +133,7 @@ samplesizedev_survival <- function(S, p, c,  n.predictors, beta=rep(1/n.predicto
   n_init  <- ceiling((n.predictors)/ ((S-1)*log(1-r2cens/S))); n_init
 
 
-  min.opt                              <- round(n_init*0.8)
+  min.opt                              <- round(n_init*0.7)
   if (c<=0.7)            inflation_f   <- 1.5
   if (c>0.7  & c<=0.8)   inflation_f   <- 2
   if (c>0.8  & c<=0.85)  inflation_f   <- 3.5
