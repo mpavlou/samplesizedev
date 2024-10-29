@@ -217,12 +217,15 @@ find_sigma <- function(target.c,  min.opt = 0.1, max.opt = 15, tol=0.0001){
   out
 }
 
-# system.time(x <- find_sigma(target.c=0.82, min.opt=1, max.opt=15))
+# system.time(x <- find_sigma(target.c=0.65, min.opt=0.2, max.opt=15))
 #  x
-#  n <-50000
+#  n <- 100000
 #  u      <- runif(n)
 #  eta    <- stats::rnorm(n, mean = 0, sd = sqrt(x))
-#  t      <- -log(u)/((lambda) * exp(eta) )
+#  t      <- -log(u)/((lambda) * exp(eta) ) ;mean(t)
+#  gamma  <- 1
+#  t      <-  (-log(u)/((lambda*1) * exp(eta) ))^(1/gamma) ;mean(t)
+#
 #  censor <- rep(1,n)
 #  c      <- 1 - concordance(t ~ eta)$concordance; c
 #  # Build formula
@@ -239,7 +242,6 @@ find_sigma <- function(target.c,  min.opt = 0.1, max.opt = 15, tol=0.0001){
 #
 #  cest <- A1$AppCindex[["Cox X1"]]
 #  cest
-
 
  #####################################################
 
@@ -268,9 +270,9 @@ find_sigma <- function(target.c,  min.opt = 0.1, max.opt = 15, tol=0.0001){
  }
 
 
-# system.time(x <- find_sigma(target.c=0.7, min.opt=0.1, max.opt=15))
+# system.time(x <- find_sigma_quick(target.c=0.65, min.opt=0.1, max.opt=15))
 #  x
-#  n <-50000
+#  n <-100000
 #  u      <- runif(n)
 #  eta    <- stats::rnorm(n, mean = 0, sd = sqrt(x))
 #  t      <- -log(u)/((lambda) * exp(eta) )
@@ -290,7 +292,7 @@ find_sigma <- function(target.c,  min.opt = 0.1, max.opt = 15, tol=0.0001){
 #
 #  cest <- A1$AppCindex[["Cox X1"]]
 #  cest
-#
+
 
 
 

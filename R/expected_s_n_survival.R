@@ -95,7 +95,7 @@ a <- foreach::foreach(i = 1: nsim, .packages = c('mvtnorm','RcppNumerical', 'ggp
    ggplot2::ylab("Density") +  ggplot2::theme(text =  ggplot2::element_text(size = 13)) +
    ggplot2::xlab("Calibration Slope")
 
- if ( abs(mean(cs, na.rm=TRUE)- 0.9) > 0.003)   cs_plot <-  cs_plot + ggplot2::geom_vline( ggplot2::aes(xintercept = 0.9), color="red", linetype ="dashed", size = 1)
+ if ( abs(mean(cs, na.rm=TRUE)- 0.9) > 0.0025)   cs_plot <-  cs_plot + ggplot2::geom_vline( ggplot2::aes(xintercept = 0.9), color="red", linetype ="dashed", size = 1)
   print(cs_plot)
 
   # graphics::hist(cs, main = paste("CS=", round( mean(cs, na.rm = TRUE) / 0.0025) * 0.0025, "N=",n))
