@@ -85,7 +85,7 @@ samplesizedev_survival <- function(S, p, c,  n.predictors, beta=rep(1/n.predicto
 
   # check
   # Size - big data
-  ncalc <- 100000
+  ncalc <- 200000
   set.seed(1)
   beta      <- rep(1/n.predictors, n.predictors)
   f         <-  sqrt(variance_eta/sum(beta^2))
