@@ -48,7 +48,7 @@ bisection <- function(f, a, b, iter = 10, tol = ceiling(round(a/200)/5) * 5, nsi
     # function and return the root.
 
     if (nsim<=200){
-    if ( ((abs(fc) <= 0.007) || ((b - a) / 2) < tol)   &  (k >=1 )) {
+    if ( ((abs(fc) <= 0.01) || ((b - a) / 2) < tol)   &  (k >=1 )) {
       #if (  abs(fc) <= 0.0025 &  (k >=2 )) {
       return(c)
     }
