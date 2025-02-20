@@ -57,11 +57,11 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   xval    <- mvtnorm::rmvnorm(nval, rep(0, n.predictors), sigma = sigma)
 
   # True R2
-  MaxR2    <- 1-(((p^(p))*((1-p)^(1-p)))^2)
-  ncalc    <- 500000
-  x        <- mvtnorm::rmvnorm(ncalc, rep(0, n.predictors), sigma = sigma )
-  eta      <- mean+x%*% beta
-  y        <- stats::rbinom(ncalc,  1, invlogit(eta))
+  MaxR2      <- 1-(((p^(p))*((1-p)^(1-p)))^2)
+  ncalc      <- 500000
+  x          <- mvtnorm::rmvnorm(ncalc, rep(0, n.predictors), sigma = sigma )
+  eta        <- mean+x%*% beta
+  y          <- stats::rbinom(ncalc,  1, invlogit(eta))
 
 
   a          <- RcppNumerical::fastLR(cbind(1,x), y)
@@ -91,7 +91,6 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   # r2_cs_true <- 1 - exp(-LR/ncalc)
   #
   # r2_cs_true
-  #
 
 
   if (parallel==TRUE) {
@@ -110,6 +109,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   r2_app     <- NULL
   heuristic  <- NULL
   cest       <- NULL
+
   i    <- 0
 
   if (method== "MLE") {
@@ -157,12 +157,14 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
 
       fit          <- RcppNumerical::fastLR(cbind(1,eta_est), yval, start = c(0,0.9) )
-      cs[i]        <- fit$coef[2]
-      mape[i]      <- mean(abs(p_true-p_est))
-      opt[i]       <- r2_cs_app/MaxR2 - r2_cs_true/MaxR2
-      heuristic[i] <- 1-n.predictors/LR
-      r2_app[i]    <- r2_cs_app
-      cest[i]      <- quickcstat(yval, p_est)
+
+      ave_pred_risk[i] <- mean(p_est)
+      cs[i]            <- fit$coef[2]
+      mape[i]          <- mean(abs(p_true-p_est))
+      opt[i]           <- r2_cs_app/MaxR2 - r2_cs_true/MaxR2
+      heuristic[i]     <- 1-n.predictors/LR
+      r2_app[i]        <- r2_cs_app
+      cest[i]          <- quickcstat(yval, p_est)
 
 
       c(cs[i], mape[i], opt[i], heuristic[i], r2_app[i], cest[i])
@@ -278,12 +280,13 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
                           round(sqrt(stats::var(mape,na.rm = TRUE)), 4),
                           round(mean(opt, na.rm = TRUE),3),
                           round(mean(cest, na.rm = TRUE),3),
+                          round(sqrt(var(ave_pred_risk, na.rm = TRUE)),3),
                           # round(mean(heuristic, na.rm = TRUE),3),
                           # round(r2_cs_true,4),
                           # round(mean(r2_app,na.rm=TRUE)*mean(cs, na.rm = TRUE),4),
                           round(prev, 2),
                           round(cstat, 2 ), n.predictors)
-  names(df) <- c("n", "mean_CS", "sd_CS", "Pr(CS<0.8)", "mean_MAPE",  "sd_MAPE", "optimism_R2_Nag", "c_est", "prevalence", "c-statistic", " # predictors")
+  names(df) <- c("n", "mean_CS", "sd_CS", "Pr(CS<0.8)", "mean_MAPE",  "sd_MAPE", "optimism_R2_Nag", "c_est", "sd_average_risk" ,"prevalence", "c-statistic", " # predictors")
 
   # names(df) <- c("n", "mean_CS", "sd_CS", "Pr(CS<0.8)", "mean_MAPE",  "sd_MAPE", "optimism_R2_Nag", "heuristic_SF", "r2_true", "r2_app/cs", "prevalence", "c-statistic", " # predictors")
 

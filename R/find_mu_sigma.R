@@ -4,6 +4,7 @@
 
 invlogit <- function(x) 1/(1+exp(-x))
 
+logit <-function(x) log(x/(1-x))
 
 
 find_mu_sigma <- function(target.prev, target.c, min.opt = c(-10,0), max.opt = c(0.02,5), tol = 0.00001){
