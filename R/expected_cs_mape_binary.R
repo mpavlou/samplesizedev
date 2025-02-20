@@ -157,18 +157,19 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
       r2_cs_app <- 1 - exp(-LR/n)
 
 
-      fit          <- RcppNumerical::fastLR(cbind(1,eta_est), yval, start = c(0,0.9) )
+      fit              <- RcppNumerical::fastLR(cbind(1,eta_est), yval, start = c(0,0.9) )
 
-      ave_pred_risk[i] <- mean(p_est)
+
       cs[i]            <- fit$coef[2]
       mape[i]          <- mean(abs(p_true-p_est))
       opt[i]           <- r2_cs_app/MaxR2 - r2_cs_true/MaxR2
-      heuristic[i]     <- 1-n.predictors/LR
+      heuristic[i]     <- 1 - n.predictors/LR
       r2_app[i]        <- r2_cs_app
+      ave_pred_risk[i] <- mean(p_est)
       cest[i]          <- quickcstat(yval, p_est)
 
 
-      c(cs[i], mape[i], opt[i], heuristic[i], r2_app[i], cest[i])
+      c(cs[i], mape[i], opt[i], heuristic[i], r2_app[i],  ave_pred_risk[i], cest[i])
 
     }
 
@@ -225,13 +226,14 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   parallel::stopCluster(cl)
 
 
-  b          <- matrix(unlist(a), byrow=TRUE, nrow=nsim)
-  cs         <- b[,1]
-  mape       <- b[,2]
-  opt        <- b[,3]
-  heuristic  <- b[,4]
-  r2_app     <- b[,5]
-  cest      <- b[,6]
+  b             <- matrix(unlist(a), byrow=TRUE, nrow=nsim)
+  cs            <- b[,1]
+  mape          <- b[,2]
+  opt           <- b[,3]
+  heuristic     <- b[,4]
+  r2_app        <- b[,5]
+  ave_pred_risk <- b[,6]
+  cest          <- b[,7]
 
 
   df        <- data.frame(cs)
