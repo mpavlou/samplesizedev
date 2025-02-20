@@ -103,12 +103,13 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   `%dopar%` <- foreach::`%dopar%`
   `%do%` <- foreach::`%do%`
 
-  cs         <- NULL
-  mape       <- NULL
-  opt        <- NULL
-  r2_app     <- NULL
-  heuristic  <- NULL
-  cest       <- NULL
+  cs            <- NULL
+  mape          <- NULL
+  opt           <- NULL
+  r2_app        <- NULL
+  heuristic     <- NULL
+  ave_pred_risk <- NULL
+  cest          <- NULL
 
   i    <- 0
 
