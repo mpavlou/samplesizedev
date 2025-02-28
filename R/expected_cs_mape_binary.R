@@ -302,8 +302,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   performance <- df
 
 
-  t(performance)
-
+   performance
 }
 
 # expected_cs_mape_binary(n = 530, phi = 0.2, c = 0.85, p=10, nsim = 2000, parallel = TRUE)
