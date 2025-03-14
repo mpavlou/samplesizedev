@@ -60,7 +60,7 @@ This is a basic example which shows how to calculate:
 1)  the **sample size** to achieve a target expected
     calibration slope (e.g. target expected calibration slope S=0.9)
 
-2)  the **expected calibration slope and MAPE** for a given
+2)  the **expected calibration slope, MAPE and other performance metrics** for a given
     sample size
 
 ``` r
