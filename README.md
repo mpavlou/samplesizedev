@@ -24,7 +24,7 @@ The formula which aims to control model overfitting ('calibration' formula - C1)
 Hence, we developed the **new package 'samplesizedev'** which performs ***unbiased sample size calculations*** regardless of model strength. Our software uses simulation in the background so calculations can take around a minute. Currently it can be used for the development of risk models for binary outcomes; functionality for ***time to event outcomes*** will be made available in due course. 
 
 
-### How does 'sampsizedev' work?
+### How does 'samplesizedev' work?
 
 The software requires information on the anticipated values of the:
 - outcome prevalence
