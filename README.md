@@ -60,7 +60,7 @@ This is a basic example which shows how to calculate:
 1)  the **sample size** to achieve a target expected
     calibration slope (e.g. target expected calibration slope S=0.9)
 
-2)  the **expected calibration slope and MAPE** for a given
+2)  the **expected calibration slope, MAPE and other performance metrics** for a given
     sample size
 
 ``` r
@@ -68,7 +68,7 @@ library(samplesizedev)
 
 # Explore the two main commands:
 # ?samplesizedev
-# ?expected_cs
+# ?expected_performance
 ```
 
 #### Calculation of sample size for given model characteristics, aiming for expected calibration slope S=0.9 
@@ -103,7 +103,7 @@ be in fact lower than we had aim for this size.  We can verify this using the se
 # Sample size=308; Prevalence=0.2; C-statistic=0.85; Number of predictors=10
 # Calculation takes a few seconds
 
-expected_cs(outcome = "Binary", n = 308, phi = 0.2, c = 0.85, p = 10)
+expected_performance(outcome = "Binary", n = 308, phi = 0.2, c = 0.85, p = 10)
 
 #>    N Mean_CS SD_CS Pr(CS<0.8) Mean_MAPE SD_MAPE Prev. C-Stat.  # Predictors
 #> 1 308   0.844 0.127       0.38    0.0509  0.0118   0.2    0.85            10
@@ -116,7 +116,7 @@ In this case, to get a mean calibration slope of 0.9 we need to inflate n$rvs si
 get the desired expected calibration slope:  
 
 ``` r
-expected_cs(outcome = "Binary", n = 500, phi = 0.2, c = 0.85, p = 10)
+expected_performance(outcome = "Binary", n = 500, phi = 0.2, c = 0.85, p = 10)
 
 #>     N Mean_CS  SD_CS Pr(CS<0.8) Mean_MAPE SD_MAPE Prev. C-Stat.  # Predictors
 #> 1 500   0.902 0.1002       0.16    0.0393  0.0087   0.2    0.85            10
