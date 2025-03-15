@@ -105,8 +105,19 @@ be in fact lower than we had aim for this size.  We can verify this using the se
 
 expected_performance(outcome = "Binary", n = 308, phi = 0.2, c = 0.85, p = 10)
 
-#>    N Mean_CS SD_CS Pr(CS<0.8) Mean_MAPE SD_MAPE Prev. C-Stat.  # Predictors
-#> 1 308   0.844 0.127       0.38    0.0509  0.0118   0.2    0.85            10
+----------------------------  ---------
+n                              308.0000
+True prevalence                  0.2000
+True c-statistic                 0.8500
+Number of predictors            10.0000
+---------------------------      0.0000
+Mean_calibration_slope           0.8430
+SD(CS)                           0.1276
+Pr(CS<0.8)                       0.3800
+Mean_MAPE                        0.0511
+SD(MAPE)                         0.0118
+Mean_AUC                         0.8350
+----------------------------  ---------
 ```
 ![example_11](https://github.com/user-attachments/assets/c7f5cce8-71fb-46ee-b709-1853e8622513)
 
@@ -118,8 +129,18 @@ get the desired expected calibration slope:
 ``` r
 expected_performance(outcome = "Binary", n = 500, phi = 0.2, c = 0.85, p = 10)
 
-#>     N Mean_CS  SD_CS Pr(CS<0.8) Mean_MAPE SD_MAPE Prev. C-Stat.  # Predictors
-#> 1 500   0.902 0.1002       0.16    0.0393  0.0087   0.2    0.85            10
+----------------------------  ---------
+n                              500.0000
+True prevalence                  0.2000
+True c-statistic                 0.8500
+Number of predictors            10.0000
+---------------------------      0.0000
+Mean_calibration_slope           0.9010
+SD(CS)                           0.0994
+Pr(CS<0.8)                       0.1600
+Mean_MAPE                        0.0394
+SD(MAPE)                         0.0087
+Mean_AUC                         0.8410
 ```
 
 ![README-example-1](https://github.com/user-attachments/assets/fe41d81d-e49f-4ef9-a30c-51cac1d3e512)
