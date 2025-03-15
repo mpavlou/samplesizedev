@@ -39,7 +39,7 @@ find_mu_sigma <- function(target.prev, target.c, min.opt = c(-10,0), max.opt = c
     abs( c - target.c)^2 + abs(prev - target.prev )^2
   }
 
-  if (target.c>0.65) {
+  if (target.c>0.7) {
     sigma_c <- sqrt(2) * stats::qnorm(target.c)
     mu      <- 0.5 * (2 * target.prev - 1) * (sigma_c^2) + log(target.prev / (1 - target.prev))
   out      <- stats::optim(par=c(mu,0.15), pcfun, c(min.opt, max.opt, tol = tol))$par} else
@@ -62,8 +62,7 @@ find_mu_sigma <- function(target.prev, target.c, min.opt = c(-10,0), max.opt = c
 }
 
 # Check
-    # round(find_mu_sigma(0.02, 0.675, tol=0.00001),4)
-  # round(find_mu_sigma(0.1, 0.6, tol=0.00001),4)
+   # round(find_mu_sigma(0.05, 0.75, tol=0.0001),4)
 
  # round(find_mu_sigma(0.05, 0.7, tol=0.00001),4)
 

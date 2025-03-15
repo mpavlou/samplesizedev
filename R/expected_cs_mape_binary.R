@@ -158,8 +158,6 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
 
       fit              <- RcppNumerical::fastLR(cbind(1,eta_est), yval, start = c(0,0.9) )
-
-
       cs[i]            <- fit$coef[2]
       mape[i]          <- mean(abs(p_true-p_est))
       opt[i]           <- r2_cs_app/MaxR2 - r2_cs_true/MaxR2
@@ -275,6 +273,8 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   # A <- 2*p*(1-p)*qnorm(c)^2
   # app <- sqrt(1/(A*n)+2/(n-2) )
 
+  options("scipen"=100, "digits"=4)
+
   df        <- data.frame(round(n),
                           round(prev, 2),
                           round(cstat, 2 ), n.predictors,
@@ -300,6 +300,8 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
   performance <- df[,-3]
   performance <- df
+
+  options("scipen"=100, "digits"=4)
 
   t(performance)
 }
