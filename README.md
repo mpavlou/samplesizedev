@@ -119,7 +119,7 @@ SD(MAPE)                         0.0118
 Mean_AUC                         0.8350
 ----------------------------  ---------
 ```
-![example_11](https://github.com/user-attachments/assets/c7f5cce8-71fb-46ee-b709-1853e8622513)
+![image](https://github.com/user-attachments/assets/bd6836ff-9dda-423a-9389-e4c1beaa6c80)
 
 As expected, the mean calibration slope for n$rvs=308 is 0.844, smaller than 0.9. The variability is high and translates to 
 38% chance of actually getting a model with CS<0.8 when we develop a model with data of that size. Hence, larger size is required.  
