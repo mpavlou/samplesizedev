@@ -12,7 +12,7 @@ R package to calculate the sample size for the development of risk models for bi
 Related paper: **"An evaluation of sample size requirements for developing risk prediction models with binary outcomes"**
 published in BMC Medical Research Methodology https://doi.org/10.1186/s12874-024-02268-5
 
-### Why do we need 'sampsizedev'?
+### Why do we need 'samplesizedev'?
 
 Riley et al. (2019) proposed 3 formulae, based on 3 distinct criteria, for calculating the sample size for the development of risk models.
 - Criterion 1: control overfitting (target: calibration slope=0.9),
