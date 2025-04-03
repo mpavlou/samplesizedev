@@ -8,7 +8,9 @@
 #'It takes approximately one minute to run. Ideally it should be followed by checking also
 #' the Mean Absolute Prediction Error that corresponds to the calculated sample size.
 
-#' @param S (numeric) The target expected calibration slope
+#' @param S1 (numeric) The lower bound for the calibration slope
+#' @param S2 (numeric) The upper bound for the expected calibration slope
+#' @param P_S1S2 (numeric) The probability of acceptable calibration
 #' @param p (numeric) The anticipated outcome prevalence
 #' @param c (numeric) The anticipated C-statistic
 #' @param n.predictors (numeric) The number of candidate predictor variables
@@ -32,7 +34,7 @@
 #'
 #'
 #' @seealso
-#' expected_cs_mape
+#' expected_performance
 
 
 samplesizedev_binary_prob_s <- function(S1, S2, P_S1S2, p, c,   n.predictors, beta = rep(1/n.predictors, n.predictors), nval = 25000, nsim = 1000, parallel = TRUE){
@@ -45,8 +47,7 @@ samplesizedev_binary_prob_s <- function(S1, S2, P_S1S2, p, c,   n.predictors, be
 
   r2   <- as.numeric(approximate_R2(c, p, n = 300000)[2])
 
-  S <- (S1+S2)/2
-  n_init <- round((n.predictors)/ ((S-1)*log(1-r2/S)))
+  n_init <- round((n.predictors)/ ((0.9-1)*log(1-r2/0.9)))
 
 
   if (c<=0.7  )               {inflation_f   <- 1.1 ; min.opt  <- n_init*0.4}
@@ -89,12 +90,12 @@ samplesizedev_binary_prob_s <- function(S1, S2, P_S1S2, p, c,   n.predictors, be
 
   prob_s_est <- function(n, nsim=nsim){
 
-    prob_s <-  expected_prob_s_n_binary(n, S = S, mean_eta = mean_eta, variance_eta = variance_eta,  beta = beta, p = p, c = c, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel)
+    prob_s <-  expected_prob_s_n_binary(n, S1 = S1, S2=S2, P_S1S2=P_S1S2, mean_eta = mean_eta, variance_eta = variance_eta,  beta = beta, p = p, c = c, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel)
     #(round(s[1]/0.0025)*0.0025-s[2]) - S
-    prob_s - P_S1S2
+    prob_s[1] - P_S1S2
   }
 
-  n   <- bisection(prob_s_est, min.opt, max.opt, tol = tol, nsim = nsim)
+  n   <- bisection_prob_s(prob_s_est, min.opt, max.opt, tol = tol, nsim = nsim)
   tol <- ceiling(round(n_init/200)/5) * 5
   if (tol==0) tol <- 5
   n   <- ceiling(n/tol)*tol
@@ -106,6 +107,7 @@ samplesizedev_binary_prob_s <- function(S1, S2, P_S1S2, p, c,   n.predictors, be
   size               <- NULL
   size$rvs           <- as.vector(n_init)
   size$sim           <- as.vector(n)
+
   # size$n_simulations <- nsim
   # size$correct_to_nearest <- as.vector(tol)
 

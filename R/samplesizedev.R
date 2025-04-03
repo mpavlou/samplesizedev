@@ -47,23 +47,21 @@
 #' # samplesizedev(outcome = "Binary", MAPE = 0.04, phi = 0.2, c = 0.85, p = 10)
 #'
 #' # Binary Outcome: Check the expected MAPE and Calibration Slope for a given sample size
-#' # expected_cs(outcome = "Binary", n = 530, phi= 0.2, c = 0.85, p = 10)
+#' # expected_performance(outcome = "Binary", n = 530, phi= 0.2, c = 0.85, p = 10)
 #'
 #' @seealso
 #' expected_cs
 
 
-samplesizedev <- function(outcome="Binary", S = NULL, MAPE = NULL, S1= NULL, S2 = NULL, P_S1S2 = NULL, phi, c,  p, gamma = rep(1/p, p), nval = 25000, nsim = 1000, parallel = TRUE){
+samplesizedev <- function(outcome="Binary", S = NULL, MAPE = NULL, S1 = NULL, S2 = NULL, P_S1S2 = NULL, phi, c,  p, gamma = rep(1/p, p), nval = 25000, nsim = 1000, parallel = TRUE){
 
   beta          <- gamma
   n.predictors  <- p
   p             <- phi
 
-
-
-  if (outcome=="Binary")   { if (length(MAPE)==0)                 n <- samplesizedev_binary_s(S=S, p=p, c=c,  n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel) else
-                             if (length(S)==0)                    n <- samplesizedev_binary_mape(MAPE=MAPE, p=p, c=c,  n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel)
-                             if (length(S)==0 & length(MAPE)==0)  n <- samplesizedev_binary_prob_s(S1=S1, S2=S2, P_S1S2=P_S1S2, p=p, c=c,  n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel)}
+  if (outcome=="Binary")   { if (length(MAPE)==0 & length(S1)==0)    n <- samplesizedev_binary_s(S=S, p=p, c=c,  n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel) else
+                             if (length(S)==0    & length(S1)==0)    n <- samplesizedev_binary_mape(MAPE=MAPE, p=p, c=c,  n.predictors = n.predictors, beta = beta, nval = nval, nsim = nsim, parallel = parallel) else
+                             if (length(S)==0    & length(MAPE)==0)  n <- samplesizedev_binary_prob_s(S1=S1, S2=S2, P_S1S2=P_S1S2, p=p, c=c,  n.predictors = n.predictors, beta = beta, nval = nval, nsim = nsim, parallel = parallel) }
 
   if (outcome=="Survival") n <- samplesizedev_survival(S=S, p=p, c=c, n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel)
 
