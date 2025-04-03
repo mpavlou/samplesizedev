@@ -12,7 +12,7 @@ R package to calculate the sample size for the development of risk models for bi
 Related paper: **"An evaluation of sample size requirements for developing risk prediction models with binary outcomes"**
 published in BMC Medical Research Methodology https://doi.org/10.1186/s12874-024-02268-5
 
-### Why do we need 'sampsizedev'?
+### Why do we need 'samplesizedev'?
 
 Riley et al. (2019) proposed 3 formulae, based on 3 distinct criteria, for calculating the sample size for the development of risk models.
 - Criterion 1: control overfitting (target: calibration slope=0.9),
@@ -24,7 +24,7 @@ The formula which aims to control model overfitting ('calibration' formula - C1)
 Hence, we developed the **new package 'samplesizedev'** which performs ***unbiased sample size calculations*** regardless of model strength. Our software uses simulation in the background so calculations can take around a minute. Currently it can be used for the development of risk models for binary outcomes; functionality for ***time to event outcomes*** will be made available in due course. 
 
 
-### How does 'sampsizedev' work?
+### How does 'samplesizedev' work?
 
 The software requires information on the anticipated values of the:
 - outcome prevalence
@@ -34,7 +34,7 @@ The software requires information on the anticipated values of the:
 Based on the characterisitcs above it can perform two actions based on two core functions:
 
 1. **Calculate the required sample size** to achieve a target expected calibration slope or Mean Absolute Prediction Error (MAPE) (function **'samplesizedev'**) or
-2. **Calculate the expected model performance** at a given sample size (function **'expected_cs'**)
+2. **Calculate the expected model performance** at a given sample size (function **'expected_performance'**)
 
 
 ## Installation
@@ -105,10 +105,21 @@ be in fact lower than we had aim for this size.  We can verify this using the se
 
 expected_performance(outcome = "Binary", n = 308, phi = 0.2, c = 0.85, p = 10)
 
-#>    N Mean_CS SD_CS Pr(CS<0.8) Mean_MAPE SD_MAPE Prev. C-Stat.  # Predictors
-#> 1 308   0.844 0.127       0.38    0.0509  0.0118   0.2    0.85            10
+----------------------------  ---------
+n                              308.0000
+True prevalence                  0.2000
+True c-statistic                 0.8500
+Number of predictors            10.0000
+---------------------------      0.0000
+Mean_calibration_slope           0.8430
+SD(CS)                           0.1276
+Pr(CS<0.8)                       0.3800
+Mean_MAPE                        0.0511
+SD(MAPE)                         0.0118
+Mean_AUC                         0.8350
+----------------------------  ---------
 ```
-![example_11](https://github.com/user-attachments/assets/c7f5cce8-71fb-46ee-b709-1853e8622513)
+![image](https://github.com/user-attachments/assets/b334b848-ec07-4fa9-a718-19a355372d11)
 
 As expected, the mean calibration slope for n$rvs=308 is 0.844, smaller than 0.9. The variability is high and translates to 
 38% chance of actually getting a model with CS<0.8 when we develop a model with data of that size. Hence, larger size is required.  
@@ -118,11 +129,21 @@ get the desired expected calibration slope:
 ``` r
 expected_performance(outcome = "Binary", n = 500, phi = 0.2, c = 0.85, p = 10)
 
-#>     N Mean_CS  SD_CS Pr(CS<0.8) Mean_MAPE SD_MAPE Prev. C-Stat.  # Predictors
-#> 1 500   0.902 0.1002       0.16    0.0393  0.0087   0.2    0.85            10
+----------------------------  ---------
+n                              500.0000
+True prevalence                  0.2000
+True c-statistic                 0.8500
+Number of predictors            10.0000
+---------------------------      0.0000
+Mean_calibration_slope           0.9010
+SD(CS)                           0.0994
+Pr(CS<0.8)                       0.1600
+Mean_MAPE                        0.0394
+SD(MAPE)                         0.0087
+Mean_AUC                         0.8410
 ```
 
-![README-example-1](https://github.com/user-attachments/assets/fe41d81d-e49f-4ef9-a30c-51cac1d3e512)
+![image](https://github.com/user-attachments/assets/d02cda94-a1b5-4618-883d-9e1ed41ec801)
 
 N.B. Although the mean calibration slope is now indeed 0.9 (Probability of CS<0.8 has reduced to 16%) bare in mind that still there is variability in the CS
 and *we are not guaranteed* to achieve that performance for every development sample of size 500 ...
