@@ -8,6 +8,9 @@ samplesizedev(
   outcome = "Binary",
   S = NULL,
   MAPE = NULL,
+  S1 = NULL,
+  S2 = NULL,
+  P_S1S2 = NULL,
   phi,
   c,
   p,
@@ -73,7 +76,7 @@ to the calculated sample size.
 # samplesizedev(outcome = "Binary", MAPE = 0.04, phi = 0.2, c = 0.85, p = 10)
 
 # Binary Outcome: Check the expected MAPE and Calibration Slope for a given sample size
-# expected_cs(outcome = "Binary", n = 530, phi= 0.2, c = 0.85, p = 10)
+# expected_performance(outcome = "Binary", n = 530, phi= 0.2, c = 0.85, p = 10)
 
 }
 \seealso{
