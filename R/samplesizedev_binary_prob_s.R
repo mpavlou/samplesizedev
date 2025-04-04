@@ -56,8 +56,8 @@ samplesizedev_binary_prob_s <- function(S1, S2, P_S1S2, p, c,   n.predictors, be
   if (c>0.85 & c<=0.9)        {inflation_f   <- 2.8  ; min.opt <- n_init*0.9}
 
 
-  if (c<=0.7  & n.predictors <6)            {inflation_f    <- 0.9 ; min.opt  <- n_init*0.3}
-  if (c>0.7  & c<=0.8  & n.predictors < 8)   {inflation_f   <- 1.8  ; min.opt <- n_init*0.4}
+  if (c<=0.7  & n.predictors <6)            {inflation_f    <- 2.5 ; min.opt  <- n_init*0.3}
+  if (c>0.7  & c<=0.8  & n.predictors < 8)   {inflation_f   <- 2.5  ; min.opt <- n_init*0.4}
   if (c>0.8  & c<=0.85 & n.predictors < 8)   {inflation_f   <- 2.1    ; min.opt <- n_init *0.5}
   if (c>0.85 & c<=0.9  & n.predictors < 8)   {inflation_f   <- 2.8  ; min.opt <- n_init*0.7}
 
