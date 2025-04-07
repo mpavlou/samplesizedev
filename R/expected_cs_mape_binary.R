@@ -173,6 +173,22 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
   } else if (method == "LSF")
 
+     quickcstat <- function(y, pred, seed=1){
+        #set.seed(seed)
+        casepred=pred[y == 1]
+        conpred=pred[y == 0]
+
+        if (length(conpred)>length(casepred)){
+          conpred=conpred[sample(length(conpred),length(casepred),replace=FALSE)]
+          auc.true=sum(casepred>conpred)/length(casepred)} else
+          {
+            casepred=casepred[sample(length(casepred),length(conpred),replace=FALSE)]
+            auc.true=sum(casepred>conpred)/length(conpred)
+          }
+
+        return(auc.true)
+      }
+
   {
 
     bootsf <- function(data,n=100){
