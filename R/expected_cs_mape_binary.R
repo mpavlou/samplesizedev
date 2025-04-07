@@ -171,7 +171,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
     }
 
-  } else if (method == "LSF")
+  } else if (method == "LSF") {
 
      quickcstat <- function(y, pred, seed=1){
         #set.seed(seed)
@@ -188,8 +188,6 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
         return(auc.true)
       }
-
-  {
 
     bootsf <- function(data,n=100){
       #first column outcome
