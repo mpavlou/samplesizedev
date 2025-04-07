@@ -59,6 +59,8 @@ samplesizedev <- function(outcome="Binary", S = NULL, MAPE = NULL, S1 = NULL, S2
   n.predictors  <- p
   p             <- phi
 
+  if (n.predictors<=6) nsim=3000
+
   if (outcome=="Binary")   { if (length(MAPE)==0 & length(S1)==0)    n <- samplesizedev_binary_s(S=S, p=p, c=c,  n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel) else
                              if (length(S)==0    & length(S1)==0)    n <- samplesizedev_binary_mape(MAPE=MAPE, p=p, c=c,  n.predictors = n.predictors, beta = beta, nval = nval, nsim = nsim, parallel = parallel) else
                              if (length(S)==0    & length(MAPE)==0)  n <- samplesizedev_binary_prob_s(S1=S1, S2=S2, P_S1S2=P_S1S2, p=p, c=c,  n.predictors = n.predictors, beta = beta, nval = nval, nsim = nsim, parallel = parallel) }
