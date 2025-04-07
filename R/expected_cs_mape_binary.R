@@ -215,8 +215,15 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
       fit      <- RcppNumerical::fastLR(cbind(1,eta_est), yval )
       cs[i]    <- fit$coef[2]
       mape[i]  <- mean(abs(p_true-p_est))
+      opt[i]           <- NULL
+      heuristic[i]     <- NULL
+      r2_app[i]        <- NULL
+      ave_pred_risk[i] <- mean(p_est)
+      cest[i]          <- quickcstat(yval, p_est)
 
-      c(cs[i],mape[i])
+
+      c(cs[i], mape[i], opt[i], heuristic[i], r2_app[i],  ave_pred_risk[i], cest[i])
+
     }
   }
 
