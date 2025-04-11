@@ -64,11 +64,13 @@ samplesizedev_binary_mape <- function(MAPE, p, c,  n.predictors, beta, nval = 25
     mape <-  expected_mape_n_binary(n, MAPE = MAPE, mean_eta = mean_eta, variance_eta = variance_eta,  p = p, c = c, beta = beta, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel = parallel)
 
     MAPE-round(mape[1]/0.00025)*0.00025
+    MAPE-round(mape[1]/0.005)*0.005
+    mape[1] - MAPE/phi
 
   }
 
 
-  n <- bisection(mape_est, min.opt, max.opt, tol = tol, nsim = nsim)
+  n <- bisection_mape(mape_est, min.opt, max.opt, tol = tol, nsim = nsim)
   tol = ceiling(round(n_init/200)/5) * 5
   n <- ceiling(n/tol)*tol
 
