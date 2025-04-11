@@ -40,7 +40,7 @@ bisection_mape <- function(f, a, b, MAPE = 0.0001, iter = 15, tol = ceiling(roun
     # If the function equals 0 at the midpoint or the midpoint is below the desired tolerance, stop the
     # function and return the root.
     # if (  ((abs(fc) <= MAPE/200) || ((b - a) / 2) < tol)   &  (k >=2 )) {
-    if (  ((abs(fc) <= 0.003) || ((b - a) / 2) < tol) ) {
+    if (  ((abs(fc) <= 0.0025) || ((b - a) / 2) < tol) ) {
 
             return(c)
     }
