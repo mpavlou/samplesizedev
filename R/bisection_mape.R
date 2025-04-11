@@ -1,17 +1,23 @@
 # Function for bisection method
 
-bisection_mape <- function(f, a, b, MAPE = 0.0001, iter = 10, tol = ceiling(round(a/200)/5) * 5, nsim = 1000) {
+bisection_mape <- function(f, a, b, MAPE = 0.0001, iter = 15, tol = ceiling(round(a/200)/5) * 5, nsim = 1000) {
   # If the signs of the function at the evaluated points, a and b, stop the function and return message.
-
-  tol = ceiling(round(a/200)/5) * 5
 
   nsim1 <- nsim
 
   if (nsim>=1000) divide <- 2 else divide <- 1
+
   nsim  <- round(nsim/divide)
 
   fa <- f(a, nsim = nsim)
   fb <- f(b, nsim = nsim)
+
+  if (fa > 0 & fb > 0) a <- a/1.2
+  if (fa < 0 & fb < 0) b <- b*1.2
+
+  fa <- f(a, nsim = nsim)
+  fb <- f(b, nsim = nsim)
+
   if (!(fa < 0) && (fb > 0)) {
     stop('signs of f(a) and f(b) differ')
   } else if ((fa > 0) && (fb < 0)) {
@@ -24,7 +30,7 @@ bisection_mape <- function(f, a, b, MAPE = 0.0001, iter = 10, tol = ceiling(roun
     # a <- round(a/tol)*tol
     # b <- round(b/tol)*tol
 
-    c  <- (a + b) / 2 # Calculate midpoint
+    c  <- round((a + b) / 2) # Calculate midpoint
     fc <- f(c, nsim = nsim)
 
     #print(c(k, a, b, c, fa, fb, fc ))
@@ -33,9 +39,10 @@ bisection_mape <- function(f, a, b, MAPE = 0.0001, iter = 10, tol = ceiling(roun
 
     # If the function equals 0 at the midpoint or the midpoint is below the desired tolerance, stop the
     # function and return the root.
-    if (  ((abs(fc) <= MAPE/200) || ((b - a) / 2) < tol)   &  (k >=2 )) {
-    # if (  abs(fc) <= MAPE/200 &  (k >=2 )) {
-      return(c)
+    # if (  ((abs(fc) <= MAPE/200) || ((b - a) / 2) < tol)   &  (k >=2 )) {
+    if (  ((abs(fc) <= 0.003) || ((b - a) / 2) < tol) ) {
+
+            return(c)
     }
 
     # If another iteration is required,

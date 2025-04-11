@@ -59,12 +59,13 @@ expected_mape_n_binary <- function(n, MAPE, mean_eta, variance_eta,  p, c, beta,
   df        <- data.frame(mape)
   df        <- stats::na.omit(df)
   mape_plot   <- ggplot2:: ggplot(df,  ggplot2::aes(x = mape), size=12) +
-    ggplot2::geom_density() +  ggplot2::ggtitle(paste("N = ", n, ", Expected MAPE = ", round(mean(mape,na.rm=TRUE)/0.0025)*0.0025, ", SD(MAPE) = ", round(sqrt(stats::var(mape)),3))) +
+    ggplot2::geom_density() +  ggplot2::ggtitle(paste("N = ", n, ", Target MAPE =", MAPE, ", Scaled MAPE (MAPE/phi) = ", round(mean(mape/p,na.rm=TRUE),3), ", Diff = ", round(MAPE/p- mean(mape/p,na.rm=TRUE),4), ", Exp. MAPE = ", round(mean(mape,na.rm=TRUE)/0.0005)*0.0005, ", SD(MAPE) = ", round(sqrt(stats::var(mape)),3))) +
     ggplot2::geom_vline( ggplot2::aes(xintercept = mean(mape, na.rm = TRUE)), color="blue", linetype ="dashed", size = 1) +
     ggplot2::ylab("Density") +  ggplot2::theme(text =  ggplot2::element_text(size = 13)) +
     ggplot2::xlab("MAPE")
 
-  #print(cs_plot)
+  print(mape_plot)
   c(round(median(mape,na.rm=TRUE)/0.00025)*0.00025, sqrt(var(mape)/nsim))
+  c(mean(mape,na.rm=TRUE)/p, round(mean(mape,na.rm=TRUE)/0.00025)*0.00025, sqrt(var(mape)/nsim))
 
 }
