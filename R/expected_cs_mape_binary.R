@@ -3,7 +3,7 @@
 #'
 #' @description
 #' This function calculates the expected calibration slope and MAPE given key data and model characteristics
-#' (outcome prevalence, C-statistic and number of predictors). It takes approximately 15 seconds to test_allrun.
+#' (outcome prevalence, C-statistic and number of predictors). It takes approximately 15 seconds to run.
 #' @param n (numeric) The sample size
 #' @param p (numeric) The anticipated outcome prevalence
 #' @param c (numeric) The C-statistic
@@ -14,9 +14,11 @@
 #' @param method (character) the fitting method. "MLE" is the default and currently only option, but others will be added in future versions
 #' @param parallel (numeric) relative strength of predictor variables (same length as n_predictors)
 #' @param beta (numeric) Strength of predictors (same length as n.predictors)
+#' @param long (logical) Extract all simulations instead of just averages
+
 
 #'
-#' @return a data frame df with elecments:
+#' @return a data frame df with elements:
 #'             theinut sample size
 #'             the expected calibration slope (mean_CS)
 #'             the standard deviation of the CS (sd_CS)
@@ -37,7 +39,7 @@
 #'
 #'
 #'
-expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nval = 25000, method ="MLE", parallel=TRUE){
+expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nval = 25000, method ="MLE", parallel = TRUE, long = FALSE){
 
   # Find mean and variance of for Normal linear predictor
   # beta=rep(1/n.predictors, n.predictors)
@@ -150,8 +152,8 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
       #Opt R2Neg
       L1        <- a$loglikelihood
-      # a0        <- RcppNumerical::fastLR(as.matrix(rep(1,n)), y)
-      # L0        <- a0$loglikelihood
+      # a0      <- RcppNumerical::fastLR(as.matrix(rep(1,n)), y)
+      # L0      <- a0$loglikelihood
       L0        <- sum(y*log(mean(y)) + (1-y)*log(1-mean(y)))
       LR        <- -2*(L0-L1)
       r2_cs_app <- 1 - exp(-LR/n)
@@ -324,7 +326,15 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
   options("scipen"=100, "digits"=4)
 
-  t(performance)
+  if (long == FALSE)  t(performance) else
+
+    {
+    b        <- cbind(n, p, n.predictors, b)
+    b        <- data.frame(b)
+    names(b) <- c("n", "phi", "p", "cs", "mape", "opt_r2_nag", "heur_cs", "r2_apparent", "average_risk", "cstat")
+    b
+  }
+
 }
 
 # expected_cs_mape_binary(n = 530, phi = 0.2, c = 0.85, p=10, nsim = 2000, parallel = TRUE)

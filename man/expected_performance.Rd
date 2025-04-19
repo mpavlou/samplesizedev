@@ -14,7 +14,8 @@ expected_performance(
   nval = 25000,
   nsim = 1000,
   parallel = TRUE,
-  method = "MLE"
+  method = "MLE",
+  long = FALSE
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ expected_performance(
 \item{parallel}{(logical) parallel processing to speed up computations (default=TRUE)}
 
 \item{method}{(character) the fitting method (default="MLE"; currently the only option. Other fitting methods will be added in future versions)}
+
+\item{long}{(logical) Extract all simulations instef of just averages}
 }
 \value{
 a data frame df with the following elements:
@@ -63,7 +66,7 @@ This function calculates the expected calibration slope and MAPE given key data 
 # expected_performance(outcome="Binary", n = 530, phi = 0.2, c = 0.85, p = 10, nsim = 100, parallel = FALSE)
 
 # Prefer parallel computing with >2 cores that ensure faster running
-# expected_performance(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = TRUE)
+# expected_performance(n = 530, phi = 0.2, c = 0.85, p = 10, nsim = 100, parallel = TRUE)
 }
 \seealso{
 samplesizedev

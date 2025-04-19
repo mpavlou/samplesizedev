@@ -13,7 +13,8 @@ expected_cs_mape_binary(
   nsim = 1000,
   nval = 25000,
   method = "MLE",
-  parallel = TRUE
+  parallel = TRUE,
+  long = FALSE
 )
 }
 \arguments{
@@ -34,9 +35,11 @@ expected_cs_mape_binary(
 \item{method}{(character) the fitting method. "MLE" is the default and currently only option, but others will be added in future versions}
 
 \item{parallel}{(numeric) relative strength of predictor variables (same length as n_predictors)}
+
+\item{long}{(logical) Extract all simulations instead of just averages}
 }
 \value{
-a data frame df with elecments:
+a data frame df with elements:
 theinut sample size
 the expected calibration slope (mean_CS)
 the standard deviation of the CS (sd_CS)
@@ -47,7 +50,7 @@ the expected optimism in R square Nagelgerke (optimism_R2_Nag)
 }
 \description{
 This function calculates the expected calibration slope and MAPE given key data and model characteristics
-(outcome prevalence, C-statistic and number of predictors). It takes approximately 15 seconds to test_allrun.
+(outcome prevalence, C-statistic and number of predictors). It takes approximately 15 seconds to run.
 }
 \examples{
 # expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = FALSE)

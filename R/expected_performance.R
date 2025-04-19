@@ -15,8 +15,10 @@
 #' @param parallel (logical) parallel processing to speed up computations (default=TRUE)
 #' @param method (character) the fitting method (default="MLE"; currently the only option. Other fitting methods will be added in future versions)
 #' @param gamma (numeric) Relative strength of predictors (default=rep(1/p,p); same length as p, must sums up to 1)
+#' @param long (logical) Extract all simulations instef of just averages
+
 #'
-#' @return a data frame df with the following elements:
+#' @return   a data frame df with the following elements:
 #' @return   input sample size (n)
 #' @return   expected calibration slope (mean_CS)
 #' @return   standard deviation of the CS (sd_CS)
@@ -32,20 +34,20 @@
 #' # expected_performance(outcome="Binary", n = 530, phi = 0.2, c = 0.85, p = 10, nsim = 100, parallel = FALSE)
 #'
 #' # Prefer parallel computing with >2 cores that ensure faster running
-#' # expected_performance(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = TRUE)
+#' # expected_performance(n = 530, phi = 0.2, c = 0.85, p = 10, nsim = 100, parallel = TRUE)
 
 #' @seealso
 #' samplesizedev
 
 #'
 #'
-expected_performance <- function(outcome="Binary", n, phi, c,  p,  gamma = rep(1/p, p), nval = 25000, nsim = 1000, parallel = TRUE, method = "MLE"){
+expected_performance <- function(outcome="Binary", n, phi, c,  p,  gamma = rep(1/p, p), nval = 25000, nsim = 1000, parallel = TRUE, method = "MLE", long=FALSE){
 
   beta          <- gamma
   n.predictors  <- p
   p             <- phi
 
-  if (outcome=="Binary")   performance <- expected_cs_mape_binary (n=n,  p=p, c=c,  n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel, method = method)
+  if (outcome=="Binary")   performance <- expected_cs_mape_binary (n=n,  p=p, c=c,  n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel, method = method, long = long)
 
   if (outcome=="Survival") performance <- expected_cs_survival (n=n, p=p, c=c,  n.predictors = n.predictors, nval = nval, nsim = nsim, parallel = parallel, method = method)
 
