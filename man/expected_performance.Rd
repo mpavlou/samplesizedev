@@ -39,7 +39,7 @@ expected_performance(
 
 \item{method}{(character) the fitting method (default="MLE"; currently the only option. Other fitting methods will be added in future versions)}
 
-\item{long}{(logical) Extract all simulations instef of just averages}
+\item{long}{(logical) Extract results for all simulations instead of just averages}
 }
 \value{
 a data frame df with the following elements:

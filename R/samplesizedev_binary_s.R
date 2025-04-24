@@ -88,7 +88,7 @@ samplesizedev_binary_s <- function(S, p, c,   n.predictors, beta = rep(1/n.predi
 
   s_est <- function(n, nsim=nsim){
 
-    s <-  expected_s_n_binary(n, S = S, mean_eta = mean_eta, variance_eta = variance_eta,  beta = beta, p = p, c = c, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel)
+    s <-  expected_s_n_binary(n, S = S, mean_eta = mean_eta, variance_eta = variance_eta,  beta = beta, p = p, c = c, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel, tol=tol)
     #(round(s[1]/0.0025)*0.0025-s[2]) - S
     s[1] - S
   }
@@ -96,7 +96,7 @@ samplesizedev_binary_s <- function(S, p, c,   n.predictors, beta = rep(1/n.predi
   n   <- bisection(s_est, min.opt, max.opt, tol = tol, nsim = nsim)
   tol <- ceiling(round(n_init/200)/5) * 5
   if (tol==0) tol <- 5
-  n   <- ceiling(n/tol)*tol
+  # n   <- ceiling(n/tol)*tol
 
 #   # run <- expected_s(n, p=p, c=c, n.true=n.true, n.noise=n.noise, beta = c(0.5,0.3,0.3,0.15,0.15), nsim=1000, nval=50000, cores=2)
 

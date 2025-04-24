@@ -1,10 +1,10 @@
 # Function for bisection method
 
-bisection <- function(f, a, b, iter = 10, tol = ceiling(round(a/200)/5) * 5, nsim = 1000) {
+bisection <- function(f, a, b, iter = 10, tol = ceiling(round(a/100)/5) * 5, nsim = 1000) {
   # If the signs of the function at the evaluated points, a and b, stop the function and return message.
   ##ch
 
-  tol = ceiling(round(a/200)/5) * 5
+  tol = ceiling(round(a/100)/5) * 5
 
   nsim1 <- nsim
 
@@ -61,7 +61,7 @@ bisection <- function(f, a, b, iter = 10, tol = ceiling(round(a/200)/5) * 5, nsi
       return(c)
    }
 
-    if (  ((abs(fc) <= 0.005) || ((b - a) / 2) < tol)   &  (k >=7) ) {
+    if (  ((abs(fc) <= 0.0025) || ((b - a) / 2) < tol)   &  (k >=7) ) {
       #if (  abs(fc) <= 0.0025 &  (k >=2 )) {
       return(c)
     }

@@ -15,7 +15,7 @@
 #' @param parallel (logical) parallel processing to speed up computations (default=TRUE)
 #' @param method (character) the fitting method (default="MLE"; currently the only option. Other fitting methods will be added in future versions)
 #' @param gamma (numeric) Relative strength of predictors (default=rep(1/p,p); same length as p, must sums up to 1)
-#' @param long (logical) Extract all simulations instef of just averages
+#' @param long (logical) Extract results for all simulations instead of just averages
 
 #'
 #' @return   a data frame df with the following elements:
