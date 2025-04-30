@@ -93,7 +93,7 @@ samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10)
 The sample size calculated using simulation is n$sim=500 which corresponds to CS=0.9. In comparison, 
 the sample size using previously proposed formulae is n$rvs=308. According to the findings in our paper
 the RvS overfitting formula  underestimates the sample size for high C-statistic. Thus, the expected calibration slope will
-be in fact lower than we had aim for this size.  We can verify this using the second command of our package, 'expected_cs'.
+be in fact lower than we had aim for this size.  We can verify this using the second command of our package, 'expected_performance'.
 
 
 #### Calculation of expected model performance (CS, MAPE etc) for a given sample size and model characteristics
