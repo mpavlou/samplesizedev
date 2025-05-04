@@ -15,6 +15,8 @@
 #' @param parallel (numeric) relative strength of predictor variables (same length as n_predictors)
 #' @param beta (numeric) Strength of predictors (same length as n.predictors)
 #' @param long (logical) Extract all simulations instead of just averages
+#' @param approx (logical) Extract all simulations instead of just averages
+
 
 
 #'
@@ -39,7 +41,7 @@
 #'
 #'
 #'
-expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nval = 25000, method ="MLE", parallel = TRUE, long = FALSE){
+expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nval = 25000, method ="MLE", parallel = TRUE, long = FALSE, approx=FALSE){
 
   # Find mean and variance of for Normal linear predictor
   # beta=rep(1/n.predictors, n.predictors)
@@ -60,7 +62,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
   # True R2
   MaxR2      <- 1-(((p^(p))*((1-p)^(1-p)))^2)
-  ncalc      <- 500000
+  ncalc      <- 100000
   x          <- mvtnorm::rmvnorm(ncalc, rep(0, n.predictors), sigma = sigma )
   eta        <- mean+x%*% beta
   y          <- stats::rbinom(ncalc,  1, invlogit(eta))
@@ -72,6 +74,14 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   LR         <- -2*(L0-L1)
   r2_cs_true <- 1 - exp(-LR/ncalc)
   r2_cs_true
+
+  if (approx==TRUE) {
+
+  fit <- glm(y~x, family=binomial())
+
+  varbeta <- vcov(fit)
+
+  }
 
   # data.calc <- data.frame(y,x)
   #
@@ -117,6 +127,10 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
   if (method== "MLE") {
 
+
+    if (approx==TRUE) sampbeta <- rmvnorm(nsim, c(mean, beta), sigma = varbeta*ncalc/n)
+
+
     a<- foreach::foreach(i = 1:nsim, .packages=c('mvtnorm','RcppNumerical', 'ggplot2' )) %dopar% {
 
       set.seed(i)
@@ -145,7 +159,14 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
       yval     <- stats::rbinom(nval, 1, invlogit(mean + xval%*%beta))
       p_true   <- as.vector(invlogit(mean + xval%*%beta))
 
+
+
       a        <- RcppNumerical::fastLR(cbind(1,x), y)
+      if (approx==TRUE){
+        a$coef <- sampbeta[i,]
+
+      }
+
       eta_est  <- cbind(1, xval) %*% as.vector(a$coef)
       p_est    <- as.vector(invlogit(eta_est))
 
