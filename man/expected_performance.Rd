@@ -15,7 +15,8 @@ expected_performance(
   nsim = 1000,
   parallel = TRUE,
   method = "MLE",
-  long = FALSE
+  long = FALSE,
+  approx = FALSE
 )
 }
 \arguments{

@@ -14,7 +14,8 @@ expected_cs_mape_binary(
   nval = 25000,
   method = "MLE",
   parallel = TRUE,
-  long = FALSE
+  long = FALSE,
+  approx = FALSE
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ expected_cs_mape_binary(
 \item{parallel}{(numeric) relative strength of predictor variables (same length as n_predictors)}
 
 \item{long}{(logical) Extract all simulations instead of just averages}
+
+\item{approx}{(logical) Extract all simulations instead of just averages}
 }
 \value{
 a data frame df with elements:

@@ -47,7 +47,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   # beta=rep(1/n.predictors, n.predictors)
   if (p>0.5) p  <- 1-p
 
-  set.seed(2022)
+  # set.seed(2022)
 
   mean_var     <- find_mu_sigma(p,c, tol = 0.00001)
   mean         <- mean_var[1]
@@ -58,11 +58,12 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   beta    <- beta * sqrt(mean_var[2]/sum(beta^2))
   sigma   <- diag(1, n.predictors)
 
+  set.seed(2022)
   xval    <- mvtnorm::rmvnorm(nval, rep(0, n.predictors), sigma = sigma)
 
   # True R2
   MaxR2      <- 1-(((p^(p))*((1-p)^(1-p)))^2)
-  ncalc      <- 100000
+  ncalc      <- 500000
   x          <- mvtnorm::rmvnorm(ncalc, rep(0, n.predictors), sigma = sigma )
   eta        <- mean+x%*% beta
   y          <- stats::rbinom(ncalc,  1, invlogit(eta))
