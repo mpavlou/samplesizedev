@@ -333,12 +333,13 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
                           round(mean(opt, na.rm = TRUE),3),
                           round(mean(cest, na.rm = TRUE),3),
                           round(sqrt(stats::var(cest,na.rm = TRUE)), 4),
-                          round(sqrt(var(ave_pred_risk, na.rm = TRUE)),3))
+                          round(sqrt(var(ave_pred_risk, na.rm = TRUE)),3),
+                          round(median(cs, na.rm = TRUE),3))
                           # round(mean(heuristic, na.rm = TRUE),3),
                           # round(r2_cs_true,4),
                           # round(mean(r2_app,na.rm=TRUE)*mean(cs, na.rm = TRUE),4),
 
-  names(df) <- c("n","True prevalence", "True c-statistic", "Number of predictors","---------------------------",  "Mean_calibration_slope", "SD(CS)", "Pr(0.85<CS<1.15)", "Mean_MAPE",  "SD(MAPE)", "Optimism_R2_Nag", "Mean_AUC", "SD(AUC)", "SD(Average Predicted Risk)")
+  names(df) <- c("n","True prevalence", "True c-statistic", "Number of predictors","---------------------------",  "Mean_calibration_slope", "SD(CS)", "Pr(0.85<CS<1.15)", "Mean_MAPE",  "SD(MAPE)", "Optimism_R2_Nag", "Mean_AUC", "SD(AUC)", "SD(Average Predicted Risk)", "Median CS")
 
 
   # names(df) <- c("n", "mean_CS", "sd_CS", "Pr(CS<0.8)", "mean_MAPE",  "sd_MAPE", "optimism_R2_Nag", "heuristic_SF", "r2_true", "r2_app/cs", "prevalence", "c-statistic", " # predictors")
