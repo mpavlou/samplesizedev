@@ -96,9 +96,9 @@ samplesizedev_binary_prob_s <- function(S1, S2, P_S1S2, p, c,   n.predictors, be
   }
 
   n   <- bisection_prob_s(prob_s_est, min.opt, max.opt, tol = tol, nsim = nsim)
-  tol <- ceiling(round(n_init/200)/5) * 5
-  if (tol==0) tol <- 5
-  n   <- ceiling(n/tol)*tol
+  # tol <- ceiling(round(n_init/200)/5) * 5
+  # if (tol==0) tol <- 5
+  # n   <- ceiling(n/tol)*tol
 
 #   # run <- expected_s(n, p=p, c=c, n.true=n.true, n.noise=n.noise, beta = c(0.5,0.3,0.3,0.15,0.15), nsim=1000, nval=50000, cores=2)
 

@@ -47,7 +47,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
   set.seed(2022)
 
-  mean_var     <- find_mu_sigma(p,c)
+  mean_var     <- find_mu_sigma(p,c, tol = 0.00001)
   mean         <- mean_var[1]
   variance     <- mean_var[2]
 

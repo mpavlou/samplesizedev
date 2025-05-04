@@ -94,8 +94,8 @@ samplesizedev_binary_s <- function(S, p, c,   n.predictors, beta = rep(1/n.predi
   }
 
   n   <- bisection(s_est, min.opt, max.opt, tol = tol, nsim = nsim)
-  tol <- ceiling(round(n_init/200)/5) * 5
-  if (tol==0) tol <- 5
+  # tol <- ceiling(round(n_init/200)/5) * 5
+  # if (tol==0) tol <- 5
   # n   <- ceiling(n/tol)*tol
 
 #   # run <- expected_s(n, p=p, c=c, n.true=n.true, n.noise=n.noise, beta = c(0.5,0.3,0.3,0.15,0.15), nsim=1000, nval=50000, cores=2)
