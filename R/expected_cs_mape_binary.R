@@ -60,6 +60,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
   set.seed(2022)
   xval    <- mvtnorm::rmvnorm(nval, rep(0, n.predictors), sigma = sigma)
+  # yval     <- stats::rbinom(nval, 1, invlogit(mean + xval%*%beta))
 
   # True R2
   MaxR2      <- 1-(((p^(p))*((1-p)^(1-p)))^2)
@@ -78,10 +79,13 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
   if (approx==TRUE) {
 
+  ncalc      <- 100000
+  x          <- mvtnorm::rmvnorm(ncalc, rep(0, n.predictors), sigma = sigma )
+  eta        <- mean+x%*% beta
+  y          <- stats::rbinom(ncalc,  1, invlogit(eta))
   fit <- glm(y~x, family=binomial())
-
   varbeta <- vcov(fit)
-
+  sampbeta <- rmvnorm(nsim, c(mean, beta), sigma = varbeta*ncalc/n)
   }
 
   # data.calc <- data.frame(y,x)
@@ -129,8 +133,6 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   if (method== "MLE") {
 
 
-    if (approx==TRUE) sampbeta <- rmvnorm(nsim, c(mean, beta), sigma = varbeta*ncalc/n)
-
 
     a<- foreach::foreach(i = 1:nsim, .packages=c('mvtnorm','RcppNumerical', 'ggplot2' )) %dopar% {
 
@@ -161,24 +163,35 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
       p_true   <- as.vector(invlogit(mean + xval%*%beta))
 
 
+      r2_cs_app <- NA
 
-      a        <- RcppNumerical::fastLR(cbind(1,x), y)
+      a <- NULL
       if (approx==TRUE){
         a$coef <- sampbeta[i,]
 
-      }
+      } else
+
+        {a        <- RcppNumerical::fastLR(cbind(1,x), y)
+        L1        <- a$loglikelihood
+        # a0      <- RcppNumerical::fastLR(as.matrix(rep(1,n)), y)
+        # L0      <- a0$loglikelihood
+        L0        <- sum(y*log(mean(y)) + (1-y)*log(1-mean(y)))
+        LR        <- -2*(L0-L1)
+        r2_cs_app <- 1 - exp(-LR/n)
+        }
+
+
+      # a        <- RcppNumerical::fastLR(cbind(1,x), y)
+      # L1        <- a$loglikelihood
+      # # a0      <- RcppNumerical::fastLR(as.matrix(rep(1,n)), y)
+      # # L0      <- a0$loglikelihood
+      # L0        <- sum(y*log(mean(y)) + (1-y)*log(1-mean(y)))
+      # LR        <- -2*(L0-L1)
+      # r2_cs_app <- 1 - exp(-LR/n)
+
 
       eta_est  <- cbind(1, xval) %*% as.vector(a$coef)
       p_est    <- as.vector(invlogit(eta_est))
-
-
-      #Opt R2Neg
-      L1        <- a$loglikelihood
-      # a0      <- RcppNumerical::fastLR(as.matrix(rep(1,n)), y)
-      # L0      <- a0$loglikelihood
-      L0        <- sum(y*log(mean(y)) + (1-y)*log(1-mean(y)))
-      LR        <- -2*(L0-L1)
-      r2_cs_app <- 1 - exp(-LR/n)
 
 
       fit              <- RcppNumerical::fastLR(cbind(1,eta_est), yval, start = c(0,0.9) )
