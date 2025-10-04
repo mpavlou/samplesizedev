@@ -112,9 +112,7 @@ be in fact lower than we had aim for this size.  We can verify this using the se
 ``` r
 #Calculate the sample size Size for Probability of Acceptable Performance (PAP=0.8), where Acceptable Performance means 0.85<=S<=1.15
 # PrAP(S)=0.9; Prevalence=0.2; c-statistic=0.85; Number of predictors=10;
-#samplesizedev(outcome="Binary", l_s= 0.85, u_s = 1.15, PAP_s = 0.8, phi = 0.2, c = 0.85, p = 10)
-
-samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10)
+samplesizedev(outcome="Binary", l_s= 0.85, u_s = 1.15, PAP_s = 0.8, phi = 0.2, c = 0.85, p = 10)
 
 $sim
 [1] 699
