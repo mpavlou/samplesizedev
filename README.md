@@ -30,7 +30,9 @@ Hence, we developed the **new package 'samplesizedev'** which performs ***unbias
 
 ### $\textcolor{#f00}{\large  \textbf{UPDATE}}$
 
-The package has now been updated and can also provide sample size calculations than also ***control the*** $\textcolor{#f00}{\large variability}$ ***in the calibration slope, instead of *just* the expected value***. This is very important because, as shown in the accompanied paper, the variability in performance is high when the number of predictors is small. So, while one may think that a reduced model might be preferred to avoid overfitting, this can be misleading because even if the average is controlled with E(S)=0.9, the variability can be very high, offerring limited gurantees about the performance of the model once the data collected.
+The package has now been updated and can also provide sample size calculations than also ***control the*** $\textcolor{#f00}{\large variability}$ ***in the calibration slope, instead of *just* the expected value***. 
+
+This is very important because, as shown in the accompanied paper, the variability in performance can be very high when the number of predictors is small. Therefor, while one may think that a reduced model might be preferred to avoid model overfitting, this can be misleading because even if the average is controlled with e.g., E(S)=0.9, the variability can be very high. This suggests, that if one were to collect many datasets of the recommended size, on average the calibration slope would be indeed be around 0.9; however, if the variability in perforamnce is very high, the probability of obtaining a single individual dataset with calibration slope close to 0.9 might be small (see examples in the paper and below).
 
 
 ### How does 'samplesizedev' work?
