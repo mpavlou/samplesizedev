@@ -14,7 +14,7 @@ Related papers:
 **"An evaluation of sample size requirements for developing risk prediction models with binary outcomes"**
 published in BMC Medical Research Methodology https://doi.org/10.1186/s12874-024-02268-5
 
-$\textcolor{#f00}{\large NEW:}$ **"Sample Size Calculations for the Development of Risk Prediction Models that Account for Performance Variability"**
+ç **"Sample Size Calculations for the Development of Risk Prediction Models that Account for Performance Variability"**
 https://doi.org/10.48550/arXiv.2509.14028
 
 ### Why do we need 'samplesizedev'?
@@ -30,7 +30,7 @@ Hence, we developed the **new package 'samplesizedev'** which performs ***unbias
 
 ### $\textcolor{#f00}{\large  UPDATE}$
 
-The package has now been updated and can also provide sample size calculations than also ***control the $\textcolor{#f00}{variability}$ in the calibration slope instead of *just* the expected value***. This is very important because, as shown in the accompanied paper, the variability in performance is high when the number of predictors is small. So, while one may think that a reduced model might be preferred to avoid overfitting, this can be misleading because even if the average is controlled with E(S)=0.9, the variability can be very high, offerring limited gurantees about the performance of the model once the data collected.
+The package has now been updated and can also provide sample size calculations than also ***control the $\textcolor{#f00}{\large  UPDATE}$ in the calibration slope instead of *just* the expected value***. This is very important because, as shown in the accompanied paper, the variability in performance is high when the number of predictors is small. So, while one may think that a reduced model might be preferred to avoid overfitting, this can be misleading because even if the average is controlled with E(S)=0.9, the variability can be very high, offerring limited gurantees about the performance of the model once the data collected.
 
 
 ### How does 'samplesizedev' work?
