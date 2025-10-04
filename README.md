@@ -83,7 +83,7 @@ library(samplesizedev)
 # ?expected_performance
 ```
 
-#### Calculation of sample size for given model characteristics, aiming for expected calibration slope S=0.9 
+#### Calculation of sample size for given model characteristics, aiming for E(S)=0.9 
 
 ``` r
 # Calculate sample size for target calibration slope
