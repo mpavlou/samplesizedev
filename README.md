@@ -30,7 +30,7 @@ Hence, we developed the **new package 'samplesizedev'** which performs ***unbias
 
 ### $\textcolor{red}{\large  UPDATE}$
 
-The package has now been updated and can also provide sample size calculations than also ***control the variability in the calibration slope insted of *just* the expected value***. This is very important because, as shown in the accompanied paper, the variability in performance is high when the number of predictors is small. So, while one may think that a reduced model might be preferred to avoid overfitting, this can be misleading because even if the average is controlled with E(S)=0.9, the variability can be very high, offerring limited gurantees about the performance of the model once the data collected.
+The package has now been updated and can also provide sample size calculations than also ***control the variability in the calibration slope instead of *just* the expected value***. This is very important because, as shown in the accompanied paper, the variability in performance is high when the number of predictors is small. So, while one may think that a reduced model might be preferred to avoid overfitting, this can be misleading because even if the average is controlled with E(S)=0.9, the variability can be very high, offerring limited gurantees about the performance of the model once the data collected.
 
 
 ### How does 'samplesizedev' work?
