@@ -28,7 +28,7 @@ The formula which aims to control model overfitting ('calibration' formula - C1)
 
 Hence, we developed the **new package 'samplesizedev'** which performs ***unbiased sample size calculations*** regardless of model strength. Our software uses simulation in the background so calculations can take around a minute. Currently it can be used for the development of risk models for binary outcomes; functionality for ***time to event outcomes*** will be made available in due course. 
 
-### $\textcolor{#f00}{\large  UPDATE}$
+### $\textcolor{#f00}{\large  \textbf{UPDATE}}$
 
 The package has now been updated and can also provide sample size calculations than also ***control the*** $\textcolor{#f00}{\large variability}$ ***in the calibration slope, instead of *just* the expected value***. This is very important because, as shown in the accompanied paper, the variability in performance is high when the number of predictors is small. So, while one may think that a reduced model might be preferred to avoid overfitting, this can be misleading because even if the average is controlled with E(S)=0.9, the variability can be very high, offerring limited gurantees about the performance of the model once the data collected.
 
