@@ -33,8 +33,6 @@ Hence, we developed the **new package 'samplesizedev'** which performs ***unbias
 The package has now been updated and can also provide sample size calculations than also ***control the variability in the calibration slope insted of *just* the expected value***. This is very important because, as shown in the accompanied paper, the variability in performance is high when the number of predictors is small. So, while one may think that a reduced model might be preferred to avoid overfitting, this can be misleading because even if the average is controlled with E(S)=0.9, the variability can be very high, offerring limited gurantees about the performance of the model once the data collected.
 
 
-
-
 ### How does 'samplesizedev' work?
 
 The software requires information on the anticipated values of the:
@@ -71,7 +69,7 @@ This is a basic example which shows how to calculate:
 
 1a)  the **sample size** to achieve a target expected calibration slope (e.g. target expected calibration slope S=0.9)  or 
 
-1b) $\textcolor{red}{\textbf a target probability of acceptabale performance in terms of calibration (e.g. Probability of calibration slope in (0.85,1.15), PrAP(S)=0.8 or}$
+1b) $\textcolor{red}{\textbf NEW}$ the **sample size**  to acheive a target probability of acceptable performance in terms of calibration (e.g. Probability of calibration slope in (0.85,1.15), PrAP(S)=0.8 or}$
 
 2)  the **expected calibration slope, MAPE and other performance metrics** for a given
     sample size
