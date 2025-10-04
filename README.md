@@ -14,7 +14,7 @@ Related papers:
 **"An evaluation of sample size requirements for developing risk prediction models with binary outcomes"**
 published in BMC Medical Research Methodology https://doi.org/10.1186/s12874-024-02268-5
 
-$\textcolor{red}{\large NEW}:$ **"Sample Size Calculations for the Development of Risk Prediction Models that Account for Performance Variability"**
+$\textcolor{red}{\large NEW:}$ **"Sample Size Calculations for the Development of Risk Prediction Models that Account for Performance Variability"**
 https://doi.org/10.48550/arXiv.2509.14028
 
 ### Why do we need 'samplesizedev'?
@@ -28,7 +28,7 @@ The formula which aims to control model overfitting ('calibration' formula - C1)
 
 Hence, we developed the **new package 'samplesizedev'** which performs ***unbiased sample size calculations*** regardless of model strength. Our software uses simulation in the background so calculations can take around a minute. Currently it can be used for the development of risk models for binary outcomes; functionality for ***time to event outcomes*** will be made available in due course. 
 
-### $\textcolor{red}{\textbf UPDATE}$
+### $\textcolor{red}{\large  UPDATE}$
 
 The package has now been updated and can also provide sample size calculations than also ***control the variability in the calibration slope insted of *just* the expected value***. This is very important because, as shown in the accompanied paper, the variability in performance is high when the number of predictors is small. So, while one may think that a reduced model might be preferred to avoid overfitting, this can be misleading because even if the average is controlled with E(S)=0.9, the variability can be very high, offerring limited gurantees about the performance of the model once the data collected.
 
@@ -43,7 +43,7 @@ The software requires information on the anticipated values of the:
 Based on the characterisitcs above it can perform two actions based on two core functions:
 
 1. **Calculate the required sample size** to achieve a target expected calibration slope or Mean Absolute Prediction Error (MAPE) (function **'samplesizedev'**)
-2. ### $\textcolor{red}{NEW}$ **Calculate the required sample size** to achieve a high probability of a model with acceptbale calibrtion (function **'samplesizedev'**)
+2. ### $\textcolor{red}{\large NEW}$ **Calculate the required sample size** to achieve a high probability of a model with acceptbale calibration 
 3. **Calculate the expected model performance** at a given sample size (function **'expected_performance'**)
 
 
