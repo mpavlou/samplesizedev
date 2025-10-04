@@ -44,8 +44,9 @@ The software requires information on the anticipated values of the:
 
 Based on the characterisitcs above it can perform two actions based on two core functions:
 
-1. **Calculate the required sample size** to achieve a target expected calibration slope or Mean Absolute Prediction Error (MAPE) (function **'samplesizedev'**) or
-2. **Calculate the expected model performance** at a given sample size (function **'expected_performance'**)
+1. **Calculate the required sample size** to achieve a target expected calibration slope or Mean Absolute Prediction Error (MAPE) (function **'samplesizedev'**)
+2. ### $\textcolor{red}{\textbf NEW}$ **Calculate the required sample size** to achieve a high probability of a model with acceptbale calibrtion (function **'samplesizedev'**)
+3. **Calculate the expected model performance** at a given sample size (function **'expected_performance'**)
 
 
 ## Installation
@@ -68,8 +69,9 @@ Please get in touch (m.pavlou@ucl.ac.uk) for any bugs you spot and/or for sugges
 
 This is a basic example which shows how to calculate:
 
-1)  the **sample size** to achieve a target expected
-    calibration slope (e.g. target expected calibration slope S=0.9)
+1a)  the **sample size** to achieve a target expected calibration slope (e.g. target expected calibration slope S=0.9)  or 
+
+1b) \textcolor{red}{\textbf a target probability of acceptabale performance in terms of calibration (e.g. Probability of calibration slope in (0.85,1.15), PrAP(S)=0.8 or}
 
 2)  the **expected calibration slope, MAPE and other performance metrics** for a given
     sample size
@@ -105,6 +107,33 @@ The sample size calculated using simulation is n$sim=500 which corresponds to CS
 the sample size using previously proposed formulae is n$rvs=308. According to the findings in our paper
 the RvS overfitting formula  underestimates the sample size for high C-statistic. Thus, the expected calibration slope will
 be in fact lower than we had aim for this size.  We can verify this using the second command of our package, 'expected_performance'.
+
+
+#### Calculation of sample size for given model characteristics, aiming for expected calibration slope S=0.9 
+
+``` r
+# Calculate sample size for target calibration slope
+# Target Calibration slope S=0.9; Prevalence=0.2; c-statistic=0.85; Number of predictors=10;
+# Calculation takes about a minute 
+
+samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10)
+#> [1] "Optimisation Starting, ~ 1 min left..."
+#> $rvs
+#> [1] 308
+#> 
+#> $sim
+#> [1] 500
+
+# $sim is the sample size calculated by simulation
+# $rvs is the sample size calculated using the approach of Riley et al. (2019) (RvS formula Criterion 1 - overfitting)
+```
+
+The sample size calculated using simulation is n$sim=500 which corresponds to CS=0.9. In comparison, 
+the sample size using previously proposed formulae is n$rvs=308. According to the findings in our paper
+the RvS overfitting formula  underestimates the sample size for high C-statistic. Thus, the expected calibration slope will
+be in fact lower than we had aim for this size.  We can verify this using the second command of our package, 'expected_performance'.
+
+
 
 
 #### Calculation of expected model performance (CS, MAPE etc) for a given sample size and model characteristics
