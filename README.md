@@ -9,8 +9,13 @@
 
 R package to calculate the sample size for the development of risk models for binary outcomes
 
-Related papers: **"An evaluation of sample size requirements for developing risk prediction models with binary outcomes"**
+Related papers: 
+
+**"An evaluation of sample size requirements for developing risk prediction models with binary outcomes"**
 published in BMC Medical Research Methodology https://doi.org/10.1186/s12874-024-02268-5
+
+**"Sample Size Calculations for the Development of Risk Prediction Models that Account for Performance Variability"**
+https://doi.org/10.48550/arXiv.2509.14028
 
 ### Why do we need 'samplesizedev'?
 
