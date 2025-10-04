@@ -135,17 +135,18 @@ The sample size calculated using simulation targetting at E(S)=0.9 is 500, while
 expected_performance(outcome = "Binary", n = 308, phi = 0.2, c = 0.85, p = 10)
 
 ----------------------------  ---------
-n                              308.0000
-True prevalence                  0.2000
-True c-statistic                 0.8500
-Number of predictors            10.0000
----------------------------      0.0000
-Mean_calibration_slope           0.8430
-SD(CS)                           0.1276
-Pr(CS<0.8)                       0.3800
-Mean_MAPE                        0.0511
-SD(MAPE)                         0.0118
-Mean_AUC                         0.8350
+n                           308.0000
+True prevalence               0.2000
+True c-statistic              0.8500
+Number of predictors         10.0000
+---------------------------   0.0000
+Mean_CS                       0.8440
+SD(CS)                        0.1265
+Pr(0.85<CS<1.15)              0.4520
+Mean_MAPE                     0.0513
+SD(MAPE)                      0.0119
+Mean_AUC                      0.8350
+SD(AUC)                       0.0092
 ----------------------------  ---------
 ```
 ![image](https://github.com/user-attachments/assets/b334b848-ec07-4fa9-a718-19a355372d11)
