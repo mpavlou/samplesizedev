@@ -42,11 +42,11 @@ The software requires information on the anticipated values of the:
 
 Based on the characteristics above it can perform actions based on two core functions:
 
-1. **Calculate the required sample size** to achieve a target expected calibration slope or Mean Absolute Prediction Error (MAPE) (function **'samplesizedev'**)
+1a) **Calculate the required sample size** to achieve a target expected calibration slope or Mean Absolute Prediction Error (MAPE) (function **'samplesizedev'**)
 
-2. $\textcolor{red}{\large NEW}$ **Calculate the required sample size** to achieve a $\textcolor{red}{a \space high \space probability \space  \space of  \space a  \space model  \space with  \space acceptbale  \space calibration}$ (function **'samplesizedev'**)
+1b) $\textcolor{red}{\large NEW}$ **Calculate the required sample size** to achieve a $\textcolor{red}{a \space high \space probability \space  \space of  \space a  \space model  \space with  \space acceptbale  \space calibration}$ (function **'samplesizedev'**)
 
-3. **Calculate the expected model performance** at a given sample size (function **'expected_performance'**)
+2. **Calculate the expected model performance** at a given sample size (function **'expected_performance'**)
 
 
 ## Installation
