@@ -46,7 +46,7 @@ Based on the characteristics above it can perform actions based on two core func
 
 1b) $\textcolor{red}{\large NEW}$ **Calculate the required sample size** to achieve a $\textcolor{red}{a \space high \space probability \space  \space of  \space a  \space model  \space with  \space acceptbale  \space calibration}$ (function **'samplesizedev'**)
 
-2. **Calculate the expected model performance** at a given sample size (function **'expected_performance'**)
+2) **Calculate the expected model performance** at a given sample size (function **'expected_performance'**)
 
 
 ## Installation
