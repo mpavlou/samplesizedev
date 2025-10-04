@@ -71,7 +71,7 @@ This is a basic example which shows how to calculate:
 
 1.  the **sample size** to achieve a target expected calibration slope (e.g. target expected calibration slope **E(S)=0.9**)  or 
 
-2. $\textcolor{#f00}{\large \text{NEW}}$ the **sample size**  to achieve a target probability of acceptable performance in terms of calibration (e.g. Probability of calibration slope $\in (0.85,1.15)$, **PrAP(S)=0.8** or}
+2. $\textcolor{#f00}{\large \text{NEW}}$ the **sample size**  to achieve a target probability of acceptable performance in terms of calibration (e.g. Probability of calibration slope $\in (0.85,1.15)$, **PrAP(S)=0.8**}
 
 3.  the **expected calibration slope, MAPE and other performance metrics** for a given sample size
 
