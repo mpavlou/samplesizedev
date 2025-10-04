@@ -176,6 +176,6 @@ SD(AUC)                       0.0068
 ![image](https://github.com/user-attachments/assets/d02cda94-a1b5-4618-883d-9e1ed41ec801)
 
 N.B. Although the mean calibration slope is now indeed 0.9 bare in mind that still there is variability in the CS
-and *we are not guaranteed* to achieve that performance for every development sample of size 500 ... Indeed, $P(calibration slope \in (0.85,1.15))$=67%...
+and *we are not guaranteed* to achieve that performance for every development sample of size 500 ... Indeed, $P(calibration \space slope \in (0.85,1.15))$=67%...
 
 
