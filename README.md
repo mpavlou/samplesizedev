@@ -107,31 +107,22 @@ the RvS overfitting formula  underestimates the sample size for high C-statistic
 be in fact lower than we had aim for this size.  We can verify this using the second command of our package, 'expected_performance'.
 
 
-#### Calculation of sample size for given model characteristics, aiming for expected calibration slope S=0.9 
+#### Calculation of sample size for given model characteristics, aiming for Probability of acceptbale calibrtion PrAP(S) =0.8 
 
 ``` r
-# Calculate sample size for target calibration slope
-# Target Calibration slope S=0.9; Prevalence=0.2; c-statistic=0.85; Number of predictors=10;
-# Calculation takes about a minute 
+#Calculate the sample size Size for Probability of Acceptable Performance (PAP=0.8), where Acceptable Performance means 0.85<=S<=1.15
+# PrAP(S)=0.9; Prevalence=0.2; c-statistic=0.85; Number of predictors=10;
+#samplesizedev(outcome="Binary", l_s= 0.85, u_s = 1.15, PAP_s = 0.8, phi = 0.2, c = 0.85, p = 10)
 
 samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10)
-#> [1] "Optimisation Starting, ~ 1 min left..."
-#> $rvs
-#> [1] 308
-#> 
-#> $sim
-#> [1] 500
 
-# $sim is the sample size calculated by simulation
-# $rvs is the sample size calculated using the approach of Riley et al. (2019) (RvS formula Criterion 1 - overfitting)
+$sim
+[1] 699
+
+# $sim is the sample size calculated by simulation to ensure that PraP(S)=0.9
 ```
 
-The sample size calculated using simulation is n$sim=500 which corresponds to CS=0.9. In comparison, 
-the sample size using previously proposed formulae is n$rvs=308. According to the findings in our paper
-the RvS overfitting formula  underestimates the sample size for high C-statistic. Thus, the expected calibration slope will
-be in fact lower than we had aim for this size.  We can verify this using the second command of our package, 'expected_performance'.
-
-
+The sample size calculated using simulation targetting at E(S)=0.9 is 500, while the sample size to ensure that PrAP(S)=0.8 is 699.
 
 
 #### Calculation of expected model performance (CS, MAPE etc) for a given sample size and model characteristics
@@ -168,22 +159,23 @@ get the desired expected calibration slope:
 expected_performance(outcome = "Binary", n = 500, phi = 0.2, c = 0.85, p = 10)
 
 ----------------------------  ---------
-n                              500.0000
-True prevalence                  0.2000
-True c-statistic                 0.8500
-Number of predictors            10.0000
----------------------------      0.0000
-Mean_calibration_slope           0.9010
-SD(CS)                           0.0994
-Pr(CS<0.8)                       0.1600
-Mean_MAPE                        0.0394
-SD(MAPE)                         0.0087
-Mean_AUC                         0.8410
+n                           500.0000
+True prevalence               0.2000
+True c-statistic              0.8500
+Number of predictors         10.0000
+---------------------------   0.0000
+Mean_CS                       0.9020
+SD(CS)                        0.0998
+Pr(0.85<CS<1.15)              0.6740
+Mean_MAPE                     0.0396
+SD(MAPE)                      0.0088
+Mean_AUC                      0.8410
+SD(AUC)                       0.0068
 ```
 
 ![image](https://github.com/user-attachments/assets/d02cda94-a1b5-4618-883d-9e1ed41ec801)
 
 N.B. Although the mean calibration slope is now indeed 0.9 (Probability of CS<0.8 has reduced to 16%) bare in mind that still there is variability in the CS
-and *we are not guaranteed* to achieve that performance for every development sample of size 500 ...
+and *we are not guaranteed* to achieve that performance for every development sample of size 500 ... Indeed the the probability of 
 
 
