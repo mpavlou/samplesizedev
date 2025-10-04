@@ -40,11 +40,11 @@ The software requires information on the anticipated values of the:
 - c-statistic (AUC)
 - number of predictor variables
 
-Based on the characterisitcs above it can perform two actions based on two core functions:
+Based on the characteristics above it can perform actions based on two core functions:
 
-1. **Calculate the required sample size** to achieve a target expected calibration slope or Mean Absolute Prediction Error (MAPE) (function **'samplesizedev'**)
-2. ### $\textcolor{red}{\large NEW}$ **Calculate the required sample size** to achieve a high probability of a model with acceptbale calibration 
-3. **Calculate the expected model performance** at a given sample size (function **'expected_performance'**)
+1a. **Calculate the required sample size** to achieve a target expected calibration slope or Mean Absolute Prediction Error (MAPE) (function **'samplesizedev'**)
+1b. $\textcolor{red}{\large NEW}$ **Calculate the required sample size** to achieve a high probability of a model with acceptbale calibration 
+2. **Calculate the expected model performance** at a given sample size (function **'expected_performance'**)
 
 
 ## Installation
