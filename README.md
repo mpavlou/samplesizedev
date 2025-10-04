@@ -152,7 +152,7 @@ SD(AUC)                       0.0092
 ![image](https://github.com/user-attachments/assets/b334b848-ec07-4fa9-a718-19a355372d11)
 
 As expected, the mean calibration slope for n$rvs=308 is 0.844, smaller than 0.9. The variability is high and translates to 
-38% chance of actually getting a model with CS<0.8 when we develop a model with data of that size. Hence, larger size is required.  
+45% chance of actually getting a model with calibration slope $\in(0.85,1.15)$ when we develop a model with data of that size. Hence, larger size is required.  
 In this case, to get a mean calibration slope of 0.9 we need to inflate n$rvs size by 60%! We can confirm that with a sample size of 500 we 
 get the desired expected calibration slope:  
 
@@ -176,7 +176,7 @@ SD(AUC)                       0.0068
 
 ![image](https://github.com/user-attachments/assets/d02cda94-a1b5-4618-883d-9e1ed41ec801)
 
-N.B. Although the mean calibration slope is now indeed 0.9 (Probability of CS<0.8 has reduced to 16%) bare in mind that still there is variability in the CS
-and *we are not guaranteed* to achieve that performance for every development sample of size 500 ... Indeed the the probability of 
+N.B. Although the mean calibration slope is now indeed 0.9 bare in mind that still there is variability in the CS
+and *we are not guaranteed* to achieve that performance for every development sample of size 500 ... Indeed, P(calibration slope $\in(0.85,1.15)$)=67%...
 
 
