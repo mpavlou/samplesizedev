@@ -42,11 +42,11 @@ The software requires information on the anticipated values of the:
 
 Based on the characteristics above it can perform actions based on two core functions:
 
-1a) **Calculate the required sample size** to achieve a target expected calibration slope or Mean Absolute Prediction Error (MAPE) (function **'samplesizedev'**)
+1. **Calculate the required sample size** to achieve a target expected calibration slope or Mean Absolute Prediction Error (MAPE) (function **'samplesizedev'**)
 
-1b) $\textcolor{red}{\large NEW}$ **Calculate the required sample size** to achieve a $\textcolor{red}{a \space high \space probability \space  \space of  \space a  \space model  \space with  \space acceptbale  \space calibration}$ (function **'samplesizedev'**)
+2. $\textcolor{red}{\large NEW}$ **Calculate the required sample size** to achieve a $\textcolor{red}{a \space high \space probability \space  \space of  \space a  \space model  \space with  \space acceptbale  \space calibration}$ (function **'samplesizedev'**)
 
-2) **Calculate the expected model performance** at a given sample size (function **'expected_performance'**)
+3. **Calculate the expected model performance** at a given sample size (function **'expected_performance'**)
 
 
 ## Installation
@@ -69,12 +69,11 @@ Please get in touch (m.pavlou@ucl.ac.uk) for any bugs you spot and/or for sugges
 
 This is a basic example which shows how to calculate:
 
-1a)  the **sample size** to achieve a target expected calibration slope (e.g. target expected calibration slope **E(S)=0.9**)  or 
+1.  the **sample size** to achieve a target expected calibration slope (e.g. target expected calibration slope **E(S)=0.9**)  or 
 
-1b) $\textcolor{red}{\large NEW}$ the **sample size**  to achieve a target probability of acceptable performance in terms of calibration (e.g. Probability of calibration slope $\in (0.85,1.15)$, **PrAP(S)=0.8** or}
+2. $\textcolor{red}{\large NEW}$ the **sample size**  to achieve a target probability of acceptable performance in terms of calibration (e.g. Probability of calibration slope $\in (0.85,1.15)$, **PrAP(S)=0.8** or}
 
-2)  the **expected calibration slope, MAPE and other performance metrics** for a given
-    sample size
+3.  the **expected calibration slope, MAPE and other performance metrics** for a given sample size
 
 ``` r
 library(samplesizedev)
