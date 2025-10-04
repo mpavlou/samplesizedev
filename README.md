@@ -9,7 +9,7 @@
 
 R package to calculate the sample size for the development of risk models for binary outcomes
 
-Related paper: **"An evaluation of sample size requirements for developing risk prediction models with binary outcomes"**
+Related papers: **"An evaluation of sample size requirements for developing risk prediction models with binary outcomes"**
 published in BMC Medical Research Methodology https://doi.org/10.1186/s12874-024-02268-5
 
 ### Why do we need 'samplesizedev'?
@@ -22,6 +22,12 @@ Riley et al. (2019) proposed 3 formulae, based on 3 distinct criteria, for calcu
 The formula which aims to control model overfitting ('calibration' formula - C1) most often gives that highest sample size and our article we focused primarily around this formula. While the calibration formula performed well for models with C-statistic/C-index<0.8, we found that that it substantially ***underestimated*** the sample size when the predictive strength of the model was higher. The sample sizes often needed to be increased by 50% or even doubled to meet the calibration targets.
 
 Hence, we developed the **new package 'samplesizedev'** which performs ***unbiased sample size calculations*** regardless of model strength. Our software uses simulation in the background so calculations can take around a minute. Currently it can be used for the development of risk models for binary outcomes; functionality for ***time to event outcomes*** will be made available in due course. 
+
+### UPDATE
+
+The package has now been updated and can also provide sample size calculations than also control the variability in the calibration slope insted of *just* the expected value. This is very important because, as shown in the accompanied paper, the variability in performance is high when the number of predictors is small. So, while one may think that a reduced model might be preferred to avoid overfitting, this can be misleading because even if the average is controlled with E(S)=0.9, the variability can be very high, offerring limited gurantees about the performance of the model once the data collected.
+
+
 
 
 ### How does 'samplesizedev' work?
