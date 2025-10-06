@@ -43,6 +43,7 @@
 #'
 #'
 #'
+#'
 expected_cs_mape_binary_xy <- function(n, p, c, n.predictors, beta, nsim = 1000, nval = 25000, method ="MLE", parallel = TRUE, long = FALSE, approx=FALSE, x=x, y=y){
 
   # Find mean and variance of for Normal linear predictor

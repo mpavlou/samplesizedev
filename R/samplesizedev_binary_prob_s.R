@@ -8,9 +8,9 @@
 #'It takes approximately one minute to run. Ideally it should be followed by checking also
 #' the Mean Absolute Prediction Error that corresponds to the calculated sample size.
 
-#' @param S1 (numeric) The lower bound for the calibration slope
-#' @param S2 (numeric) The upper bound for the expected calibration slope
-#' @param P_S1S2 (numeric) The probability of acceptable calibration
+#' @param l_s (numeric) The lower bound for the calibration slope
+#' @param u_s (numeric) The upper bound for the expected calibration slope
+#' @param PAP_s (numeric) The probability of acceptable performance in terms of calibration
 #' @param p (numeric) The anticipated outcome prevalence
 #' @param c (numeric) The anticipated C-statistic
 #' @param n.predictors (numeric) The number of candidate predictor variables
@@ -37,7 +37,7 @@
 #' expected_performance
 
 
-samplesizedev_binary_prob_s <- function(S1, S2, P_S1S2, p, c,   n.predictors, beta = rep(1/n.predictors, n.predictors), nval = 25000, nsim = 1000, parallel = TRUE){
+samplesizedev_binary_prob_s <- function(l_s, u_s, PAP_s, p, c,   n.predictors, beta = rep(1/n.predictors, n.predictors), nval = 25000, nsim = 1000, parallel = TRUE){
 
   set.seed(2022)
 
@@ -63,9 +63,19 @@ samplesizedev_binary_prob_s <- function(S1, S2, P_S1S2, p, c,   n.predictors, be
 
   max.opt <- inflation_f * n_init
 
+
+  n_init <- n_pap_s_analytical(c, p, n.predictors,l_s= l_s ,u_s = u_s, PAP_s = PAP_s, min.opt = 0.1, max.opt = 0.99)[2]
+
+  if (c <  0.75 )               {inflation_f   <- 1.02   ; min.opt <- n_init *0.9}
+  if (c >= 0.75 & c <  0.8  )   {inflation_f   <- 1.1   ; min.opt <- n_init *0.9}
+  if (c >= 0.8  & c <= 0.85 )   {inflation_f   <- 1.4   ; min.opt <- n_init*1.2 }
+  if (c >  0.85 & c <= 0.9  )   {inflation_f   <- 1.8   ; min.opt <- n_init*1.3 }
+
+  max.opt <- inflation_f * n_init
+
   tol = max(5,ceiling(round(n_init/200)/5) * 5)
 
-  print("Optimisation Starting, ~ 1 min left...")
+  print("Optimisation Started: check progress on the appearing plots...")
 
   #Automatically adjust number of simulations to ensure MCSE is not too high
   A   <- 2*p*(1-p)*stats::qnorm(c)^2
@@ -90,9 +100,9 @@ samplesizedev_binary_prob_s <- function(S1, S2, P_S1S2, p, c,   n.predictors, be
 
   prob_s_est <- function(n, nsim=nsim){
 
-    prob_s <-  expected_prob_s_n_binary(n, S1 = S1, S2=S2, P_S1S2=P_S1S2, mean_eta = mean_eta, variance_eta = variance_eta,  beta = beta, p = p, c = c, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel)
+    prob_s <-  expected_prob_s_n_binary(n, l_s = l_s, u_s = u_s, PAP_s = PAP_s, mean_eta = mean_eta, variance_eta = variance_eta,  beta = beta, p = p, c = c, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel)
     #(round(s[1]/0.0025)*0.0025-s[2]) - S
-    prob_s[1] - P_S1S2
+    prob_s[1] - PAP_s
   }
 
   n   <- bisection_prob_s(prob_s_est, min.opt, max.opt, tol = tol, nsim = nsim)

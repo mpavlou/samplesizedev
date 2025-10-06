@@ -48,8 +48,12 @@ the expected calibration slope (mean_CS)
 the standard deviation of the CS (sd_CS)
 the probability of obtaining a miscalibrated model with calibration slope <0.8 (Pr(CS<0.8))
 the expected MAPE (MAPE)
-the standard deviation of the expected MAPE (sd_MAPE)
+the standard deviation of MAPE (sd_MAPE)
 the expected optimism in R square Nagelgerke (optimism_R2_Nag)
+the c-statistic
+the standard deviation of the C-statistic
+the sensitivity at specified threshold
+the net benefit at specified threshold
 }
 \description{
 This function calculates the expected calibration slope and MAPE given key data and model characteristics

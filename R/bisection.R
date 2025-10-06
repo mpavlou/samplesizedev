@@ -16,11 +16,9 @@ bisection <- function(f, a, b, iter = 10, tol = ceiling(round(a/100)/5) * 5, nsi
   fb <- f(b, nsim = nsim)
 
 
-  if (fa > 0 & fb > 0) a<-a*0.7
-  if (fa < 0 & fb < 0) b<-b*1.3
+  if (fa > 0 & fb > 0) { a<-a*0.7;   fa <- f(a, nsim = nsim)}
+  if (fa < 0 & fb < 0) { b<-b*1.3;   fb <- f(b, nsim = nsim)}
 
-  fa <- f(a, nsim = nsim)
-  fb <- f(b, nsim = nsim)
 
 
   if (!(fa < 0) && (fb > 0)) {

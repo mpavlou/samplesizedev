@@ -5,9 +5,9 @@
 \title{Sample size required to develop a risk prediction model for binary outcomes}
 \usage{
 samplesizedev_binary_prob_s(
-  S1,
-  S2,
-  P_S1S2,
+  l_s,
+  u_s,
+  PAP_s,
   p,
   c,
   n.predictors,
@@ -18,11 +18,11 @@ samplesizedev_binary_prob_s(
 )
 }
 \arguments{
-\item{S1}{(numeric) The lower bound for the calibration slope}
+\item{l_s}{(numeric) The lower bound for the calibration slope}
 
-\item{S2}{(numeric) The upper bound for the expected calibration slope}
+\item{u_s}{(numeric) The upper bound for the expected calibration slope}
 
-\item{P_S1S2}{(numeric) The probability of acceptable calibration}
+\item{PAP_s}{(numeric) The probability of acceptable performance in terms of calibration}
 
 \item{p}{(numeric) The anticipated outcome prevalence}
 

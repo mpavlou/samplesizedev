@@ -26,8 +26,12 @@
 #'             the standard deviation of the CS (sd_CS)
 #'             the probability of obtaining a miscalibrated model with calibration slope <0.8 (Pr(CS<0.8))
 #'             the expected MAPE (MAPE)
-#'             the standard deviation of the expected MAPE (sd_MAPE)
+#'             the standard deviation of MAPE (sd_MAPE)
 #'             the expected optimism in R square Nagelgerke (optimism_R2_Nag)
+#'             the c-statistic
+#'             the standard deviation of the C-statistic
+#'             the sensitivity at specified threshold
+#'             the net benefit at specified threshold
 #'
 #' @examples
 #' # expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = FALSE)
@@ -60,28 +64,32 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
   set.seed(2022)
   xval    <- mvtnorm::rmvnorm(nval, rep(0, n.predictors), sigma = sigma)
+  yval     <- stats::rbinom(nval, 1, invlogit(mean + xval%*%beta))
 
   # True R2
   MaxR2      <- 1-(((p^(p))*((1-p)^(1-p)))^2)
   ncalc      <- 500000
-  x          <- mvtnorm::rmvnorm(ncalc, rep(0, n.predictors), sigma = sigma )
-  eta        <- mean+x%*% beta
-  y          <- stats::rbinom(ncalc,  1, invlogit(eta))
+  xcalc      <- mvtnorm::rmvnorm(ncalc, rep(0, n.predictors), sigma = sigma )
+  eta        <- mean+xcalc%*% beta
+  ycalc      <- stats::rbinom(ncalc,  1, invlogit(eta))
 
 
-  a          <- RcppNumerical::fastLR(cbind(1,x), y)
+  a          <- RcppNumerical::fastLR(cbind(1,xcalc), ycalc)
   L1         <- a$loglikelihood
-  L0         <- sum(y*log(mean(y)) + (1-y)*log(1-mean(y)))
+  L0         <- sum(ycalc * log(mean(ycalc)) + (1 - ycalc) * log(1-mean(ycalc)))
   LR         <- -2*(L0-L1)
   r2_cs_true <- 1 - exp(-LR/ncalc)
   r2_cs_true
 
   if (approx==TRUE) {
 
-  fit <- glm(y~x, family=binomial())
-
+  ncalc      <- 100000
+  x          <- mvtnorm::rmvnorm(ncalc, rep(0, n.predictors), sigma = sigma )
+  eta        <- mean+x%*% beta
+  y          <- stats::rbinom(ncalc,  1, invlogit(eta))
+  fit <- glm(ycalc~xcalc, family=binomial())
   varbeta <- vcov(fit)
-
+  sampbeta <- rmvnorm(nsim, c(mean, beta), sigma = varbeta*ncalc/n)
   }
 
   # data.calc <- data.frame(y,x)
@@ -116,20 +124,21 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   `%dopar%` <- foreach::`%dopar%`
   `%do%` <- foreach::`%do%`
 
-  cs            <- NULL
-  mape          <- NULL
-  opt           <- NULL
-  r2_app        <- NULL
-  heuristic     <- NULL
-  ave_pred_risk <- NULL
-  cest          <- NULL
+  cs              <- NULL
+  mape            <- NULL
+  opt             <- NULL
+  r2_app          <- NULL
+  heuristic       <- NULL
+  ave_pred_risk   <- NULL
+  cest            <- NULL
+  nb              <- NULL
+  sens            <- NULL
+  p_est_interest  <- NULL
 
   i    <- 0
 
   if (method== "MLE") {
 
-
-    if (approx==TRUE) sampbeta <- rmvnorm(nsim, c(mean, beta), sigma = varbeta*ncalc/n)
 
 
     a<- foreach::foreach(i = 1:nsim, .packages=c('mvtnorm','RcppNumerical', 'ggplot2' )) %dopar% {
@@ -155,30 +164,47 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
         return(auc.true)
       }
 
+
+      # samp       <- sample(ncalc, n, replace=FALSE)
+      # x          <- xcalc[samp,]
+      # y          <- ycalc[samp]
       x        <- mvtnorm::rmvnorm(round(n), rep(0, n.predictors), sigma = sigma )
       y        <- stats::rbinom(round(n),  1, invlogit(mean + x%*%beta))
-      yval     <- stats::rbinom(nval, 1, invlogit(mean + xval%*%beta))
+      yval       <- stats::rbinom(nval, 1, invlogit(mean + xval%*%beta))
+
+
       p_true   <- as.vector(invlogit(mean + xval%*%beta))
 
 
+      r2_cs_app <- NA
 
-      a        <- RcppNumerical::fastLR(cbind(1,x), y)
+      a <- NULL
       if (approx==TRUE){
         a$coef <- sampbeta[i,]
 
-      }
+      } else
+
+        {a        <- RcppNumerical::fastLR(cbind(1,x), y)
+        L1        <- a$loglikelihood
+        # a0      <- RcppNumerical::fastLR(as.matrix(rep(1,n)), y)
+        # L0      <- a0$loglikelihood
+        L0        <- sum(y*log(mean(y)) + (1-y)*log(1-mean(y)))
+        LR        <- -2*(L0-L1)
+        r2_cs_app <- 1 - exp(-LR/n)
+        }
+
+
+      # a        <- RcppNumerical::fastLR(cbind(1,x), y)
+      # L1        <- a$loglikelihood
+      # # a0      <- RcppNumerical::fastLR(as.matrix(rep(1,n)), y)
+      # # L0      <- a0$loglikelihood
+      # L0        <- sum(y*log(mean(y)) + (1-y)*log(1-mean(y)))
+      # LR        <- -2*(L0-L1)
+      # r2_cs_app <- 1 - exp(-LR/n)
+
 
       eta_est  <- cbind(1, xval) %*% as.vector(a$coef)
       p_est    <- as.vector(invlogit(eta_est))
-
-
-      #Opt R2Neg
-      L1        <- a$loglikelihood
-      # a0      <- RcppNumerical::fastLR(as.matrix(rep(1,n)), y)
-      # L0      <- a0$loglikelihood
-      L0        <- sum(y*log(mean(y)) + (1-y)*log(1-mean(y)))
-      LR        <- -2*(L0-L1)
-      r2_cs_app <- 1 - exp(-LR/n)
 
 
       fit              <- RcppNumerical::fastLR(cbind(1,eta_est), yval, start = c(0,0.9) )
@@ -189,9 +215,20 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
       r2_app[i]        <- r2_cs_app
       ave_pred_risk[i] <- mean(p_est)
       cest[i]          <- quickcstat(yval, p_est)
+      # Set decision threshold
+      threshold <- p
+      # Classify predictions
+      pred_class <- ifelse(p_est >= threshold, 1, 0)
 
+      # Calculate TP, FP, and N
+      TP <- sum(pred_class == 1 & yval == 1)
+      FP <- sum(pred_class == 1 & yval == 0)
 
-      c(cs[i], mape[i], opt[i], heuristic[i], r2_app[i],  ave_pred_risk[i], cest[i])
+      # Calculate net benefit
+      nb[i] <- (TP / nval) - (FP / nval) * (threshold / (1 - threshold))
+      sens[i] <- (TP / sum(yval))
+
+      c(cs[i], mape[i], opt[i], heuristic[i], r2_app[i],  ave_pred_risk[i], cest[i], sens[i], nb[i])
 
     }
 
@@ -250,6 +287,8 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
       eta_est   <- cbind(1, xval)%*%betasf
       p_est     <- as.vector(invlogit(eta_est))
 
+
+
       fit      <- RcppNumerical::fastLR(cbind(1,eta_est), yval )
       cs[i]    <- fit$coef[2]
       mape[i]  <- mean(abs(p_true-p_est))
@@ -258,9 +297,20 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
       r2_app[i]        <- NA
       ave_pred_risk[i] <- mean(p_est)
       cest[i]          <- quickcstat(yval, p_est)
+      # Set decision threshold
+      threshold <- p
+      # Classify predictions
+      pred_class <- ifelse(p_est >= threshold, 1, 0)
 
+      # Calculate TP, FP, and N
+      TP <- sum(pred_class == 1 & yval == 1)
+      FP <- sum(pred_class == 1 & yval == 0)
 
-      c(cs[i], mape[i], opt[i], heuristic[i], r2_app[i],  ave_pred_risk[i], cest[i])
+      # Calculate net benefit
+      nb[i] <- (TP / nval) - (FP / nval) * (threshold / (1 - threshold))
+      sens[i] <- (TP / sum(yval))
+
+      c(cs[i], mape[i], opt[i], heuristic[i], r2_app[i],  ave_pred_risk[i], cest[i], sens[i], nb[i])
 
     }
   }
@@ -277,6 +327,8 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   r2_app        <- b[,5]
   ave_pred_risk <- b[,6]
   cest          <- b[,7]
+  sens          <- b[,8]
+  nb            <- b[,9]
 
 
   df        <- data.frame(cs)
@@ -327,20 +379,28 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
                           round(mean(cs, na.rm = TRUE),3),
                           round(sqrt(stats::var(cs,na.rm = TRUE)), 4),
                           # round(sqrt( mean( ((cs-1)^2), na.rm=TRUE) ), 4),
-                          round(mean(ifelse( (cs > 0.85 & cs <1.15), 1, 0),na.rm=TRUE), 2),
+                          round(mean(ifelse( (cs > 0.85 & cs <1.15), 1, 0),na.rm=TRUE), 3),
                           round(stats::median(mape, na.rm = TRUE),4),
                           round(sqrt(stats::var(mape,na.rm = TRUE)), 4),
                           round(mean(opt, na.rm = TRUE),3),
                           round(mean(cest, na.rm = TRUE),3),
                           round(sqrt(stats::var(cest,na.rm = TRUE)), 4),
                           round(sqrt(var(ave_pred_risk, na.rm = TRUE)),3),
-                          round(median(cs, na.rm = TRUE),3))
+                          round(median(cs, na.rm = TRUE),3),
+                          round(quantile(cs, probs=0.025, na.rm = TRUE),3),
+                          round(quantile(cs, probs=0.975, na.rm = TRUE),3),
+                          round(quantile(cs, probs=0.05, na.rm = TRUE),3),
+                          round(quantile(cs, probs=0.95, na.rm = TRUE),3),
+                          round(mean(sens, na.rm = TRUE),3),
+                          round(sqrt(stats::var(sens,na.rm = TRUE)), 4),
+                          round(mean(nb, na.rm = TRUE),3),
+                          round(sqrt(stats::var(nb,na.rm = TRUE)), 4)
+                          )
                           # round(mean(heuristic, na.rm = TRUE),3),
                           # round(r2_cs_true,4),
                           # round(mean(r2_app,na.rm=TRUE)*mean(cs, na.rm = TRUE),4),
 
-  names(df) <- c("n","True prevalence", "True c-statistic", "Number of predictors","---------------------------",  "Mean_calibration_slope", "SD(CS)", "Pr(0.85<CS<1.15)", "Mean_MAPE",  "SD(MAPE)", "Optimism_R2_Nag", "Mean_AUC", "SD(AUC)", "SD(Average Predicted Risk)", "Median CS")
-
+  names(df) <- c("n","True prevalence", "True c-statistic", "Number of predictors","---------------------------",  "Mean_calibration_slope", "SD(CS)", "Pr(0.85<CS<1.15)", "Mean_MAPE",  "SD(MAPE)", "Optimism_R2_Nag", "Mean_AUC", "SD(AUC)", "SD(Average Predicted Risk)", "Median CS", "Q2.5", "Q97.5", "Q5", "Q95", "Mean_Sens", "SD(Sens)", "Mean NB", "SD(NB)" )
 
   # names(df) <- c("n", "mean_CS", "sd_CS", "Pr(CS<0.8)", "mean_MAPE",  "sd_MAPE", "optimism_R2_Nag", "heuristic_SF", "r2_true", "r2_app/cs", "prevalence", "c-statistic", " # predictors")
 
@@ -354,7 +414,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
     {
     b        <- cbind(n, p, n.predictors, b)
     b        <- data.frame(b)
-    names(b) <- c("n", "phi", "p", "cs", "mape", "opt_r2_nag", "heur_cs", "r2_apparent", "average_risk", "cstat")
+    names(b) <- c("n", "phi", "p", "cs", "mape", "opt_r2_nag", "heur_cs", "r2_apparent", "average_risk", "cstat", "sens", "nb")
     b
   }
 

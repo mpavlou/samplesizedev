@@ -1,4 +1,4 @@
-expected_prob_s_n_binary <- function(n, S1, S2, P_S1S2, mean_eta, variance_eta,  p, c, n.predictors, beta, nsim, nval, parallel){
+expected_prob_s_n_binary <- function(n, l_s, u_s, PAP_s, mean_eta, variance_eta,  p, c, n.predictors, beta, nsim, nval, parallel){
 
   set.seed(2022)
 
@@ -57,7 +57,7 @@ expected_prob_s_n_binary <- function(n, S1, S2, P_S1S2, mean_eta, variance_eta, 
   df        <- data.frame(cs)
   df        <- stats::na.omit(df)
 
-  prob <- ifelse(cs>S1 & cs<S2, 1,0)
+  prob <- ifelse(cs>l_s & cs<u_s, 1,0)
   mean(prob)
 
   cs_plot   <- ggplot2:: ggplot(df,  ggplot2::aes(x = cs), size=12) +

@@ -1,14 +1,14 @@
 # Function for bisection method
 
-bisection_prob_s <- function(f, a, b, iter = 15, tol = ceiling(round(a/200)/5) * 5, nsim = 1000) {
+bisection_prob_s <- function(f, a, b, iter = 20, tol = ceiling(round(a/200)/5) * 5, nsim = 1000) {
   # If the signs of the function at the evaluated points, a and b, stop the function and return message.
   ##ch
 
-  tol = ceiling(round(a/200)/5) * 5
+  tol = ceiling(round(a/200)/5) * 3
 
   nsim1 <- nsim
 
-  if (nsim>=1000) divide <- 2 else divide <- 1
+  if (nsim>=1000) divide <- 1 else divide <- 1
 
   nsim  <- round(nsim/divide)
 
@@ -16,11 +16,8 @@ bisection_prob_s <- function(f, a, b, iter = 15, tol = ceiling(round(a/200)/5) *
   fb <- f(b, nsim = nsim)
 
 
-  if (fa > 0 & fb > 0) a<-a*0.5
-  if (fa < 0 & fb < 0) b<-b*1.5
-
-  fa <- f(a, nsim = nsim)
-  fb <- f(b, nsim = nsim)
+  if (fa > 0 & fb > 0) {a<-a*0.8 ;   fa <- f(a, nsim = nsim)}
+  if (fa < 0 & fb < 0) {b<-b*1.2  ;  fb <- f(b, nsim = nsim)}
 
 
   if (!(fa < 0) && (fb > 0)) {
@@ -36,7 +33,7 @@ bisection_prob_s <- function(f, a, b, iter = 15, tol = ceiling(round(a/200)/5) *
     # a <- round(a/tol)*tol
     # b <- round(b/tol)*tol
 
-    c  <- round((a*3 + b*2) / 5) # Calculate midpoint
+    c  <- round((a*4 + b*2) / 6) # Calculate midpoint
     fc <- f(c, nsim = nsim)
 
     #print(c(k, a, b, c, fa, fb, fc ))
@@ -61,7 +58,7 @@ bisection_prob_s <- function(f, a, b, iter = 15, tol = ceiling(round(a/200)/5) *
       return(c)
    }
 
-    if (  ((abs(fc) <= 0.005) || ((b - a) / 2) < tol)   &  (k >=7) ) {
+    if (  ((abs(fc) <= 0.006) || ((b - a) / 2) < tol)   &  (k >=7) ) {
       #if (  abs(fc) <= 0.0025 &  (k >=2 )) {
       return(c)
     }

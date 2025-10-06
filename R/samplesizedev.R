@@ -41,19 +41,22 @@
 #'
 #' # Binary Outcome
 #' # Size for target S=0.9
-#' # samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, parallel=TRUE)
+#' # samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10)
+#'
+#'Size for Probability of Acceptable Performance (PAP=0.8), where Acceptable Performance means 0.85<=S<=1.15
+#'samplesizedev(outcome="Binary", l_s= 0.85, u_s = 1.15, PAP_s = 0.8, phi = 0.2, c = 0.85, p = 10)
 #'
 #'#' Size for target MAPE=0.04
 #' # samplesizedev(outcome = "Binary", MAPE = 0.04, phi = 0.2, c = 0.85, p = 10)
 #'
 #' # Binary Outcome: Check the expected MAPE and Calibration Slope for a given sample size
-#' # expected_performance(outcome = "Binary", n = 530, phi= 0.2, c = 0.85, p = 10)
+#' # expected_performance(outcome = "Binary", n = 500, phi= 0.2, c = 0.85, p = 10)
 #'
 #' @seealso
 #' expected_cs
 
 
-samplesizedev <- function(outcome="Binary", S = NULL, MAPE = NULL, S1 = NULL, S2 = NULL, P_S1S2 = NULL, phi, c,  p, gamma = rep(1/p, p), nval = 25000, nsim = 1000, parallel = TRUE){
+samplesizedev <- function(outcome="Binary", S = NULL, MAPE = NULL, l_s = NULL, u_s = NULL, PAP_s = NULL, phi, c,  p, gamma = rep(1/p, p), nval = 25000, nsim = 1000, parallel = TRUE){
 
   beta          <- gamma
   n.predictors  <- p
@@ -62,9 +65,9 @@ samplesizedev <- function(outcome="Binary", S = NULL, MAPE = NULL, S1 = NULL, S2
   if (n.predictors<=6) nsim = 3000
 
 
-  if (outcome=="Binary")   { if (length(MAPE)==0 & length(S1)==0)    n <- samplesizedev_binary_s(S=S, p=p, c=c,  n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel) else
-                             if (length(S)==0    & length(S1)==0)    n <- samplesizedev_binary_mape(MAPE=MAPE, p=p, c=c,  n.predictors = n.predictors, beta = beta, nval = nval, nsim = nsim, parallel = parallel) else
-                             if (length(S)==0    & length(MAPE)==0)  n <- samplesizedev_binary_prob_s(S1=S1, S2=S2, P_S1S2=P_S1S2, p=p, c=c,  n.predictors = n.predictors, beta = beta, nval = nval, nsim = nsim, parallel = parallel) }
+  if (outcome=="Binary")   { if (length(MAPE)==0 & length(l_s)==0)    n <- samplesizedev_binary_s(S=S, p=p, c=c,  n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel) else
+                             if (length(S)==0    & length(l_s)==0)    n <- samplesizedev_binary_mape(MAPE=MAPE, p=p, c=c,  n.predictors = n.predictors, beta = beta, nval = nval, nsim = nsim, parallel = parallel) else
+                             if (length(S)==0    & length(MAPE)==0)  n <- samplesizedev_binary_prob_s(l_s=l_s, u_s=u_s, PAP_s=PAP_s, p=p, c=c,  n.predictors = n.predictors, beta = beta, nval = nval, nsim = nsim, parallel = parallel) }
 
   if (outcome=="Survival") n <- samplesizedev_survival(S=S, p=p, c=c, n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel)
 
