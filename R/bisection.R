@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Function for bisection method
 
 bisection <- function(f, a, b, iter = 10, tol = ceiling(round(a/100)/5) * 5, nsim = 1000) {
@@ -83,7 +83,7 @@ bisection <- function(f, a, b, iter = 10, tol = ceiling(round(a/100)/5) * 5, nsi
   # return message and end function.
   print('Too many iterations')
 }
-=======
+
 # Function for bisection method
 
 bisection <- function(f, a, b, iter = 10, tol = ceiling(round(a/100)/5) * 5, nsim = 1000) {
@@ -167,4 +167,3 @@ bisection <- function(f, a, b, iter = 10, tol = ceiling(round(a/100)/5) * 5, nsi
   # return message and end function.
   print('Too many iterations')
 }
->>>>>>> 521b8058513dc5b5134501aa353d083e7f64b4e9
