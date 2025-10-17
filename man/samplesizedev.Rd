@@ -70,13 +70,16 @@ to the calculated sample size.
 
 # Binary Outcome
 # Size for target S=0.9
-# samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, parallel=TRUE)
+# samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10)
+
+Size for Probability of Acceptable Performance (PAP=0.8), where Acceptable Performance means 0.85<=S<=1.15
+samplesizedev(outcome="Binary", l_s= 0.85, u_s = 1.15, PAP_s = 0.8, phi = 0.2, c = 0.85, p = 10)
 
 #' Size for target MAPE=0.04
 # samplesizedev(outcome = "Binary", MAPE = 0.04, phi = 0.2, c = 0.85, p = 10)
 
 # Binary Outcome: Check the expected MAPE and Calibration Slope for a given sample size
-# expected_performance(outcome = "Binary", n = 530, phi= 0.2, c = 0.85, p = 10)
+# expected_performance(outcome = "Binary", n = 500, phi= 0.2, c = 0.85, p = 10)
 
 }
 \seealso{

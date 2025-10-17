@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 
 #' Calculate the expected calibration slope and mean absolute prediction error (MAPE) for a given  sample size
 #'
@@ -428,8 +427,6 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 # rep(0,5)), nsim = 2000, parallel = TRUE)
 
 
-=======
-
 #' Calculate the expected calibration slope and mean absolute prediction error (MAPE) for a given  sample size
 #'
 #' @description
@@ -810,5 +807,3 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 # expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, beta= c(0.9,0.1 ,0,0,0,
 # rep(0,5)), nsim = 2000, parallel = TRUE)
 
-
->>>>>>> 521b8058513dc5b5134501aa353d083e7f64b4e9
