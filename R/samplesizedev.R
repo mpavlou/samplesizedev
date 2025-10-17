@@ -21,6 +21,9 @@
 
 #' @param outcome (character) The type of outcome (''Binary'' ; ''Survival'' to be added in later versions)
 #' @param S (numeric) The target expected calibration slope
+#' @param l_s (numeric) Lower bound for calibration slope
+#' @param u_s (numeric) Upper bound for calibration slope
+#' @param u_s (numeric) Target Probability of Acceptable performance in terms of calibration, (l_s, u_s)
 #' @param MAPE (numeric) The target expected mean absolute prediction error
 #' @param phi (numeric) The anticipated outcome prevalence of the binary outcome (or proportion of events for survival outcome)
 #' @param c (numeric) The anticipated c-statistic for binary outcome (or c-index for survival outcome)
