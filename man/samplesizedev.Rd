@@ -27,6 +27,12 @@ samplesizedev(
 
 \item{MAPE}{(numeric) The target expected mean absolute prediction error}
 
+\item{l_s}{(numeric) Lower bound for calibration slope}
+
+\item{u_s}{(numeric) Upper bound for calibration slope}
+
+\item{PAP_s}{(numeric) Target Probability of Acceptable performance in terms of calibration, (l_s, u_s)}
+
 \item{phi}{(numeric) The anticipated outcome prevalence of the binary outcome (or proportion of events for survival outcome)}
 
 \item{c}{(numeric) The anticipated c-statistic for binary outcome (or c-index for survival outcome)}
