@@ -7,7 +7,7 @@
 <!-- badges: end -->
 
 
-R package to calculate the sample size for the development of risk models for binary outcomes ($\textcolor{#f00}{installation issue fixed}$)
+R package to calculate the sample size for the development of risk models for binary outcomes ($\textcolor{#f00}{\text{installation issue fixed}}$)
 
 Related papers: 
 
