@@ -26,7 +26,7 @@ Riley et al. (2019) proposed 3 formulae, based on 3 distinct criteria, for calcu
 
 The formula which aims to control model overfitting ('calibration' formula - C1) most often gives that highest sample size and our article we focused primarily around this formula. While the calibration formula performed well for models with C-statistic/C-index<0.8, we found that that it substantially ***underestimated*** the sample size when the predictive strength of the model was higher. The sample sizes often needed to be increased by 50% or even doubled to meet the calibration targets.
 
-Hence, we developed the **new package 'samplesizedev'** which performs ***unbiased sample size calculations*** regardless of model strength. Our software uses simulation in the background so calculations can take around a minute. Currently it can be used for the development of risk models for binary outcomes; functionality for ***time to event outcomes*** will be made available in due course. 
+Hence, we developed the **new package 'samplesizedev'** which performs ***unbiased sample size calculations*** regardless of model strength. Our software uses simulation in the background so calculations can take a bit to run (from 30s to some minutes depending on scenatio and computational power). Currently it can be used for the development of risk models for binary outcomes; functionality for ***time to event outcomes***  is under development. 
 
 ### $\textcolor{#f00}{\large  \textbf{UPDATE}}$
 
