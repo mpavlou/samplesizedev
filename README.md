@@ -1,13 +1,13 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# samplesizedev : Simulation-based sample size calculations for the development of risk models
+# samplesizedev : Simulation-based sample size calculations for the development of risk models 
 
 <!-- badges: start -->
 <!-- badges: end -->
 
 
-R package to calculate the sample size for the development of risk models for binary outcomes
+R package to calculate the sample size for the development of risk models for binary outcomes ($\textcolor{#f00}{installation issue fixed}$)
 
 Related papers: 
 
