@@ -115,7 +115,8 @@ be in fact lower than we had aim for this size.  We can verify this using the se
 #### Calculation of sample size for given model characteristics, aiming for Probability of acceptable calibrtion PrAP(S)=0.8 
 
 ``` r
-# Calculate the sample size Size for Probability of Acceptable Performance (PAP=0.8), where Acceptable Performance means $S\in (0.85, 1.15)
+# Calculate the sample size Size for Probability of Acceptable Performance (PAP=0.8),
+# where Acceptable Performance is defined $S\in (0.85, 1.15)$
 # Performance target: PrAP(S)=0.8; Prevalence=0.2; c-statistic=0.85; Number of predictors=10;
 samplesizedev(outcome="Binary", l_s= 0.85, u_s = 1.15, PAP_s = 0.8, phi = 0.2, c = 0.85, p = 10)
 
