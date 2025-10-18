@@ -95,7 +95,7 @@ library(samplesizedev)
 # Calculation takes about a minute 
 
 samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10)
-#> [1] "Optimisation Starting, ~ 1 min left..."
+#> [1] "Optimisation Started: check progress on the appearing plots..."
 #> $rvs
 #> [1] 308
 #> 
