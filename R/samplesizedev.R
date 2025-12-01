@@ -65,7 +65,7 @@ samplesizedev <- function(outcome="Binary", S = NULL, MAPE = NULL, l_s = NULL, u
   n.predictors  <- p
   p             <- phi
 
-  if (n.predictors<=6) nsim = 3000
+  if (n.predictors<6) nsim = 3000
 
   if (length(S)!=0 & (length(l_s)!=0 |length(u_s)!=0) | length(PAP_s)!=0) {n<-"Calculation not performed. Please enter either S *or* l_s, u_s and PAP_s" ; print(n)} else {
 
