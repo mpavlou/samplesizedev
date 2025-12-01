@@ -1,13 +1,13 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# samplesizedev : Simulation-based sample size calculations for the development of risk models
+# samplesizedev : Simulation-based sample size calculations for the development of risk models 
 
 <!-- badges: start -->
 <!-- badges: end -->
 
 
-R package to calculate the sample size for the development of risk models for binary outcomes
+R package to calculate the sample size for the development of risk models for binary outcomes $\textcolor{#f00}{\text{(installation issue fixed)}}$.
 
 Related papers: 
 
@@ -26,7 +26,7 @@ Riley et al. (2019) proposed 3 formulae, based on 3 distinct criteria, for calcu
 
 The formula which aims to control model overfitting ('calibration' formula - C1) most often gives that highest sample size and our article we focused primarily around this formula. While the calibration formula performed well for models with C-statistic/C-index<0.8, we found that that it substantially ***underestimated*** the sample size when the predictive strength of the model was higher. The sample sizes often needed to be increased by 50% or even doubled to meet the calibration targets.
 
-Hence, we developed the **new package 'samplesizedev'** which performs ***unbiased sample size calculations*** regardless of model strength. Our software uses simulation in the background so calculations can take around a minute. Currently it can be used for the development of risk models for binary outcomes; functionality for ***time to event outcomes*** will be made available in due course. 
+Hence, we developed the **new package 'samplesizedev'** which performs ***unbiased sample size calculations*** regardless of model strength. Our software uses simulation in the background so calculations can take a bit to run (from 30s to some minutes depending on scenatio and computational power). Currently it can be used for the development of risk models for binary outcomes; functionality for ***time to event outcomes***  is under development. 
 
 ### $\textcolor{#f00}{\large  \textbf{UPDATE}}$
 
@@ -95,7 +95,7 @@ library(samplesizedev)
 # Calculation takes about a minute 
 
 samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10)
-#> [1] "Optimisation Starting, ~ 1 min left..."
+#> [1] "Optimisation Started: check progress on the appearing plots..."
 #> $rvs
 #> [1] 308
 #> 
@@ -115,7 +115,8 @@ be in fact lower than we had aim for this size.  We can verify this using the se
 #### Calculation of sample size for given model characteristics, aiming for Probability of acceptable calibrtion PrAP(S)=0.8 
 
 ``` r
-# Calculate the sample size Size for Probability of Acceptable Performance (PAP=0.8), where Acceptable Performance means $S\in (0.85, 1.15)
+# Calculate the sample size Size for Probability of Acceptable Performance (PAP=0.8),
+# where Acceptable Performance is defined $S\in (0.85, 1.15)$
 # Performance target: PrAP(S)=0.8; Prevalence=0.2; c-statistic=0.85; Number of predictors=10;
 samplesizedev(outcome="Binary", l_s= 0.85, u_s = 1.15, PAP_s = 0.8, phi = 0.2, c = 0.85, p = 10)
 
