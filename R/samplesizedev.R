@@ -67,8 +67,6 @@ samplesizedev <- function(outcome="Binary", S = NULL, MAPE = NULL, l_s = NULL, u
 
   if (n.predictors<=6) nsim = 3000
 
-  if (length(S)!=0 & (length(l_s)!=0 |length(u_s)!=0) | length(PAP_s)!=0) {n<-"Calculation not performed. Please enter either S *or* l_s, u_s and PAP_s" ; print(n)} else {
-
 
   if (outcome=="Binary")   { if (length(MAPE)==0 & length(l_s)==0)    n <- samplesizedev_binary_s(S=S, p=p, c=c,  n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel) else
                              if (length(S)==0    & length(l_s)==0)    n <- samplesizedev_binary_mape(MAPE=MAPE, p=p, c=c,  n.predictors = n.predictors, beta = beta, nval = nval, nsim = nsim, parallel = parallel) else
@@ -76,7 +74,6 @@ samplesizedev <- function(outcome="Binary", S = NULL, MAPE = NULL, l_s = NULL, u
 
   if (outcome=="Survival") n <- samplesizedev_survival(S=S, p=p, c=c, n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel)
 
-  }
   n
 
 }
