@@ -48,7 +48,7 @@ Based on the characteristics above it can perform actions based on two core func
 
 1. **Calculate the required sample size** to achieve a target expected calibration slope or Mean Absolute Prediction Error (MAPE) (function **'samplesizedev'**)
 
-2. $\textcolor{#f00}{\large  \textbf{NEW:}}$ **Calculate the required sample size** to achieve a $\textcolor{#f00}{\large \text{a high  probability  of  a   model   with   acceptable   calibration}}$ (function **'samplesizedev'**)
+2. $\textcolor{#f00}{\large  \textbf{NEW:}}$ **Calculate the required sample size** to achieve a $\textcolor{#f00}{\text{a high  probability  of  a   model   with   acceptable   calibration}}$ (function **'samplesizedev'**)
 
 3. **Calculate the expected model performance** at a given sample size (function **'expected_performance'**)
 
@@ -75,7 +75,7 @@ This is a basic example which shows how to calculate:
 
 1.  the **sample size** to achieve a target expected calibration slope (e.g. target expected calibration slope **E(S)=0.9**)  or 
 
-2. $\textcolor{#f00}{\large \text{NEW:}}$ the **sample size**  to achieve a target probability of acceptable performance in terms of calibration (e.g. Probability of calibration slope $\in (0.85,1.15)$, **PrAP(S)=0.8**}
+2. $\textcolor{#f00}{\text{NEW:}}$ the **sample size**  to achieve a target probability of acceptable performance in terms of calibration (e.g. Probability of calibration slope $\in (0.85,1.15)$, **PrAP(S)=0.8**}
 
 3.  the **expected calibration slope, MAPE and other performance metrics** for a given sample size
 
