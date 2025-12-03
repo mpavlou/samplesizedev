@@ -30,7 +30,7 @@ Hence, we developed the **new package 'samplesizedev'** which performs ***unbias
 
 ### $\textcolor{#f00}{\large  \textbf{UPDATE}}$
 
-The package has now been updated and can perform sample size calculations than also ***control the*** $\textcolor{#f00}{\large variability}$ ***in the calibration slope, instead of *just* the expected value***. 
+The package has now been updated and can perform sample size calculations than also ***control the*** $\textcolor{#f00}{variability}$ ***in the calibration slope, instead of *just* the expected value***. 
 
 This is very important because, as shown in the accompanied paper, the variability in performance can be very high when the number of predictors is small. Therefore, while one may think that a reduced model should be preferred to avoid model overfitting, this can be misleading. That's because even though performance is controlled on average,  e.g., E(S)=0.9, the variability can still be very high. In this context, E(S)=0.9 is interpreted to mean that if one were to collect many datasets of the recommended size, and  validate them on large external dataset, then the calibration slope would be on average around 0.9. However, if the variability is very high, the probability of actually obtaining an individual dataset with calibration slope close to 0.9 might be unacceptably low (see examples in the paper and below). 
 
@@ -48,7 +48,7 @@ Based on the characteristics above it can perform actions based on two core func
 
 1. **Calculate the required sample size** to achieve a target expected calibration slope or Mean Absolute Prediction Error (MAPE) (function **'samplesizedev'**)
 
-2. $\textcolor{#f00}{\large  \textbf{NEW:}}$ **Calculate the required sample size** to achieve a $\textcolor{#f00}{\text{a high  probability  of  a   model   with   acceptable   calibration}}$ (function **'samplesizedev'**)
+2. $\textcolor{#f00}{\textbf{NEW:}}$ **Calculate the required sample size** to achieve a $\textcolor{#f00}{\text{a high  probability  of  a   model   with   acceptable   calibration}}$ (function **'samplesizedev'**)
 
 3. **Calculate the expected model performance** at a given sample size (function **'expected_performance'**)
 
