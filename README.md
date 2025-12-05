@@ -112,7 +112,7 @@ the RvS overfitting formula  underestimates the sample size for high C-statistic
 be in fact lower than we had aim for this size.  We can verify this using the second command of our package, 'expected_performance'.
 
 
-#### Calculation of sample size for given model characteristics, aiming for Probability of acceptable calibrtion PrAP(S)=0.8 
+#### Calculation of sample size for given model characteristics, aiming at the $\textcolor{#f00}{ \text{Probability of acceptable calibrtion, PrAP(S)=0.8}}$ 
 
 ``` r
 # Calculate the sample size Size for Probability of Acceptable Performance (PAP=0.8),
