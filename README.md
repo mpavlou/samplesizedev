@@ -7,7 +7,7 @@
 <!-- badges: end -->
 
 
-R package to calculate the sample size for the development of risk models for binary outcomes $\textcolor{#f00}{\text{(installation issue fixed)}}$.
+R package to calculate the sample size for the development of risk models for binary outcomes.
 
 Related papers: 
 
@@ -30,11 +30,11 @@ Hence, we developed the **new package 'samplesizedev'** which performs ***unbias
 
 ### $\textcolor{#f00}{\large  \textbf{UPDATE}}$
 
-The package has now been updated and can perform sample size calculations than also ***control the*** $\textcolor{#f00}{\large variability}$ ***in the calibration slope, instead of *just* the expected value***. 
+The package has now been updated and can perform sample size calculations than also ***control the*** $\textcolor{#f00}{variability}$ ***in the calibration slope, instead of *just* the expected value***. 
 
 This is very important because, as shown in the accompanied paper, the variability in performance can be very high when the number of predictors is small. Therefore, while one may think that a reduced model should be preferred to avoid model overfitting, this can be misleading. That's because even though performance is controlled on average,  e.g., E(S)=0.9, the variability can still be very high. In this context, E(S)=0.9 is interpreted to mean that if one were to collect many datasets of the recommended size, and  validate them on large external dataset, then the calibration slope would be on average around 0.9. However, if the variability is very high, the probability of actually obtaining an individual dataset with calibration slope close to 0.9 might be unacceptably low (see examples in the paper and below). 
 
-Hence, in our more recent work we $\textcolor{#f00}{\large  \text{develop sample size calculations where we aim to control the probability of acceptable }}$ $\textcolor{#f00}{\large  \text{performance, rather than just performance on average}}$. In a simulation-based framework this approach can be easily implemented for any performance metric and a suitably defined range of acceptable performance. Here and in the paper above, we focused on the calibration slope. In addition to the simulation-based approach, we also derived an approximate analytical calculation that is unbiased in most cases and very quick. 
+Hence, in our more recent work we $\textcolor{#f00}{\text{develop sample size calculations where we aim to control the probability of acceptable performance, rather}}$ $\textcolor{#f00}{ \text{than just performance on average}}$. In a simulation-based framework this approach can be easily implemented for any performance metric and a suitably defined range of acceptable performance. Here and in the paper above, we focused on the calibration slope. In addition to the simulation-based approach, we also derived an approximate analytical calculation that avoids and is very quick. 
 
 
 ### How does 'samplesizedev' work?
@@ -48,7 +48,7 @@ Based on the characteristics above it can perform actions based on two core func
 
 1. **Calculate the required sample size** to achieve a target expected calibration slope or Mean Absolute Prediction Error (MAPE) (function **'samplesizedev'**)
 
-2. $\textcolor{#f00}{\large  \textbf{NEW:}}$ **Calculate the required sample size** to achieve a $\textcolor{#f00}{\large \text{a high  probability  of  a   model   with   acceptable   calibration}}$ (function **'samplesizedev'**)
+2. $\textcolor{#f00}{\textbf{NEW:}}$ **Calculate the required sample size** to achieve a $\textcolor{#f00}{\text{a high  probability  of  a   model   with   acceptable   calibration}}$ (function **'samplesizedev'**)
 
 3. **Calculate the expected model performance** at a given sample size (function **'expected_performance'**)
 
@@ -75,7 +75,7 @@ This is a basic example which shows how to calculate:
 
 1.  the **sample size** to achieve a target expected calibration slope (e.g. target expected calibration slope **E(S)=0.9**)  or 
 
-2. $\textcolor{#f00}{\large \text{NEW:}}$ the **sample size**  to achieve a target probability of acceptable performance in terms of calibration (e.g. Probability of calibration slope $\in (0.85,1.15)$, **PrAP(S)=0.8**}
+2. $\textcolor{#f00}{\text{NEW:}}$ the **sample size**  to achieve a target probability of acceptable performance in terms of calibration (e.g. Probability of calibration slope $\in (0.85,1.15)$, **PrAP(S)=0.8**}
 
 3.  the **expected calibration slope, MAPE and other performance metrics** for a given sample size
 
@@ -87,7 +87,7 @@ library(samplesizedev)
 # ?expected_performance
 ```
 
-#### Calculation of sample size for given model characteristics, aiming for E(S)=0.9 
+#### Calculation of sample size for given model characteristics, aiming at $\textcolor{#f00}{ \text{ expected Calibration slope,  E(S)=0.9}}$ 
 
 ``` r
 # Calculate sample size for target calibration slope
@@ -112,7 +112,7 @@ the RvS overfitting formula  underestimates the sample size for high C-statistic
 be in fact lower than we had aim for this size.  We can verify this using the second command of our package, 'expected_performance'.
 
 
-#### Calculation of sample size for given model characteristics, aiming for Probability of acceptable calibrtion PrAP(S)=0.8 
+#### Calculation of sample size for given model characteristics, aiming at the $\textcolor{#f00}{ \text{Probability of acceptable calibrtion, PrAP(S)=0.8}}$ 
 
 ``` r
 # Calculate the sample size Size for Probability of Acceptable Performance (PAP=0.8),
@@ -123,7 +123,7 @@ samplesizedev(outcome="Binary", l_s= 0.85, u_s = 1.15, PAP_s = 0.8, phi = 0.2, c
 $sim
 [1] 699
 
-# $sim is the sample size calculated by simulation to ensure that PraP(S)=0.9
+# $sim is the sample size calculated by simulation to ensure that PrAP(S)=0.8
 ```
 
 The sample size calculated using simulation targetting at E(S)=0.9 is 500, while the sample size to ensure that PrAP(S)=0.8 is 699.
