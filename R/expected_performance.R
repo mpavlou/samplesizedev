@@ -47,8 +47,8 @@ expected_performance <- function(outcome="Binary", n, phi, c,  p,  gamma = rep(1
   n.predictors  <- p
   p             <- phi
 
-  if (outcome=="Binary" & length(x)==0)   performance <- expected_cs_mape_binary (n=n,  p=p, c=c,  n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel, method = method, long = long, approx = approx)
-  if (outcome=="Binary" & length(x)!=0)   performance <- expected_cs_mape_binary_xy (n=n,  p=p, c=c,  n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel, method = method, long = long, approx = approx, x=x, y=y)
+  if (outcome=="Binary" & length(x)==0)   performance <- expected_cs_mape_binary (n=n,  p=p, c=c,  n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel, method = method, long = long, approx = approx, threshold = threshold)
+  if (outcome=="Binary" & length(x)!=0)   performance <- expected_cs_mape_binary_xy (n=n,  p=p, c=c,  n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel, method = method, long = long, approx = approx, x=x, y=y, threshold = threshold)
 
   if (outcome=="Survival") performance <- expected_cs_survival (n=n, p=p, c=c,  n.predictors = n.predictors, nval = nval, nsim = nsim, parallel = parallel, method = method)
 
