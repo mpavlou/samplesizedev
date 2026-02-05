@@ -196,7 +196,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
       p_est    <- as.vector(invlogit(eta_est))
 
       # Set decision threshold
-      threshold <- p
+      # threshold <- p
       # Classify predictions
       pred_class <- ifelse(p_est >= threshold, 1, 0)
 
@@ -287,7 +287,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
       cest[i]          <- quickcstat(yval, p_est)
 
       # Set decision threshold
-      threshold <- p
+      # threshold <- p
       # Classify predictions
       pred_class <- ifelse(p_est >= threshold, 1, 0)
 
