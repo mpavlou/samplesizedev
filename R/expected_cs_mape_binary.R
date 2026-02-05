@@ -374,13 +374,13 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
                           round(stats::median(mape, na.rm = TRUE),4),
                           round(sqrt(stats::var(mape,na.rm = TRUE)), 4),
                           round(mean(opt, na.rm = TRUE),3),
-                          round(mean(cest, na.rm = TRUE),3),
+                          round(median(cest, na.rm = TRUE),3),
                           round(sqrt(stats::var(cest,na.rm = TRUE)), 4),
                           round(sqrt(var(ave_pred_risk, na.rm = TRUE)),3),
                           round(median(cs, na.rm = TRUE),3),
-                          round(mean(brier, na.rm = TRUE),3),
-                          round(mean(sens, na.rm = TRUE),3),
-                          round(mean(nb, na.rm = TRUE),3))
+                          round(median(brier, na.rm = TRUE),3),
+                          round(median(sens, na.rm = TRUE),3),
+                          round(median(nb, na.rm = TRUE),3))
 
                           # round(mean(heuristic, na.rm = TRUE),3),
                           # round(r2_cs_true,4),
