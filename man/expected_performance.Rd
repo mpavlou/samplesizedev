@@ -18,7 +18,8 @@ expected_performance(
   long = FALSE,
   approx = FALSE,
   x = NULL,
-  y = NULL
+  y = NULL,
+  threshold = phi
 )
 }
 \arguments{

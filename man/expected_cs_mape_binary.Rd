@@ -17,20 +17,6 @@ expected_cs_mape_binary(
   long = FALSE,
   approx = FALSE
 )
-
-expected_cs_mape_binary(
-  n,
-  p,
-  c,
-  n.predictors,
-  beta,
-  nsim = 1000,
-  nval = 25000,
-  method = "MLE",
-  parallel = TRUE,
-  long = FALSE,
-  approx = FALSE
-)
 }
 \arguments{
 \item{n}{(numeric) The sample size}
@@ -62,26 +48,10 @@ the expected calibration slope (mean_CS)
 the standard deviation of the CS (sd_CS)
 the probability of obtaining a miscalibrated model with calibration slope <0.8 (Pr(CS<0.8))
 the expected MAPE (MAPE)
-the standard deviation of MAPE (sd_MAPE)
-the expected optimism in R square Nagelgerke (optimism_R2_Nag)
-the c-statistic
-the standard deviation of the C-statistic
-the sensitivity at specified threshold
-the net benefit at specified threshold
-
-a data frame df with elements:
-theinut sample size
-the expected calibration slope (mean_CS)
-the standard deviation of the CS (sd_CS)
-the probability of obtaining a miscalibrated model with calibration slope <0.8 (Pr(CS<0.8))
-the expected MAPE (MAPE)
 the standard deviation of the expected MAPE (sd_MAPE)
 the expected optimism in R square Nagelgerke (optimism_R2_Nag)
 }
 \description{
-This function calculates the expected calibration slope and MAPE given key data and model characteristics
-(outcome prevalence, C-statistic and number of predictors). It takes approximately 15 seconds to run.
-
 This function calculates the expected calibration slope and MAPE given key data and model characteristics
 (outcome prevalence, C-statistic and number of predictors). It takes approximately 15 seconds to run.
 }
@@ -90,13 +60,7 @@ This function calculates the expected calibration slope and MAPE given key data 
 
 # Prefer parallel computing with >2 cores that ensure faster running
 # expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = TRUE)
-# expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = FALSE)
-
-# Prefer parallel computing with >2 cores that ensure faster running
-# expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, nsim = 100, parallel = TRUE)
 }
 \seealso{
-samplesizedev_binary samplesizedev_survival
-
 samplesizedev_binary samplesizedev_survival
 }

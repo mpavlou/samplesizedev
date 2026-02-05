@@ -41,7 +41,7 @@
 
 #'
 #'
-expected_performance <- function(outcome="Binary", n, phi, c,  p,  gamma = rep(1/p, p), nval = 25000, nsim = 1000, parallel = TRUE, method = "MLE", long=FALSE, approx = FALSE, x=NULL, y=NULL){
+expected_performance <- function(outcome="Binary", n, phi, c,  p,  gamma = rep(1/p, p), nval = 25000, nsim = 1000, parallel = TRUE, method = "MLE", long=FALSE, approx = FALSE, x=NULL, y=NULL, threshold=phi){
 
   beta          <- gamma
   n.predictors  <- p
