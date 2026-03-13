@@ -187,7 +187,7 @@ expected_cs_survival <- function(n, p, c, n.predictors, beta=rep(1/n.predictors,
   # prev      <- mean(yval)
   # cstat     <- quickcstat(yval, invlogit(mean + xval %*% beta))
 
-  df        <- data.frame(n, round(mean(cs, na.rm = TRUE)/0.0025) * 0.0025, round(sqrt(stats::var(cs,na.rm = TRUE)), 4), round(p, 2), round(c, 2 ) )
+  df        <- data.frame(n, round(median(cs, na.rm = TRUE)/0.0025) * 0.0025, round(sqrt(stats::var(cs,na.rm = TRUE)), 4), round(p, 2), round(c, 2 ) )
   names(df) <- c("N", "Expected CS", "SD(CS)", "Proportion of events", "C-index")
 
   #performance <- df[,-3]
