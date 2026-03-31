@@ -15,7 +15,8 @@ expected_cs_mape_binary(
   method = "MLE",
   parallel = TRUE,
   long = FALSE,
-  approx = FALSE
+  approx = FALSE,
+  threshold
 )
 }
 \arguments{
