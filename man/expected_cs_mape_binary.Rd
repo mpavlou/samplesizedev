@@ -16,7 +16,8 @@ expected_cs_mape_binary(
   parallel = TRUE,
   long = FALSE,
   approx = FALSE,
-  threshold
+  threshold,
+  individual_predicted_probability
 )
 }
 \arguments{
@@ -36,15 +37,15 @@ expected_cs_mape_binary(
 
 \item{method}{(character) the fitting method. "MLE" is the default and currently only option, but others will be added in future versions}
 
-\item{parallel}{(numeric) relative strength of predictor variables (same length as n_predictors)}
+\item{parallel}{(logical) parallel processing to speed up computations (default=TRUE)}
 
 \item{long}{(logical) Extract all simulations instead of just averages}
 
-\item{approx}{(logical) Extract all simulations instead of just averages}
+\item{gamma}{(numeric) relative strength of predictor variables (same length as n_predictors)}
 }
 \value{
 a data frame df with elements:
-theinut sample size
+the input sample size
 the expected calibration slope (mean_CS)
 the standard deviation of the CS (sd_CS)
 the probability of obtaining a miscalibrated model with calibration slope <0.8 (Pr(CS<0.8))

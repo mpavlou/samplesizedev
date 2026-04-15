@@ -17,7 +17,9 @@ samplesizedev(
   gamma = rep(1/p, p),
   nval = 25000,
   nsim = 1000,
-  parallel = TRUE
+  parallel = TRUE,
+  plot = TRUE,
+  quick = TRUE
 )
 }
 \arguments{
@@ -46,6 +48,8 @@ samplesizedev(
 \item{nsim}{(numeric) The number of simulations (default=1000; use at least 500 to ensure small simulation error)}
 
 \item{parallel}{(logical) parallel processing to speed up computations (default=TRUE)}
+
+\item{plot}{(logical) Show figures for intermediate plots (default=TRUE)}
 }
 \value{
 n$sim: the required sample size by simulation

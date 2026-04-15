@@ -1,0 +1,19 @@
+find_n_prap_s <- function(c, p, mean, variance, n.predictors, l_s=0.85, u_s=1.15, PAP_s = 0.8, min.opt = 0.1, max.opt = 0.99){
+
+  c_adj <- adjusted_c_mu_sigma(mean, variance, n.predictors, p)
+
+  prob <- function(S){
+    n  <- (n.predictors)/ ((S-1)*log(1-  c_adj[2]/S));
+    se <- sqrt(S/ (2*p*(1-p)*stats::qnorm(c_adj[1])^2 *n) + 2*S^2/(n-2))
+
+    zz <- 1-(stats::pnorm( (l_s-S)/se) +pnorm( (S-u_s)/se) )
+    abs(zz - PAP_s)
+  }
+
+  s_est <- stats::optimize(prob, c(min.opt, max.opt, tol = 0.0001))$minimum
+  n <- (n.predictors)/ ((s_est-1)*log(1 - c_adj[2]/s_est))
+  se<- sqrt(s_est/ (2 * p * (1-p) * stats::qnorm(c_adj[1])^2 *n) + 2 * s_est^2/(n-2))
+  probability <- 1-(stats::pnorm( (l_s-s_est)/se) + stats::pnorm( (s_est-u_s)/se) )
+  c(round(n), s_est, se,probability)
+
+}

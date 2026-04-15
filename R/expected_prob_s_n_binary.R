@@ -1,4 +1,4 @@
-expected_prob_s_n_binary <- function(n, l_s, u_s, PAP_s, mean_eta, variance_eta,  p, c, n.predictors, beta, nsim, nval, parallel){
+expected_prob_s_n_binary <- function(n, l_s, u_s, PAP_s, mean_eta, variance_eta,  p, c, n.predictors, beta, nsim, nval, parallel, plot){
 
   set.seed(2022)
 
@@ -68,7 +68,7 @@ expected_prob_s_n_binary <- function(n, l_s, u_s, PAP_s, mean_eta, variance_eta,
     ggplot2::xlab("Calibration Slope")
 
   if ( abs(mean(cs, na.rm=TRUE)- 0.9) > 0.005)   cs_plot <-  cs_plot + ggplot2::geom_vline( ggplot2::aes(xintercept = 0.9), color="red", linetype ="dashed", size = 1)
-  print(cs_plot)
+  if (plot == TRUE) print(cs_plot)
   c(round(mean(cs,na.rm=TRUE)/0.0025)*0.0025, sqrt(stats::var(cs)/nsim))
 
 

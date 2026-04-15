@@ -13,7 +13,9 @@ samplesizedev_binary_s(
   beta = rep(1/n.predictors, n.predictors),
   nval = 25000,
   nsim = 1000,
-  parallel = TRUE
+  parallel = TRUE,
+  plot = TRUE,
+  quick = TRUE
 )
 
 samplesizedev_binary_s(
@@ -24,7 +26,9 @@ samplesizedev_binary_s(
   beta = rep(1/n.predictors, n.predictors),
   nval = 25000,
   nsim = 1000,
-  parallel = TRUE
+  parallel = TRUE,
+  plot = TRUE,
+  quick = TRUE
 )
 }
 \arguments{
@@ -41,6 +45,8 @@ samplesizedev_binary_s(
 \item{nsim}{(numeric) The number of simulations (at least 500, default value 1000 to ensure small simulation error)}
 
 \item{parallel}{(logical) parallel processing to speed up computations (default=TRUE)}
+
+\item{plot}{(logical) figures for intermediate plots (default=TRUE)}
 }
 \value{
 n: the required sample size

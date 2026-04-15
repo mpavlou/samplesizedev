@@ -1,10 +1,21 @@
 ##################################################################
-# Find mean and variance of linear predictor for given prevalence
-# and C-statistic
 
-invlogit <- function(x) 1/(1+exp(-x))
+#' Calculate the means and variance of a normal linear predictor given values of C and prevalence
 
-logit <-function(x) log(x/(1-x))
+#' @description
+#' This function calculates the mean and variance of a normal linear predictor that corresponds to the specified values of C and prevalence (binary outcome).
+#'
+
+#' @param target.prev (numeric) The target prevalence
+#' @param target.c (numeric) The target aUC
+#' @param check (logical) check using a large dataset whether mean and variance correspond to the target values
+
+#' @return   mean
+#' @return   variance
+#' @return   resulting C-statistic (if check = TRUE)
+#' @return   resulting prevalence (if check = TRUE)
+
+#' @export
 
 
 find_mu_sigma2 <- function(target.prev, target.c, min.opt = c(-10,0), max.opt = c(0.02,5), tol = 0.00001, check=FALSE){
