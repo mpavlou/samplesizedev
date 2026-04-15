@@ -19,7 +19,8 @@ expected_performance(
   approx = FALSE,
   x = NULL,
   y = NULL,
-  threshold = phi
+  threshold = phi,
+  individual_quantile = 0.5
 )
 }
 \arguments{
@@ -37,30 +38,56 @@ expected_performance(
 
 \item{nval}{(numeric) Size of validation data (default=25000; use at least 10000)}
 
-\item{nsim}{(numeric) The number of simulations (default=1000; use at least 500 to ensure small simulation error)}
+\item{nsim}{(numeric) The number of simulations (default=1000; use at least 500 to ensure small Monte Carlo simulation error)}
 
 \item{parallel}{(logical) parallel processing to speed up computations (default=TRUE)}
 
 \item{method}{(character) the fitting method (default="MLE"; currently the only option. Other fitting methods will be added in future versions)}
 
 \item{long}{(logical) Extract results for all simulations instead of just averages}
+
+\item{threshold}{(numeric) A threshold to calculate sensitivity (default=outcome prevalence)}
+
+\item{individual_quantile}{(numeric) A quantile of the probability distribution (default 0.5) to obtain the uncertainty in the corresponding individual predicted probability due to finite sample size}
 }
 \value{
-a data frame df with the following elements:
+Data frame df with the following elements:
 
-input sample size (n)
+Input sample size (n)
 
-expected calibration slope (mean_CS)
+Specified outcome prevalence
 
-standard deviation of the CS (sd_CS)
+Specified AUC
 
-the probability of obtaining a mis-calibrated model with calibration slope <0.8 (Pr(CS<0.8))
+Specified Number of predictors
 
-the expected MAPE (MAPE)
+Expected calibration slope (mean_CS)
 
-the standard deviation of the expected MAPE (sd_MAPE)
+Standard deviation of the CS (sd_CS)
 
-the expected optimism in R square Nagelgerke (optimism_R2_Nag)
+Probability of obtaining a model with calibration slope between 0.85 and 1.15
+
+Expected MAPE (MAPE)
+
+Standard deviation of the expected MAPE (sd_MAPE)
+
+Expected optimism in R square Nagelgerke (optimism_R2_Nag)
+
+Expected AUC
+
+Standard deviation of the expected AUC
+
+Standard deviation of the average predicted risk
+
+Expected Brier score
+
+Sensitivity at the specified threshold (Sensitivity)
+
+Net-Benefit at the specified threshold
+
+Expected Individual predicted risk at the specified percentile
+
+Standard deviation of the Individual predicted risk
 }
 \description{
 This function calculates the expected calibration slope and MAPE given key data and model characteristics

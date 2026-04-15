@@ -16,7 +16,8 @@ expected_cs_mape_binary(
   parallel = TRUE,
   long = FALSE,
   approx = FALSE,
-  threshold
+  threshold,
+  individual_quantile
 )
 }
 \arguments{

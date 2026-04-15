@@ -14,7 +14,9 @@ samplesizedev_binary_prob_s(
   beta = rep(1/n.predictors, n.predictors),
   nval = 25000,
   nsim = 1000,
-  parallel = TRUE
+  parallel = TRUE,
+  plot = TRUE,
+  quick
 )
 }
 \arguments{

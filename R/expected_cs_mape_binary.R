@@ -11,16 +11,12 @@
 #' @param nval (numeric) Size of validation data
 #' @param parallel (logical) parallel processing to speed up computations (default=TRUE)
 #' @param method (character) the fitting method. "MLE" is the default and currently only option, but others will be added in future versions
-#' @param parallel (numeric) relative strength of predictor variables (same length as n_predictors)
+#' @param gamma (numeric) relative strength of predictor variables (same length as n_predictors)
 #' @param beta (numeric) Strength of predictors (same length as n.predictors)
 #' @param long (logical) Extract all simulations instead of just averages
-#' @param approx (logical) Extract all simulations instead of just averages
 
-
-
-#'
 #' @return a data frame df with elements:
-#'             theinut sample size
+#'             the input sample size
 #'             the expected calibration slope (mean_CS)
 #'             the standard deviation of the CS (sd_CS)
 #'             the probability of obtaining a miscalibrated model with calibration slope <0.8 (Pr(CS<0.8))
@@ -40,7 +36,7 @@
 #'
 #'
 #'
-expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nval = 25000, method ="MLE", parallel = TRUE, long = FALSE, approx=FALSE, threshold){
+expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nval = 25000, method ="MLE", parallel = TRUE, long = FALSE, approx=FALSE, threshold, individual_quantile){
 
   # Find mean and variance of for Normal linear predictor
   # beta=rep(1/n.predictors, n.predictors)
@@ -68,6 +64,35 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   eta        <- mean+x%*% beta
   y          <- stats::rbinom(ncalc,  1, invlogit(eta))
 
+  # index of closest value
+  idx        <- which.min(abs(eta - quantile(eta, p=individual_quantile)))
+  x_quantile      <- x[idx, ]
+  p_quantile_true <- as.vector(invlogit(mean + x_quantile%*%beta))
+  p_true     <- as.vector(invlogit(mean + x%*%beta))
+
+
+  # quantiles you want
+  quant_grid <- seq(0.1, 0.9, by = 0.01)
+
+  ord <- order(eta)
+  eta_sorted <- eta[ord]
+  x_sorted   <- x[ord, , drop = FALSE]
+
+  eta_q <- quantile(eta, probs = quant_grid)
+
+  idx <- findInterval(eta_q, eta_sorted)
+  idx <- pmax(1, pmin(idx, length(eta_sorted)))
+
+  x_quantile_all <- x_sorted[idx, , drop = FALSE]
+
+  # corresponding true probabilities at those points
+  p_quantile_true_all <- as.vector(invlogit(mean + x_quantile_all %*% beta))
+
+  i_individual    <- which.min(abs(quant_grid - individual_quantile))
+
+  #reduce to one
+  x_quantile      <- x_quantile_all[ i_individual, , drop = FALSE]
+  p_quantile_true <- p_quantile_true_all[ i_individual]
 
   a          <- RcppNumerical::fastLR(cbind(1,x), y)
   L1         <- a$loglikelihood
@@ -82,8 +107,8 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   x          <- mvtnorm::rmvnorm(ncalc, rep(0, n.predictors), sigma = sigma )
   eta        <- mean+x%*% beta
   y          <- stats::rbinom(ncalc,  1, invlogit(eta))
-  fit <- glm(y~x, family=binomial())
-  varbeta <- vcov(fit)
+  fit        <- glm(y~x, family=binomial())
+  varbeta    <- vcov(fit)
   sampbeta <- rmvnorm(nsim, c(mean, beta), sigma = varbeta*ncalc/n)
   }
 
@@ -119,16 +144,18 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   `%dopar%` <- foreach::`%dopar%`
   `%do%` <- foreach::`%do%`
 
-  cs            <- NULL
-  mape          <- NULL
-  opt           <- NULL
-  r2_app        <- NULL
-  heuristic     <- NULL
-  ave_pred_risk <- NULL
-  cest          <- NULL
-  brier         <- NULL
-  sens          <- NULL
-  nb            <- NULL
+  cs             <- NULL
+  mape           <- NULL
+  opt            <- NULL
+  r2_app         <- NULL
+  heuristic      <- NULL
+  ave_pred_risk  <- NULL
+  cest           <- NULL
+  brier          <- NULL
+  sens           <- NULL
+  nb             <- NULL
+  p_quantile     <- NULL
+  p_quantile_all <- matrix(NA, nrow = nsim, ncol = length(quant_grid))
 
   i    <- 0
 
@@ -159,10 +186,10 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
         return(auc.true)
       }
 
-      x        <- mvtnorm::rmvnorm(round(n), rep(0, n.predictors), sigma = sigma )
-      y        <- stats::rbinom(round(n),  1, invlogit(mean + x%*%beta))
-      yval     <- stats::rbinom(nval, 1, invlogit(mean + xval%*%beta))
-      p_true   <- as.vector(invlogit(mean + xval%*%beta))
+      x          <- mvtnorm::rmvnorm(round(n), rep(0, n.predictors), sigma = sigma )
+      y          <- stats::rbinom(round(n),  1, invlogit(mean + x%*%beta))
+      yval       <- stats::rbinom(nval, 1, invlogit(mean + xval%*%beta))
+      p_true     <- as.vector(invlogit(mean + xval%*%beta))
 
 
       r2_cs_app <- NA
@@ -213,11 +240,14 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
       r2_app[i]        <- r2_cs_app
       ave_pred_risk[i] <- mean(p_est)
       cest[i]          <- quickcstat(yval, p_est)
-      nb[i]           <- (TP / nval) - (FP / nval) * (threshold / (1 - threshold))  #net benefit
-      sens[i]         <- (TP / sum(yval))
+      nb[i]            <- (TP / nval) - (FP / nval) * (threshold / (1 - threshold))  #net benefit
+      sens[i]          <- (TP / sum(yval))
+      p_quantile[i]         <- as.vector(invlogit(c(1,x_quantile)%*%as.vector(a$coef)))
+      p_quantile_all_i <- as.vector(invlogit(cbind(1, x_quantile_all) %*% as.vector(a$coef)))
 
 
-      c(cs[i], mape[i], opt[i], heuristic[i], r2_app[i],  ave_pred_risk[i], cest[i], brier[i], sens[i], nb[i])
+      c(cs[i], mape[i], opt[i], heuristic[i], r2_app[i],  ave_pred_risk[i], cest[i], brier[i], sens[i], nb[i],   p_quantile[i],  p_quantile_all_i)
+
 
     }
 
@@ -285,6 +315,8 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
       r2_app[i]        <- NA
       ave_pred_risk[i] <- mean(p_est)
       cest[i]          <- quickcstat(yval, p_est)
+      p_quantile[i]         <- as.vector(invlogit(c(1,x_quantile)%*%betasf))
+      p_quantile_all_i <- as.vector(invlogit(cbind(1, x_quantile_all) %*% as.vector(betasf)))
 
       # Set decision threshold
       # threshold <- p
@@ -299,9 +331,169 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
       sens[i]         <- (TP / sum(yval))
 
 
-      c(cs[i], mape[i], opt[i], heuristic[i], r2_app[i],  ave_pred_risk[i], cest[i], brier[i], sens[i], nb[i])
+      c(cs[i], mape[i], opt[i], heuristic[i], r2_app[i],  ave_pred_risk[i], cest[i], brier[i], sens[i], nb[i],   p_quantile[i],  p_quantile_all_i)
 
     }
+  }  else if (method == "ridge" | method=="lasso") {
+
+    a<- foreach::foreach(i = 1:nsim,
+                         .packages=c('mvtnorm','RcppNumerical', 'ggplot2','glmnet','foreach')) %dopar% {
+
+      set.seed(i)
+      invlogit <- function(x) 1/(1+exp(-x))
+
+      # Approximation of the C-statistic (Large n)
+
+      quickcstat <- function(y, pred, seed=1){
+        #set.seed(seed)
+        casepred=pred[y == 1]
+        conpred=pred[y == 0]
+
+        if (length(conpred)>length(casepred)){
+          conpred=conpred[sample(length(conpred),length(casepred),replace=FALSE)]
+          auc.true=sum(casepred>conpred)/length(casepred)} else
+          {
+            casepred=casepred[sample(length(casepred),length(conpred),replace=FALSE)]
+            auc.true=sum(casepred>conpred)/length(conpred)
+          }
+
+        return(auc.true)
+      }
+
+      mod_penal_ave_foreach <- function(x, y, bn=50, method=method, f = nfolds/(nfolds-1)-1,
+                                        parallel=TRUE, nfolds=10, boot=TRUE){
+
+        if (method=="lasso") a=1
+        if (method=="ridge") a=0
+
+        pred        <- NULL ; beta.boot   <- NULL
+        lambda.boot <- NULL ; cv.boot     <- NULL
+        yval        <- y
+        xval        <- x
+        npred       <- ncol(x)
+        data        <- cbind(x,y)
+
+        fit <- glmnet(x, y, type.measure = "deviance", family = "binomial", alpha = a, standardize = TRUE, parallel = T)
+
+        # Obtain the default sequence of lambda, and include some smaller values too
+        lambdaseq <- fit$lambda
+        lambdaseq <- unique(c(lambdaseq, seq( lambdaseq[length(lambdaseq)], lambdaseq[length(lambdaseq)]/20,
+                                              -lambdaseq[length(lambdaseq)]/20 )))
+
+        # cvd is the cross-validated deviance obtained in each of the 'over-sampled datasets'
+        cvd <- NULL
+
+        cv.boot <- foreach(i=1:bn, .combine='rbind', .packages=c('MASS','RcppNumerical', 'pROC', 'brglm2', 'detectseparation',
+                                                                 'RcppNumerical', 'logistf', 'glmnet')) %dopar% {
+
+
+                                                                   withwarnings <- function(expr) {
+
+                                                                     val        <- NULL
+                                                                     myWarnings <- NULL
+                                                                     wHandler   <- function(w) {
+                                                                       myWarnings <<- c(myWarnings, w$message)
+                                                                       invokeRestart("muffleWarning")
+                                                                     }
+
+                                                                     myError  <- NULL
+                                                                     eHandler <- function(e) {
+                                                                       myError <<- e$message
+                                                                       NULL
+                                                                     }
+                                                                     val <- tryCatch(withCallingHandlers(expr, warning = wHandler), error = eHandler)
+                                                                     list(value = val, warnings = myWarnings, error=myError)
+                                                                   }
+
+                                                                   bs     <- sample(nrow(data), replace=T)
+                                                                   databs <- data[bs,]
+
+                                                                   if (boot==FALSE) databs<-data
+
+                                                                   if (f==0) databs  <- data else
+                                                                   {
+
+                                                                     bs2     <- sample(nrow(data)*f, replace=T)
+                                                                     databs2 <- data[bs2,]
+                                                                     databs  <- rbind(databs,databs2)
+                                                                   }
+
+                                                                   xbs   <- databs[,1:npred]
+                                                                   ybs   <- databs[,npred+1]
+
+                                                                   fitbs <- withwarnings(cv.glmnet(xbs, ybs, type.measure = "deviance", family = "binomial", alpha = a, nfolds = nfolds,
+                                                                                                   standardize = TRUE, parallel = parallel, lambda = lambdaseq))
+
+
+                                                                   if ( length(fitbs$error) == 0 ) {
+                                                                     fitbs  <- fitbs$value
+                                                                     cvd    <- fitbs$cvm
+
+                                                                   } else
+
+                                                                   {
+                                                                     cvd <- cvd
+                                                                   }
+
+                                                                   rbind(cvd)
+
+                                                                 }
+
+        b <- cbind(lambdaseq, colMeans(cv.boot, na.rm = TRUE))
+
+        # Selected the value of lambda that minimises the cross-validated deviance
+
+        lambda.boot <- b[order(b[,2]),] [1,1]
+
+
+        # Obtain the solution using ridge/lasso at the selected value of lambda for the *original data*
+
+        fit <- glmnet(x, y, type.measure = "deviance", family = "binomial", alpha = a, standardize = TRUE,
+                      parallel = T, lambda = lambdaseq)
+
+        beta.boot   <- as.vector(coef(fit, s = lambda.boot) )
+
+        return(list("beta.boot" = beta.boot, "lambda.boot" = lambda.boot))
+      }
+
+      x        <- mvtnorm::rmvnorm(round(n), rep(0, n.predictors), sigma = sigma )
+      y        <- stats::rbinom(round(n),  1, invlogit(mean + x%*%beta))
+      yval     <- stats::rbinom(nval, 1, invlogit(mean + xval%*%beta))
+      p_true   <- as.vector(invlogit(mean + xval%*%beta))
+
+      pen       <-  mod_penal_ave_foreach(x=x, y=y, method=method, bn=5, nfolds=10)
+
+      eta_est  <- cbind(1, xval) %*% as.vector(pen$beta.boot)
+      p_est    <- as.vector(invlogit(eta_est))
+
+      # Set decision threshold
+      # threshold <- p
+      # Classify predictions
+      pred_class <- ifelse(p_est >= threshold, 1, 0)
+
+      # Calculate TP, FP, and N
+      TP <- sum(pred_class == 1 & yval == 1)
+      FP <- sum(pred_class == 1 & yval == 0)
+
+      fit              <- RcppNumerical::fastLR(cbind(1,eta_est), yval, start = c(0,0.9) )
+      cs[i]            <- fit$coef[2]
+      mape[i]          <- mean(abs(p_true-p_est))
+      brier[i]         <- mean((p_est-yval)^2)
+      opt[i]           <- NA
+      heuristic[i]     <- NA
+      r2_app[i]        <- NA
+      ave_pred_risk[i] <- mean(p_est)
+      cest[i]          <- quickcstat(yval, p_est)
+      nb[i]           <- (TP / nval) - (FP / nval) * (threshold / (1 - threshold))  #net benefit
+      sens[i]         <- (TP / sum(yval))
+      p_quantile[i]         <- as.vector(invlogit(c(1,x_quantile)%*%as.vector(pen$beta.boot)))
+      p_quantile_all_i <- as.vector(invlogit(cbind(1, x_quantile_all) %*% as.vector(pen$beta.boot)))
+
+
+      c(cs[i], mape[i], opt[i], heuristic[i], r2_app[i],  ave_pred_risk[i], cest[i], brier[i], sens[i], nb[i],   p_quantile[i],  p_quantile_all_i)
+
+    }
+
   }
 
 
@@ -319,16 +511,25 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   brier         <- b[,8]
   sens          <- b[,9]
   nb            <- b[,10]
+  p_quantile    <- b[,11]
 
+  res_mat <- do.call(rbind, a)
+
+  p_quantile_all <- res_mat[, (12:ncol(res_mat))]
 
 
   df        <- data.frame(cs)
   df        <- stats::na.omit(df)
   cs_plot   <- ggplot2:: ggplot(df,  ggplot2::aes(x = cs), size=12) +
-    ggplot2::geom_density() +  ggplot2::ggtitle(paste("Mean Calibration Slope = ",round(mean(cs,na.rm=TRUE),3))) +
+    ggplot2::geom_density() +  ggplot2::ggtitle(paste("Median CS = ",round(median(cs,na.rm=TRUE),2), ", Pr(0.85<CS<1.15) = ", round(mean(ifelse( (cs > 0.85 & cs <1.15), 1, 0),na.rm=TRUE), 2) )) +
     ggplot2::geom_vline( ggplot2::aes(xintercept = mean(cs, na.rm = TRUE)), color="blue", linetype ="dashed", size = 1) +
     ggplot2::ylab("Density") +  ggplot2::theme(text =  ggplot2::element_text(size = 13)) +
-    ggplot2::xlab("Calibration Slope") + ggplot2::theme_bw()+  ggplot2::theme(legend.position="bottom")
+    ggplot2::xlab("Calibration Slope") + ggplot2::theme_bw()+  ggplot2::theme(legend.position="bottom")+
+    ggplot2::theme(axis.text=ggplot2::element_text(size=10),
+                   axis.title=ggplot2::element_text(size=10))+
+    ggplot2::theme(plot.title =  ggplot2::element_text(size = 10)) +
+    ggplot2::scale_x_continuous(limits = c(0.6, 1.4), breaks=c(0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4))
+
 
   if ( abs(mean(cs, na.rm=TRUE)- 0.9) > 0.005)   cs_plot <-  cs_plot + ggplot2::geom_vline( ggplot2::aes(xintercept = 0.9), color="red", linetype ="dashed", size = 1)
 
@@ -337,19 +538,177 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   df        <- data.frame(mape)
   df        <- stats::na.omit(df)
   mape_plot <- ggplot2::ggplot(df,  ggplot2::aes(x = mape), size=12) +
-    ggplot2::geom_density() + ggplot2::ggtitle(paste("Mean MAPE = ", round(mean(mape,na.rm=TRUE),3), sep = "")) +
+    ggplot2::geom_density() + ggplot2::ggtitle(paste("Median MAPE = ", round(median(mape,na.rm=TRUE),3), sep = "")) +
     ggplot2::geom_vline( ggplot2::aes(xintercept=mean(mape, na.rm = TRUE)), color="blue", linetype = "dashed", size=1) + ggplot2::ylab("Density") +
-    ggplot2::theme(text =  ggplot2::element_text(size = 13)) +ggplot2::xlab("MAPE") +
-    ggplot2::theme_bw()+ ggplot2::theme(legend.position="bottom")
+    ggplot2::theme(text =  ggplot2::element_text(size = 12)) +ggplot2::xlab("MAPE") + ggplot2::theme_bw()+
+    ggplot2::theme(axis.text=ggplot2::element_text(size=10),
+                   axis.title=ggplot2::element_text(size=10))+
+    ggplot2::theme(plot.title =  ggplot2::element_text(size = 10))
 
-  figure  <- ggpubr::ggarrange(cs_plot, mape_plot,
-                               ncol = 2, nrow = 1, common.legend = TRUE, legend="bottom")
+  # Predicted Probability
 
-  cs_mape_plot <- ggpubr::annotate_figure(figure,
-                                          top = ggpubr::text_grob(paste("Distribution of the Calibration Slope and MAPE\n","N=", n, ", Prevalence=", p, ", C-stat=",c,sep=""),
-                                                                  color = "black", face = "bold", size = 13)) + ggplot2::xlab("MAPE")
+  df        <- data.frame(p_quantile)
+  df        <- stats::na.omit(df)
+  p_plot <- ggplot2::ggplot(df,  ggplot2::aes(x =   p_quantile), size=10) +
+    ggplot2::geom_density() + ggplot2::ggtitle(paste("Sampling distribution of IPP=", round(  p_quantile_true,3), "\nMedian IPP = ", round(median( p_quantile,na.rm=TRUE),3), sep = "",
+                                                     "\n95% CI IPP = (", round(quantile(  p_quantile,p=0.025),3),", ", round(quantile(  p_quantile,p=0.975),3), ") ; ", "Width = ", round(quantile(  p_quantile,p=0.975)-quantile(  p_quantile,p=0.025),3) )) +
+    ggplot2::geom_vline( ggplot2::aes(xintercept=median(  p_quantile, na.rm = TRUE)), color="blue", linetype = "dashed", size=1) + ggplot2::ylab("Density") +
+    ggplot2::theme(text =  ggplot2::element_text(size = 10)) +ggplot2::xlab("Predicted Probability") +
+    ggplot2::theme_bw()+ ggplot2::theme(legend.position="bottom")+
+    ggplot2::theme(axis.text=ggplot2::element_text(size=10),
+          axis.title=ggplot2::element_text(size=10)) +
+    ggplot2::theme(plot.title =  ggplot2::element_text(size = 10)) +
+    # ggplot2::scale_x_continuous(limits = c(max(0,quantile(  p_quantile,p=0.00001)), min(quantile(  p_quantile,p=0.999),1)))
+    ggplot2::scale_x_continuous(limits = c(0, min(quantile(  p_quantile,p=0.999),1)))
 
-  print(cs_mape_plot)
+  # True probability distribution
+  df        <- data.frame(p_true)
+  df        <- stats::na.omit(df)
+  p_true_plot <- ggplot2::ggplot(df,  ggplot2::aes(x = p_true), size=10) +
+    ggplot2::geom_density() + ggplot2::ggtitle(paste("True Probability distribution")) +
+    ggplot2::geom_vline( ggplot2::aes(xintercept=  p_quantile_true), color="blue", linetype = "dashed", size=1) + ggplot2::ylab("Density") +
+    ggplot2::theme(text =  ggplot2::element_text(size = 10)) +ggplot2::xlab("True Probabilities") +
+    ggplot2::theme_bw()+ ggplot2::theme(legend.position="bottom")+
+    ggplot2::theme(axis.text=ggplot2::element_text(size=10),
+                   axis.title=ggplot2::element_text(size=10))+
+    ggplot2::theme(plot.title =  ggplot2::element_text(size = 10))+
+    # ggplot2::scale_x_continuous(limits = c(0,4.5*phi))
+    ggplot2::scale_x_continuous(limits = c(max(0,quantile(p_true,p=0.001)), min(quantile(p_true,p=0.999),1)))
+
+
+
+  # All quantiles plot
+
+  p_median <- apply(p_quantile_all, 2, median)
+  p_q25    <- apply(p_quantile_all, 2, quantile, 0.25)
+  p_q75    <- apply(p_quantile_all, 2, quantile, 0.75)
+
+  df <- data.frame(
+    q = quant_grid,
+    med = p_median,
+    lo = p_q25,
+    hi = p_q75,
+    true =   p_quantile_true_all
+  )
+
+  p_plot_quantiles_all <- ggplot2::ggplot(df, ggplot2::aes(x = q, y = med)) +
+    ggplot2::geom_line(color = "blue", linewidth = 1.2) +
+    ggplot2::geom_errorbar(
+      ggplot2::aes(ymin = lo, ymax = hi),
+      width = 0.005,
+      color = "blue"
+    ) +     ggplot2::theme_bw()+
+    ggplot2::labs(x = "Quantile", y = "Predicted probability") +
+    ggplot2::theme(axis.text=ggplot2::element_text(size=10),
+                   axis.title=ggplot2::element_text(size=10)) +
+    ggplot2::theme(plot.title =  ggplot2::element_text(size = 10))
+
+
+  df <- data.frame(
+    q = quant_grid,
+    med = p_median,
+    lo = p_q25,
+    hi = p_q75,
+    true =   p_quantile_true_all
+  )
+
+
+  p_plot_quantiles_all <- ggplot2::ggplot(df, ggplot2::aes(x = q)) +
+
+    # median estimated curve
+    ggplot2::geom_line(
+      ggplot2::aes(y = med),
+      color = "blue",
+      linewidth = 1.2
+    ) + ggplot2::geom_line(
+      ggplot2::aes(y = true),
+      color = "red",
+      linewidth = 1.2,
+      linetype = "dashed"
+    ) +
+
+    # vertical IQR bars
+    ggplot2::geom_errorbar(
+      ggplot2::aes(ymin = lo, ymax = hi),
+      width = 0.005,
+      color = "blue",
+      alpha = 0.5
+    ) +
+
+    ggplot2::labs(
+      x = "Quantile",
+      y = "Predicted probability"
+    ) +  ggplot2::theme_bw()+
+    ggplot2::theme(axis.text=ggplot2::element_text(size=10),
+                   axis.title=ggplot2::element_text(size=10)) +
+    ggplot2::theme(plot.title =  ggplot2::element_text(size = 10))
+
+
+
+
+  # Get max density to scale placement nicely
+  y_max <- max(ggplot2::ggplot_build(p_true_plot)$data[[1]]$density)
+
+  x_offset <- 0.04
+  y_offset <- y_max * 0.25
+
+  p_true_plot <- p_true_plot +
+    ggplot2::annotate(
+      "segment",
+      x =   p_quantile_true + x_offset,
+      y = y_max * 0.9,
+      xend =   p_quantile_true,
+      yend = y_max * 0.9 - y_offset,   # ensures diagonal (~45°)
+      arrow = grid::arrow(length = grid::unit(0.25, "cm")),
+      color = "red"
+    ) +
+    ggplot2::annotate(
+      "text",
+      x =   p_quantile_true + x_offset,
+      y = y_max * 0.95,
+      label = paste("IPP=",round(  p_quantile_true,3), "\n (",individual_quantile*100,"-th percentile)", sep=""),
+      color = "red",
+      hjust = 0,
+      size=3
+    )
+
+  # ---- CS + MAPE ----
+  figure1 <- ggpubr::ggarrange(
+    cs_plot, mape_plot,
+    ncol = 2, nrow = 1,
+    common.legend = TRUE,
+    legend = "bottom"
+  )
+
+  cs_mape_plot <- ggpubr::annotate_figure(
+    figure1,
+    top = ggpubr::text_grob(
+      sprintf(
+        "Sampling Distribution of CS and MAPE (nsims=%s) \nMethod=%s, N=%s, Prevalence=%s, C-stat=%s, No Predictors=%s",
+        nsim, method, n, p, c, n.predictors
+      ),
+      color = "black", face = "bold", size = 10
+    )
+  )
+
+  # ---- Probability plots ----
+  figure2 <- ggpubr::ggarrange(
+    p_true_plot, p_plot, p_plot_quantiles_all,
+    ncol = 3, nrow = 1, widths= c(3,4,4)
+  )
+
+  prob_plot <- ggpubr::annotate_figure(
+    figure2,
+    top = ggpubr::text_grob(
+      sprintf("\n Uncertainty/Stability of Individual Predicted Probabilities (IPP)"),
+      color = "black", face = "bold", size = 10))
+
+  final_plot <- ggpubr::ggarrange(
+    cs_mape_plot, prob_plot,
+    ncol = 1, nrow = 2
+  )
+
+  print(final_plot)
 
   set.seed(2022)
 
@@ -380,13 +739,19 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
                           round(median(cs, na.rm = TRUE),3),
                           round(median(brier, na.rm = TRUE),3),
                           round(median(sens, na.rm = TRUE),3),
-                          round(median(nb, na.rm = TRUE),3))
+                          round(median(nb, na.rm = TRUE),3),
+                          round(median(  p_quantile, na.rm = TRUE),3),
+                          round(sqrt(stats::var(  p_quantile,na.rm = TRUE)), 3)
+                          )
 
                           # round(mean(heuristic, na.rm = TRUE),3),
                           # round(r2_cs_true,4),
                           # round(mean(r2_app,na.rm=TRUE)*mean(cs, na.rm = TRUE),4),
 
-  names(df) <- c("n","True prevalence", "True c-statistic", "Number of predictors","---------------------------",  "Mean_calibration_slope", "SD(CS)", "Pr(0.85<CS<1.15)", "Mean_MAPE",  "SD(MAPE)", "Optimism_R2_Nag", "Mean_AUC", "SD(AUC)", "SD(Average Predicted Risk)", "Median CS", "Brier", "Sensitivity", "NB")
+  names(df) <- c("n","True prevalence", "True c-statistic", "Number of predictors","---------------------------",
+                 "Mean_calibration_slope", "SD(CS)", "Pr(0.85<CS<1.15)", "Mean_MAPE",  "SD(MAPE)", "Optimism_R2_Nag",
+                 "Mean_AUC", "SD(AUC)", "SD(Average Predicted Risk)", "Median CS", "Brier", "Sensitivity", "NB",
+                 "Individual Predicted risk", "SD(IPP)")
 
 
   # names(df) <- c("n", "mean_CS", "sd_CS", "Pr(CS<0.8)", "mean_MAPE",  "sd_MAPE", "optimism_R2_Nag", "heuristic_SF", "r2_true", "r2_app/cs", "prevalence", "c-statistic", " # predictors")
@@ -401,15 +766,15 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
     {
     b        <- cbind(n, p, n.predictors, b)
     b        <- data.frame(b)
-    names(b) <- c("n", "phi", "p", "cs", "mape", "opt_r2_nag", "heur_cs", "r2_apparent", "average_risk", "cstat", "brier", "sens", "nb")
+    names(b) <- c("n", "phi", "p", "cs", "mape", "opt_r2_nag", "heur_cs", "r2_apparent", "average_risk", "cstat", "brier", "sens", "nb", "  p_quantile")
     b
   }
 
 }
+
 
 # expected_cs_mape_binary(n = 530, phi = 0.2, c = 0.85, p=10, nsim = 2000, parallel = TRUE)
 # expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, beta= c(0.5,0.3,0.2,0.1,0.1,
 # rep(0,5)), nsim = 2000, parallel = TRUE)
 # expected_cs_mape_binary(n = 530, p = 0.2, c = 0.85, n.predictors = 10, beta= c(0.9,0.1 ,0,0,0,
 # rep(0,5)), nsim = 2000, parallel = TRUE)
-

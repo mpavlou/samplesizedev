@@ -37,7 +37,7 @@
 #' expected_performance
 
 
-samplesizedev_binary_prob_s <- function(l_s, u_s, PAP_s, p, c,   n.predictors, beta = rep(1/n.predictors, n.predictors), nval = 25000, nsim = 1000, parallel = TRUE){
+samplesizedev_binary_prob_s <- function(l_s, u_s, PAP_s, p, c,   n.predictors, beta = rep(1/n.predictors, n.predictors), nval = 25000, nsim = 1000, parallel = TRUE, plot = TRUE, quick){
 
   set.seed(2022)
 
@@ -75,7 +75,8 @@ samplesizedev_binary_prob_s <- function(l_s, u_s, PAP_s, p, c,   n.predictors, b
 
   tol = max(5,ceiling(round(n_init/200)/5) * 5)
 
-  print("Optimisation Started: check progress on the appearing plots...")
+  if (plot==TRUE & quick==FALSE) print("Optimisation Started: seconds remaining check progress on the appearing plots...") else
+    print("Optimisation Started: seconds remaining...")
 
   #Automatically adjust number of simulations to ensure MCSE is not too high
   A   <- 2*p*(1-p)*stats::qnorm(c)^2
@@ -100,19 +101,17 @@ samplesizedev_binary_prob_s <- function(l_s, u_s, PAP_s, p, c,   n.predictors, b
 
   prob_s_est <- function(n, nsim=nsim){
 
-    prob_s <-  expected_prob_s_n_binary(n, l_s = l_s, u_s = u_s, PAP_s = PAP_s, mean_eta = mean_eta, variance_eta = variance_eta,  beta = beta, p = p, c = c, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel)
+    prob_s <-  expected_prob_s_n_binary(n, l_s = l_s, u_s = u_s, PAP_s = PAP_s, mean_eta = mean_eta, variance_eta = variance_eta,  beta = beta, p = p, c = c, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel, plot = plot)
     #(round(s[1]/0.0025)*0.0025-s[2]) - S
     prob_s[1] - PAP_s
   }
 
-  n   <- bisection_prob_s(prob_s_est, min.opt, max.opt, tol = tol, nsim = nsim)
-  # tol <- ceiling(round(n_init/200)/5) * 5
-  # if (tol==0) tol <- 5
-  # n   <- ceiling(n/tol)*tol
+  if (quick==FALSE) n   <- bisection_prob_s(prob_s_est, min.opt, max.opt, tol = tol, nsim = nsim) else {
 
-#   # run <- expected_s(n, p=p, c=c, n.true=n.true, n.noise=n.noise, beta = c(0.5,0.3,0.3,0.15,0.15), nsim=1000, nval=50000, cores=2)
+    a <- find_n_prap_s(c, p, mean_eta, variance_eta, n.predictors, l_s=l_s, u_s = u_s, PAP_s = PAP_s)
+    n <- a[1]
+}
 
-  #print(paste("Required sample size: ", n ))
 
   size               <- NULL
   size$rvs           <- as.vector(n_init)

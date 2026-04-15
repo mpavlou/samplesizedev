@@ -15,6 +15,8 @@
 #' @param nsim (numeric) The number of simulations (at least 500, default value 1000 to ensure small simulation error)
 #' @param nval (numeric) Size of validation data (at least 10000 )
 #' @param parallel (logical) parallel processing to speed up computations (default=TRUE)
+#' @param plot (logical) figures for intermediate plots (default=TRUE)
+
 
 #'
 #' @return n: the required sample size
@@ -35,7 +37,7 @@
 #' expected_cs_mape
 
 
-samplesizedev_binary_s <- function(S, p, c,   n.predictors, beta = rep(1/n.predictors, n.predictors), nval = 25000, nsim = 1000, parallel = TRUE){
+samplesizedev_binary_s <- function(S, p, c,   n.predictors, beta = rep(1/n.predictors, n.predictors), nval = 25000, nsim = 1000, parallel = TRUE, plot = TRUE, quick = TRUE){
 
   set.seed(2022)
 
@@ -63,8 +65,8 @@ samplesizedev_binary_s <- function(S, p, c,   n.predictors, beta = rep(1/n.predi
 
   tol = max(5,ceiling(round(n_init/200)/5) * 5)
 
-  print("Optimisation Started: check progress on the appearing plots...")
-
+  if (plot==TRUE & quick==FALSE) print("Optimisation Started: seconds remaining check progress on the appearing plots...") else
+    print("Optimisation Started: seconds remaining...")
   #Automatically adjust number of simulations to ensure MCSE is not too high
   A   <- 2*p*(1-p)*stats::qnorm(c)^2
   app <- sqrt(1/(A* max.opt)+2/(max.opt-2) )
@@ -88,17 +90,19 @@ samplesizedev_binary_s <- function(S, p, c,   n.predictors, beta = rep(1/n.predi
 
   s_est <- function(n, nsim=nsim){
 
-    s <-  expected_s_n_binary(n, S = S, mean_eta = mean_eta, variance_eta = variance_eta,  beta = beta, p = p, c = c, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel, tol=tol)
+    s <-  expected_s_n_binary(n, S = S, mean_eta = mean_eta, variance_eta = variance_eta,  beta = beta, p = p, c = c, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel, tol=tol, plot = plot)
     #(round(s[1]/0.0025)*0.0025-s[2]) - S
     s[1] - S
   }
 
-  n   <- bisection(s_est, min.opt, max.opt, tol = tol, nsim = nsim)
-  # tol <- ceiling(round(n_init/200)/5) * 5
-  # if (tol==0) tol <- 5
-  # n   <- ceiling(n/tol)*tol
 
-#   # run <- expected_s(n, p=p, c=c, n.true=n.true, n.noise=n.noise, beta = c(0.5,0.3,0.3,0.15,0.15), nsim=1000, nval=50000, cores=2)
+  if (quick ==  FALSE) n   <- bisection(s_est, min.opt, max.opt, tol = tol, nsim = nsim) else {
+
+    c_adj <- adjusted_c_mu_sigma(mean_eta, variance_eta, n.predictors, p, set.seed=1)
+
+    n      <- round((n.predictors)/ ((S-1)*log(1-  c_adj[2]/S)))
+
+  }
 
   #print(paste("Required sample size: ", n ))
 

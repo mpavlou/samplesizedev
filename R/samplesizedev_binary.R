@@ -15,6 +15,7 @@
 #' @param nsim (numeric) The number of simulations (at least 500, default value 1000 to ensure small simulation error)
 #' @param nval (numeric) Size of validation data (at least 10000 )
 #' @param parallel (logical) parallel processing to speed up computations (default=TRUE)
+#' @param plot  (logical) plot intermediate figures (default=TRUE)
 
 #'
 #' @return n: the required sample size
@@ -62,11 +63,11 @@ samplesizedev_binary_s <- function(S, p, c,  n.predictors, nval = 25000, nsim = 
   print("Optimisation Starting ~ 1 min left...")
   s_est <- function(n, nsim=nsim){
 
-    s <-  expected_s_n_binary(n, S = S, mean_eta = mean_eta, variance_eta = variance_eta,  p = p, c = c, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel)
+    s <-  expected_s_n_binary(n, S = S, mean_eta = mean_eta, variance_eta = variance_eta,  p = p, c = c, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel, plot = plot)
     round(s[1]/0.002)*0.002 - S
   }
 
-  n <- bisection(s_est, min.opt, max.opt, tol = tol, nsim = nsim)
+  n <- bisection(s_est, min.opt, max.opt, tol = tol, nsim = nsim, plot = plot)
   # n <- ceiling(n/tol)*tol
 
   #run <- expected_s(n, p=p, c=c, n.true=n.true, n.noise=n.noise, beta = c(0.5,0.3,0.3,0.15,0.15), nsim=1000, nval=50000, cores=2)
