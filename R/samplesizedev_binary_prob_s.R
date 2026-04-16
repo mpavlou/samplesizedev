@@ -45,38 +45,65 @@ samplesizedev_binary_prob_s <- function(l_s, u_s, PAP_s, p, c,   n.predictors, b
   mean_eta         <- mean_var_eta[1]
   variance_eta     <- mean_var_eta[2]
 
-  r2   <- as.numeric(approximate_R2(c, p, n = 300000)[2])
+  beta    <- beta * sqrt(mean_var_eta[2]/sum(beta^2))
+  sigma   <- diag(1, n.predictors)
 
-  n_init <- round((n.predictors)/ ((0.9-1)*log(1-r2/0.9)))
+  ncalc      <- 500000
+  x          <- mvtnorm::rmvnorm(ncalc, rep(0, n.predictors), sigma = sigma )
+  eta        <- mean_eta+x%*% beta
+  y          <- stats::rbinom(ncalc,  1, invlogit(eta))
+  a          <- RcppNumerical::fastLR(cbind(1,x), y)
+  L1         <- a$loglikelihood
+  L0         <- sum(y*log(mean(y)) + (1-y)*log(1-mean(y)))
+  LR         <- -2*(L0-L1)
+  r2_cs_true <- 1 - exp(-LR/ncalc)
+  n_rvs      <- round((n.predictors)/ ((0.9-1)*log(1-r2_cs_true/0.9)))
 
+  # if (c<=0.7  )               {inflation_f   <- 1.1 ; min.opt  <- n_init*0.4}
+  # if (c>0.7  & c<=0.8 )       {inflation_f   <- 1.5  ; min.opt <- n_init*0.7}
+  # if (c>0.8  & c<=0.85)       {inflation_f   <- 2.1    ; min.opt <- n_init*0.8}
+  # if (c>0.85 & c<=0.9)        {inflation_f   <- 2.8  ; min.opt <- n_init*0.9}
+  #
+  #
+  # if (c<=0.7  & n.predictors <6)            {inflation_f    <- 2.5 ; min.opt  <- n_init*0.3}
+  # if (c>0.7  & c<=0.8  & n.predictors < 8)   {inflation_f   <- 2.5  ; min.opt <- n_init*0.4}
+  # if (c>0.8  & c<=0.85 & n.predictors < 8)   {inflation_f   <- 2.1    ; min.opt <- n_init *0.5}
+  # if (c>0.85 & c<=0.9  & n.predictors < 8)   {inflation_f   <- 2.8  ; min.opt <- n_init*0.7}
+  #
+  # max.opt <- inflation_f * n_init
+  #
+  #
+  # n_init <- n_pap_s_analytical(c, p, n.predictors,l_s= l_s ,u_s = u_s, PAP_s = PAP_s, min.opt = 0.1, max.opt = 0.99)[2]
+  #
+  # if (c <  0.75 )               {inflation_f   <- 1.02   ; min.opt <- n_init *0.9}
+  # if (c >= 0.75 & c <  0.8  )   {inflation_f   <- 1.1   ; min.opt <- n_init *0.9}
+  # if (c >= 0.8  & c <= 0.85 )   {inflation_f   <- 1.4   ; min.opt <- n_init*1.2 }
+  # if (c >  0.85 & c <= 0.9  )   {inflation_f   <- 1.8   ; min.opt <- n_init*1.3 }
+  #
+  # max.opt <- inflation_f * n_init
+  #
 
-  if (c<=0.7  )               {inflation_f   <- 1.1 ; min.opt  <- n_init*0.4}
-  if (c>0.7  & c<=0.8 )       {inflation_f   <- 1.5  ; min.opt <- n_init*0.7}
-  if (c>0.8  & c<=0.85)       {inflation_f   <- 2.1    ; min.opt <- n_init*0.8}
-  if (c>0.85 & c<=0.9)        {inflation_f   <- 2.8  ; min.opt <- n_init*0.9}
+  if (quick== TRUE) print("Optimisation Started: seconds remaining...")
+  a <- find_n_prap_s(c, p, mean_eta, variance_eta, n.predictors, l_s=l_s, u_s = u_s, PAP_s = PAP_s)
+  n_init <- a[1]
 
-
-  if (c<=0.7  & n.predictors <6)            {inflation_f    <- 2.5 ; min.opt  <- n_init*0.3}
-  if (c>0.7  & c<=0.8  & n.predictors < 8)   {inflation_f   <- 2.5  ; min.opt <- n_init*0.4}
-  if (c>0.8  & c<=0.85 & n.predictors < 8)   {inflation_f   <- 2.1    ; min.opt <- n_init *0.5}
-  if (c>0.85 & c<=0.9  & n.predictors < 8)   {inflation_f   <- 2.8  ; min.opt <- n_init*0.7}
-
-  max.opt <- inflation_f * n_init
-
-
-  n_init <- n_pap_s_analytical(c, p, n.predictors,l_s= l_s ,u_s = u_s, PAP_s = PAP_s, min.opt = 0.1, max.opt = 0.99)[2]
-
-  if (c <  0.75 )               {inflation_f   <- 1.02   ; min.opt <- n_init *0.9}
-  if (c >= 0.75 & c <  0.8  )   {inflation_f   <- 1.1   ; min.opt <- n_init *0.9}
-  if (c >= 0.8  & c <= 0.85 )   {inflation_f   <- 1.4   ; min.opt <- n_init*1.2 }
-  if (c >  0.85 & c <= 0.9  )   {inflation_f   <- 1.8   ; min.opt <- n_init*1.3 }
-
-  max.opt <- inflation_f * n_init
+  min.opt <- 0.9 * n_init
+  max.opt <- 1.1 * n_init
 
   tol = max(5,ceiling(round(n_init/200)/5) * 5)
 
-  if (plot==TRUE & quick==FALSE) print("Optimisation Started: seconds remaining check progress on the appearing plots...") else
-    print("Optimisation Started: seconds remaining...")
+  prob_s_est <- function(n, nsim=nsim){
+
+    prob_s <-  expected_prob_s_n_binary(n, l_s = l_s, u_s = u_s, PAP_s = PAP_s, mean_eta = mean_eta, variance_eta = variance_eta,  beta = beta, p = p, c = c, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel, plot = plot)
+    #(round(s[1]/0.0025)*0.0025-s[2]) - S
+    prob_s[1] - PAP_s
+  }
+
+  if (plot==TRUE & quick==FALSE) {print("Check progress on the appearing plots...")
+                                   n  <- bisection_prob_s(prob_s_est, min.opt, max.opt, tol = tol, nsim = nsim)} else
+    if (plot==FALSE & quick==FALSE) n   <- bisection_prob_s(prob_s_est, min.opt, max.opt, tol = tol, nsim = nsim) else
+      if (quick==TRUE) n <- n_init
+
 
   #Automatically adjust number of simulations to ensure MCSE is not too high
   A   <- 2*p*(1-p)*stats::qnorm(c)^2
@@ -99,22 +126,10 @@ samplesizedev_binary_prob_s <- function(l_s, u_s, PAP_s, p, c,   n.predictors, b
   # min.opt <- n*0.9
 
 
-  prob_s_est <- function(n, nsim=nsim){
-
-    prob_s <-  expected_prob_s_n_binary(n, l_s = l_s, u_s = u_s, PAP_s = PAP_s, mean_eta = mean_eta, variance_eta = variance_eta,  beta = beta, p = p, c = c, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel, plot = plot)
-    #(round(s[1]/0.0025)*0.0025-s[2]) - S
-    prob_s[1] - PAP_s
-  }
-
-  if (quick==FALSE) n   <- bisection_prob_s(prob_s_est, min.opt, max.opt, tol = tol, nsim = nsim) else {
-
-    a <- find_n_prap_s(c, p, mean_eta, variance_eta, n.predictors, l_s=l_s, u_s = u_s, PAP_s = PAP_s)
-    n <- a[1]
-}
 
 
   size               <- NULL
-  size$rvs           <- as.vector(n_init)
+  size$rvs           <- as.vector(n_rvs)
   size$sim           <- as.vector(n)
 
   # size$n_simulations <- nsim

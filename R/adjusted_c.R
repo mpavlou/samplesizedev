@@ -9,7 +9,7 @@ adjusted_c_mu_sigma <-function(mean, variance, n.predictors, p, set.seed=1) {
   # cj       <- find_c(mean, bj^2) ;cj
   # mean_varj <- find_mu_sigma(p, cj, tol=0.00001)
   #
-  n <- 2000000
+  n <- 1000000
 
   x <- mvtnorm::rmvnorm(n, rep(0, n.predictors), sigma = diag(n.predictors) )
   eta  <- cbind(1, x) %*% as.vector(c(mean, rep(bj, n.predictors) ))
@@ -43,7 +43,7 @@ adjusted_c_mu_sigma <-function(mean, variance, n.predictors, p, set.seed=1) {
 
   c_new        <- find_c(mean_new, variance_new); c_new
 
-  ncalc <- 2000000
+  ncalc <- 1000000
   LP    <- stats::rnorm(ncalc, mean_new, sqrt(variance_new))
   y     <- stats::rbinom(ncalc, 1, plogis(LP))
 
@@ -52,13 +52,19 @@ adjusted_c_mu_sigma <-function(mean, variance, n.predictors, p, set.seed=1) {
   # slope estimate will ensure the outcome proportion is accounted
   # for, without changing C-statistic
 
-  fit <- rms::lrm(y~LP)
+  # fit <- rms::lrm(y~LP)
+  #
+  # max_R2 <- function(prev){
+  #   1-(prev^prev*(1-prev)^(1-prev))^2
+  # }
+  #
+  # R2 <- as.numeric(fit$stats['R2']) * max_R2(p)
 
-  max_R2 <- function(prev){
-    1-(prev^prev*(1-prev)^(1-prev))^2
-  }
-
-  R2 <- as.numeric(fit$stats['R2']) * max_R2(p)
+  a   <- RcppNumerical::fastLR(cbind(1,LP), y)
+  L1  <- a$loglikelihood
+  L0  <- sum(y*log(mean(y)) + (1-y)*log(1-mean(y)))
+  LR  <- -2*(L0-L1)
+  R2  <- 1 - exp(-LR/ncalc)
 
   c(c_new, R2)
 
@@ -140,7 +146,7 @@ adjusted_c<-function(mean, variance, n.predictors=NULL, set.seed=1) {
 
   # c_new        <- find_c(mean_new, variance_new); c_new
 
-  ncalc <- 2000000
+  ncalc <- 1000000
   LP    <- stats::rnorm(ncalc, mean_new, sqrt(variance_new))
   y     <- stats::rbinom(ncalc, 1, plogis(LP))
 
@@ -149,13 +155,20 @@ adjusted_c<-function(mean, variance, n.predictors=NULL, set.seed=1) {
   # slope estimate will ensure the outcome proportion is accounted
   # for, without changing C-statistic
 
-  fit <- rms::lrm(y~LP)
+  # fit <- rms::lrm(y~LP)
+  #
+  # max_R2 <- function(prev){
+  #   1-(prev^prev*(1-prev)^(1-prev))^2
+  # }
+  #
+  # R2 <- as.numeric(fit$stats['R2']) * max_R2(p)
+  #
 
-  max_R2 <- function(prev){
-    1-(prev^prev*(1-prev)^(1-prev))^2
-  }
-
-  R2 <- as.numeric(fit$stats['R2']) * max_R2(p)
+  a   <- RcppNumerical::fastLR(cbind(1,LP), y)
+  L1  <- a$loglikelihood
+  L0  <- sum(y*log(mean(y)) + (1-y)*log(1-mean(y)))
+  LR  <- -2*(L0-L1)
+  R2  <- 1 - exp(-LR/ncalc)
 
   c(c_new,R2)
 
