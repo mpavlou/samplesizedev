@@ -53,17 +53,18 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   beta    <- beta * sqrt(mean_var[2]/sum(beta^2))
   sigma   <- diag(1, n.predictors)
 
-  set.seed(2022)
+
   xval    <- mvtnorm::rmvnorm(nval, rep(0, n.predictors), sigma = sigma)
   # yval     <- stats::rbinom(nval, 1, invlogit(mean + xval%*%beta))
 
   # True R2
+  set.seed(2022)
   MaxR2      <- 1-(((p^(p))*((1-p)^(1-p)))^2)
   ncalc      <- 500000
   x          <- mvtnorm::rmvnorm(ncalc, rep(0, n.predictors), sigma = sigma )
   eta        <- mean+x%*% beta
   y          <- stats::rbinom(ncalc,  1, invlogit(eta))
-  p_true          <- as.vector(invlogit(mean + x%*%beta))
+  p_true     <- as.vector(invlogit(mean + x%*%beta))
 
   if (length(individual_predicted_probability)==0) individual_predicted_probability=median(p_true)
 
@@ -532,9 +533,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
     ggplot2::theme(axis.text=ggplot2::element_text(size=10),
                    axis.title=ggplot2::element_text(size=10))+
     ggplot2::theme(plot.title =  ggplot2::element_text(size = 10)) +
-    ggplot2::coord_cartesian(xlim = c(0.6, 1.6)) +
-    ggplot2::scale_x_continuous(
-      breaks = seq(0.6, 1.4, by = 0.1))
+    ggplot2::coord_cartesian(xlim = c(0.6, 1.6))
 
   if ( abs(mean(cs, na.rm=TRUE)- 0.9) > 0.005)   cs_plot <-  cs_plot + ggplot2::geom_vline( ggplot2::aes(xintercept = 0.9), color="red", linetype ="dashed", size = 1)
 
@@ -631,9 +630,10 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
       axis.title = ggplot2::element_text(size = 10),
       plot.title = ggplot2::element_text(size = 10)
     ) +
-    ggplot2::coord_cartesian(
-      xlim = c(0, min(stats::quantile(p_quantile, probs = 0.999), 1))
-    )
+    ggplot2::scale_x_continuous(limits=c(max(0,p_ipp_true-2.5*p_ipp_true*(1-p_ipp_true)), min(p_ipp_true+2*p_ipp_true*(1-p_ipp_true),1)))
+    # ggplot2::coord_cartesian(
+    #   xlim = c(0, min(stats::quantile(p_quantile, probs = 0.999), 1))
+    # )
 
   # Get max density to scale placement nicely
   peak_y <- max(df_dens$y)
@@ -642,7 +642,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   y_offset <- peak_y * 0.12
 
   x_range <- max(df_dens$x) - min(df_dens$x)
-  x_offset <- 0.02 * x_range
+  x_offset <- 0.03 * x_range
 
   p_plot <- p_plot +
     ggplot2::annotate(
@@ -657,8 +657,11 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
 
   # True probability distribution
+
   df        <- data.frame(p_true)
   df        <- stats::na.omit(df)
+  dens <- stats::density(p_true, na.rm = TRUE)
+  df_dens <- data.frame(x = dens$x, y = dens$y)
   p_true_plot <- ggplot2::ggplot(df,  ggplot2::aes(x = p_true), size=10) +
     ggplot2::geom_density() + ggplot2::ggtitle(paste("Distribution of true probabilities")) +
     ggplot2::geom_vline( ggplot2::aes(xintercept=  p_ipp_true), color="blue", linetype = "dashed", size=1) + ggplot2::ylab("Density") +
@@ -670,21 +673,21 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
     ggplot2::coord_cartesian(
       xlim = c(
         max(0, stats::quantile(p_true, probs = 0.0001)),
-        min(stats::quantile(p_true, probs = 0.9999), 1)
+        min(stats::quantile(p_true, probs = 0.999), 1)
       )
     )
 
   # All quantiles plot
 
-  p_median <- apply(p_quantile_all, 2, median)
-  p_q25    <- apply(p_quantile_all, 2, quantile, 0.25)
-  p_q75    <- apply(p_quantile_all, 2, quantile, 0.75)
+  p_median  <- apply(p_quantile_all, 2, median)
+  p_q2.5    <- apply(p_quantile_all, 2, quantile, 0.025)
+  p_q97.5   <- apply(p_quantile_all, 2, quantile, 0.975)
 
   df <- data.frame(
     q = quant_grid,
     med = p_median,
-    lo = p_q25,
-    hi = p_q75,
+    lo = p_q2.5,
+    hi = p_q97.5,
     true =   p_quantile_true_all
   )
 
@@ -707,8 +710,8 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   df <- data.frame(
     q = quant_grid,
     med = p_median,
-    lo = p_q25,
-    hi = p_q75,
+    lo = p_q2.5,
+    hi = p_q97.5,
     true =   p_quantile_true_all
   )
 
@@ -742,7 +745,9 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
     ggplot2::theme_bw()+
     ggplot2::theme(axis.text=ggplot2::element_text(size=10),
                    axis.title=ggplot2::element_text(size=10)) +
-    ggplot2::theme(plot.title =  ggplot2::element_text(size = 10))
+    ggplot2::theme(plot.title =  ggplot2::element_text(size = 10)) +
+    ggplot2::scale_y_continuous(limits=c(0,quantile(p_true, p=0.98)))
+
 
   # Get max density to scale placement nicely
   y_max <- max(df_dens$y)
@@ -772,7 +777,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
   # ---- CS + MAPE ----
   figure1 <- ggpubr::ggarrange(
-    cs_plot, mape_plot,
+    cs_plot,  p_true_plot,
     ncol = 2, nrow = 1,
     common.legend = TRUE,
     legend = "bottom"
@@ -782,7 +787,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
     figure1,
     top = ggpubr::text_grob(
       sprintf(
-        "Sampling Distribution of CS and MAPE (nsims=%s) \nMethod=%s, N=%s, Prevalence=%s, C-stat=%s, No Predictors=%s",
+        "Distribution of true probabilities and Sampling Distribution of CS (nsims=%s) \nMethod=%s, N=%s, Prevalence=%s, C-stat=%s, No Predictors=%s",
         nsim, method, n, p, c, n.predictors
       ),
       color = "black", face = "bold", size = 10
@@ -791,8 +796,8 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
   # ---- Probability plots ----
   figure2 <- ggpubr::ggarrange(
-    p_true_plot, p_plot, p_plot_quantiles_all,
-    ncol = 3, nrow = 1, widths= c(3,4,4)
+    p_plot, p_plot_quantiles_all,
+    ncol = 2, nrow = 1, widths= c(4,4)
   )
 
   prob_plot <- ggpubr::annotate_figure(
