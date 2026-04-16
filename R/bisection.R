@@ -6,7 +6,7 @@ bisection <- function(f, a, b, iter = 10, tol = ceiling(round(a/100)/5) * 5, nsi
   ##ch
 
   tol = ceiling(round(a/100)/5) * 5
-  tol = round(a/50)
+  # tol = round(a/50)
 
   nsim1 <- nsim
 

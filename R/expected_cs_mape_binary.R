@@ -41,6 +41,9 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   # Find mean and variance of for Normal linear predictor
   # beta=rep(1/n.predictors, n.predictors)
   if (p>0.5) p  <- 1-p
+
+  # set.seed(2022)
+
   mean_var     <- find_mu_sigma(p,c, tol = 0.00001)
   mean         <- mean_var[1]
   variance     <- mean_var[2]
@@ -54,20 +57,13 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   xval    <- mvtnorm::rmvnorm(nval, rep(0, n.predictors), sigma = sigma)
   # yval     <- stats::rbinom(nval, 1, invlogit(mean + xval%*%beta))
 
-  # True R2 and R2CS
+  # True R2
   MaxR2      <- 1-(((p^(p))*((1-p)^(1-p)))^2)
   ncalc      <- 500000
   x          <- mvtnorm::rmvnorm(ncalc, rep(0, n.predictors), sigma = sigma )
   eta        <- mean+x%*% beta
   y          <- stats::rbinom(ncalc,  1, invlogit(eta))
   p_true          <- as.vector(invlogit(mean + x%*%beta))
-  a          <- RcppNumerical::fastLR(cbind(1,x), y)
-  L1         <- a$loglikelihood
-  L0         <- sum(y*log(mean(y)) + (1-y)*log(1-mean(y)))
-  LR         <- -2*(L0-L1)
-  r2_cs_true <- 1 - exp(-LR/ncalc)
-  r2_cs_true
-
 
   if (length(individual_predicted_probability)==0) individual_predicted_probability=median(p_true)
 
@@ -102,7 +98,12 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 #   x_quantile      <- x_quantile_all[ i_individual, , drop = FALSE]
 #   p_quantile_true <- p_quantile_true_all[ i_individual]
 
-
+  a          <- RcppNumerical::fastLR(cbind(1,x), y)
+  L1         <- a$loglikelihood
+  L0         <- sum(y*log(mean(y)) + (1-y)*log(1-mean(y)))
+  LR         <- -2*(L0-L1)
+  r2_cs_true <- 1 - exp(-LR/ncalc)
+  r2_cs_true
 
   if (approx==TRUE) {
 
@@ -543,7 +544,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   mape_plot <- ggplot2::ggplot(df,  ggplot2::aes(x = mape), size=12) +
     ggplot2::geom_density() + ggplot2::ggtitle(paste("Median MAPE = ", round(median(mape,na.rm=TRUE),3), sep = "")) +
     ggplot2::geom_vline( ggplot2::aes(xintercept=mean(mape, na.rm = TRUE)), color="blue", linetype = "dashed", size=1) + ggplot2::ylab("Density") +
-    ggplot2::theme(text =  ggplot2::element_text(size = 12)) +ggplot2::xlab("MAPE") + ggplot2::theme_bw()+
+    ggplot2::theme(text =  ggplot2::element_text(size = 10)) +ggplot2::xlab("MAPE") + ggplot2::theme_bw()+
     ggplot2::theme(axis.text=ggplot2::element_text(size=10),
                    axis.title=ggplot2::element_text(size=10))+
     ggplot2::theme(plot.title =  ggplot2::element_text(size = 10))
@@ -565,19 +566,16 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   # shading rule
 
 
-
-
   if (threshold < p_ipp_true) {
     # shade BELOW threshold
     prob_region <- mean(p_quantile < threshold, na.rm = TRUE)
     df_shade <- df_dens[df_dens$x < threshold, ]
-    prob_label <-   sprintf("Pr(IPP <  threshold)",threshold)
-
+    prob_label <- "P(IPP < threshold)"
   } else {
     # shade ABOVE threshold
     prob_region <- mean(p_quantile > threshold, na.rm = TRUE)
     df_shade <- df_dens[df_dens$x > threshold, ]
-    prob_label <-   sprintf("Pr(IPP > threshold)",threshold)
+    prob_label <- "P(IPP > threshold)"
   }
 
   p_plot <- ggplot2::ggplot(df_dens, ggplot2::aes(x = x, y = y)) +
@@ -631,14 +629,13 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
       legend.position = "bottom",
       axis.text = ggplot2::element_text(size = 10),
       axis.title = ggplot2::element_text(size = 10),
-      plot.title = ggplot2::element_text(size = 10))
-  # +
-  #
-  #   ggplot2::coord_cartesian(
-  #     xlim = c(0, min(stats::quantile(p_quantile, probs = 0.999), 1))
-  #   )
+      plot.title = ggplot2::element_text(size = 10)
+    ) +
+    ggplot2::coord_cartesian(
+      xlim = c(0, min(stats::quantile(p_quantile, probs = 0.999), 1))
+    )
 
- # Get max density to scale placement nicely
+  # Get max density to scale placement nicely
   peak_y <- max(df_dens$y)
 
   y_anchor <- peak_y * 0.7
@@ -658,6 +655,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
       size = 3
     )
 
+
   # True probability distribution
   df        <- data.frame(p_true)
   df        <- stats::na.omit(df)
@@ -675,43 +673,6 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
         min(stats::quantile(p_true, probs = 0.9999), 1)
       )
     )
-
-  # Get max density to scale placement nicely
-  dens <- stats::density(p_true, na.rm = TRUE)
-  df_dens <- data.frame(x = dens$x, y = dens$y)
-  peak_y <- max(df_dens$y)
-
-  y_anchor <- peak_y * 0.7
-  y_offset <- peak_y * 0.12
-
-  x_range <- max(df_dens$x) - min(df_dens$x)
-  x_offset <- 0.15 * x_range
-
-  p_true_plot <- p_true_plot +
-
-    ggplot2::annotate(
-      "segment",
-      x = p_ipp_true + x_offset,
-      y = y_anchor,
-      xend = p_ipp_true,
-      yend = y_anchor - y_offset,
-      arrow = grid::arrow(length = grid::unit(0.25, "cm")),
-      color = "red"
-    ) +
-
-    ggplot2::annotate(
-      "text",
-      x = p_ipp_true + x_offset,
-      y = y_anchor + peak_y * 0.05,
-      label = paste0(
-        "IPP=", round(p_ipp_true, 3),
-        "\n(", individual_quantile * 100, "- percentile)"
-      ),
-      color = "red",
-      hjust = 0,
-      size = 3
-    )
-
 
   # All quantiles plot
 
@@ -736,9 +697,12 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
       width = 0.005,
       color = "blue"
     ) +     ggplot2::theme_bw()+
-    ggplot2::labs(x = "Percentile of distribution of true probs", y = "Median (95% CI) of IPPs") +
     ggplot2::theme(axis.text=ggplot2::element_text(size=10),
-                   axis.title=ggplot2::element_text(size=10))
+                   axis.title=ggplot2::element_text(size=10)) +
+    ggplot2::theme(plot.title =  ggplot2::element_text(size = 10)) +
+    ggplot2::labs(x = "Percentile of distribution of true probs", y = "Median (95% CI) of IPPs")+
+    ggplot2::ggtitle("Stability of IPP")
+
 
   df <- data.frame(
     q = quant_grid,
@@ -771,13 +735,40 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
       color = "blue",
       alpha = 0.5
     ) +
-    ggplot2::theme_bw() +
-    ggplot2::ggtitle("Stability of individual predicted probabilities") +
+    ggplot2::labs(
+      x = "Percentile of distribution of true probs",
+      y = "Median (95% CI) of IPPs")+
+    ggplot2::ggtitle("Stability of IPPs")+
+    ggplot2::theme_bw()+
     ggplot2::theme(axis.text=ggplot2::element_text(size=10),
                    axis.title=ggplot2::element_text(size=10)) +
     ggplot2::theme(plot.title =  ggplot2::element_text(size = 10))
 
+  # Get max density to scale placement nicely
+  y_max <- max(df_dens$y)
 
+  x_offset <- 0.04
+  y_offset <- y_max * 0.25
+
+  p_true_plot <- p_true_plot +
+    ggplot2::annotate(
+      "segment",
+      x =   p_ipp_true + x_offset,
+      y = y_max * 0.9,
+      xend =   p_ipp_true,
+      yend = y_max * 0.9 - y_offset,   # ensures diagonal (~45°)
+      arrow = grid::arrow(length = grid::unit(0.25, "cm")),
+      color = "red"
+    ) +
+    ggplot2::annotate(
+      "text",
+      x =   p_ipp_true + x_offset,
+      y = y_max * 0.95,
+      label = paste("IPP=",round(  p_ipp_true,3), "\n (",individual_quantile*100,"- percentile)", sep=""),
+      color = "red",
+      hjust = 0,
+      size=3
+    )
 
   # ---- CS + MAPE ----
   figure1 <- ggpubr::ggarrange(
