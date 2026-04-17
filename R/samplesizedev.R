@@ -60,7 +60,9 @@
 #' expected_cs
 
 
-samplesizedev <- function(outcome="Binary", S = NULL, MAPE = NULL, l_s = NULL, u_s = NULL, PAP_s = NULL, phi, c,  p, gamma = rep(1/p, p), nval = 25000, nsim = 1000, parallel = TRUE, plot = TRUE, quick = TRUE){
+samplesizedev <- function(outcome="Binary", S = NULL, MAPE = NULL, l_s = NULL, u_s = NULL, PAP_s = NULL,
+                          phi, c,  p, gamma = rep(1/p, p), nval = 25000, nsim = 1000, parallel = TRUE,
+                          plot = TRUE, quick = TRUE, tol=0.0025){
 
   beta          <- gamma
   n.predictors  <- p
@@ -71,7 +73,7 @@ samplesizedev <- function(outcome="Binary", S = NULL, MAPE = NULL, l_s = NULL, u
   if (length(S)!=0 & (length(l_s)+length(PAP_s) +length(u_s))!=0) {n<-"Calculation not performed. Please enter either S *or* l_s, u_s and PAP_s" ; print(n)} else {
 
 
-  if (outcome=="Binary")   { if (length(MAPE)==0 & length(l_s)==0)    n <- samplesizedev_binary_s(S=S, p=p, c=c,  n.predictors = n.predictors, beta = beta, nval = nval, nsim = nsim, parallel = parallel, plot = plot, quick = quick) else
+  if (outcome=="Binary")   { if (length(MAPE)==0 & length(l_s)==0)    n <- samplesizedev_binary_s(S=S, p=p, c=c,  n.predictors = n.predictors, beta = beta, nval = nval, nsim = nsim, parallel = parallel, plot = plot, quick = quick, tol = tol) else
                              if (length(S)==0    & length(l_s)==0)    n <- samplesizedev_binary_mape(MAPE=MAPE, p=p, c=c,  n.predictors = n.predictors, beta = beta, nval = nval, nsim = nsim, parallel = parallel) else
                              if (length(S)==0    & length(MAPE)==0)  n <- samplesizedev_binary_prob_s(l_s=l_s, u_s=u_s, PAP_s=PAP_s, p=p, c=c,  n.predictors = n.predictors, beta = beta, nval = nval, nsim = nsim, parallel = parallel, plot = plot, quick = quick) }
 

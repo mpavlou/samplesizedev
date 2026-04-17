@@ -1,25 +1,19 @@
 
 # Function for bisection method
 
-bisection <- function(f, a, b, iter = 10, tol = ceiling(round(a/100)/5) * 5, nsim = 1000) {
-  # If the signs of the function at the evaluated points, a and b, stop the function and return message.
-  ##ch
+bisection <- function(f, a, b, tol, iter = 10, tol_n = ceiling(round(a/100)/5) * 5, nsim = 1000) {
 
-  tol = ceiling(round(a/100)/5) * 5
-  # tol = round(a/50)
-
-  nsim1 <- nsim
-
-  if (nsim>=1000) divide <- 2 else divide <- 1
-
-  nsim  <- round(nsim/divide)
+  tol_n = round(a/50)
 
   fa <- f(a, nsim = nsim)
+  if (abs(fa) <= tol) return(a)
+
   fb <- f(b, nsim = nsim)
+  if (abs(fb) <= tol) return(b)
 
 
-  if (fa > 0 & fb > 0) { a<-a*0.7;   fa <- f(a, nsim = nsim)}
-  if (fa < 0 & fb < 0) { b<-b*1.3;   fb <- f(b, nsim = nsim)}
+  if (fa > 0 & fb > 0) { a<-a*0.8;   fa <- f(a, nsim = nsim)}
+  if (fa < 0 & fb < 0) { b<-b*1.2;   fb <- f(b, nsim = nsim)}
 
 
   if (!(fa < 0) && (fb > 0)) {
@@ -31,7 +25,7 @@ bisection <- function(f, a, b, iter = 10, tol = ceiling(round(a/100)/5) * 5, nsi
 
   for (k in 1:iter) {
 
-    if (k <= divide ) nsim <- nsim1/divide*k
+    # if (k <= divide ) nsim <- nsim1/divide*k
     # a <- round(a/tol)*tol
     # b <- round(b/tol)*tol
 
@@ -47,7 +41,7 @@ bisection <- function(f, a, b, iter = 10, tol = ceiling(round(a/100)/5) * 5, nsi
     # function and return the root.
 
     if (nsim<=200){
-    if ( ((abs(fc) <= 0.01) || ((b - a) / 2) < tol)   &  (k >=1 )) {
+    if ( ((abs(fc) <= 0.01) || ((b - a) / 2) < tol_n)   &  (k >=1 )) {
       #if (  abs(fc) <= 0.0025 &  (k >=2 )) {
       return(c)
     }
@@ -55,17 +49,9 @@ bisection <- function(f, a, b, iter = 10, tol = ceiling(round(a/100)/5) * 5, nsi
 
     # If the function equals 0 at the midpoint or the midpoint is below the desired tolerance, stop the
     # function and return the root.
-   if (  ((abs(fc) <= 0.0025) || ((b - a) / 2) < tol)   &  (k >=1 )) {
-    #if (  abs(fc) <= 0.0025 &  (k >=2 )) {
+   if (  ((abs(fc) <= tol) || ((b - a) / 2) < tol_n)   &  (k >=1 )) {
       return(c)
    }
-
-    if (  ((abs(fc) <= 0.0025) || ((b - a) / 2) < tol)   &  (k >=7) ) {
-      #if (  abs(fc) <= 0.0025 &  (k >=2 )) {
-      return(c)
-    }
-
-
 
     # If another iteration is required,
     # check the signs of the function at the points c and a and reassign

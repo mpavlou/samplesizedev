@@ -1,4 +1,3 @@
-
 #' Sample size required to develop a risk prediction model for binary outcomes
 #'
 #' @description
@@ -37,7 +36,7 @@
 #' expected_cs_mape
 
 
-samplesizedev_binary_s <- function(S, p, c,   n.predictors, beta = rep(1/n.predictors, n.predictors), nval = 25000, nsim = 1000, parallel = TRUE, plot = TRUE, quick = TRUE){
+samplesizedev_binary_s <- function(S, p, c,   n.predictors, beta = rep(1/n.predictors, n.predictors), nval = 25000, nsim = 1000, parallel = TRUE, plot = TRUE, quick = TRUE, tol){
 
   set.seed(2022)
 
@@ -45,72 +44,73 @@ samplesizedev_binary_s <- function(S, p, c,   n.predictors, beta = rep(1/n.predi
   mean_eta         <- mean_var_eta[1]
   variance_eta     <- mean_var_eta[2]
 
-  r2   <- as.numeric(approximate_R2(c, p, n = 300000)[2])
+  # Find beta that corresponds to that variance
 
-  n_init <- round((n.predictors)/ ((S-1)*log(1-r2/S)))
+  beta    <- beta * sqrt(mean_var_eta[2]/sum(beta^2))
+  sigma   <- diag(1, n.predictors)
+
+  # True R2 and R2CS
+  MaxR2      <- 1-(((p^(p))*((1-p)^(1-p)))^2)
+  ncalc      <- 500000
+  x          <- mvtnorm::rmvnorm(ncalc, rep(0, n.predictors), sigma = sigma )
+  eta        <- mean_eta+x%*% beta
+  y          <- stats::rbinom(ncalc,  1, invlogit(eta))
+  p_true     <- as.vector(invlogit(mean_eta + x%*%beta))
+  a          <- RcppNumerical::fastLR(cbind(1,x), y)
+  L1         <- a$loglikelihood
+  L0         <- sum(y*log(mean(y)) + (1-y)*log(1-mean(y)))
+  LR         <- -2*(L0-L1)
+  r2         <- 1 - exp(-LR/ncalc)
 
 
-  if (c<=0.7  )               {inflation_f   <- 1.1 ; min.opt  <- n_init*0.4}
-  if (c>0.7  & c<=0.8 )       {inflation_f   <- 1.5  ; min.opt <- n_init*0.7}
-  if (c>0.8  & c<=0.85)       {inflation_f   <- 2.1    ; min.opt <- n_init*0.8}
-  if (c>0.85 & c<=0.9)        {inflation_f   <- 2.8  ; min.opt <- n_init*0.9}
+  c_adj <- adjusted_c_mu_sigma(mean_eta, variance_eta, n.predictors, p, set.seed=1)
+
+  n_init      <- round((n.predictors)/ ((S-1)*log(1-  c_adj[2]/S)))
+
+  # r2   <- as.numeric(approximate_R2(c, p, n = 300000)[2])
+
+  n_rvs <- round((n.predictors)/ ((S-1)*log(1-r2/S)))
 
 
-  if (c<=0.7  & n.predictors <6)            {inflation_f    <- 0.9 ; min.opt  <- n_init*0.3}
-  if (c>0.7  & c<=0.8  & n.predictors < 8)   {inflation_f   <- 1.8  ; min.opt <- n_init*0.4}
-  if (c>0.8  & c<=0.85 & n.predictors < 8)   {inflation_f   <- 2.1    ; min.opt <- n_init *0.5}
-  if (c>0.85 & c<=0.9  & n.predictors < 8)   {inflation_f   <- 2.8  ; min.opt <- n_init*0.7}
+  if (c<=0.7  )               {inflation_f   <- 1.1  ; min.opt <- n_rvs*0.4}
+  if (c>0.7  & c<=0.8 )       {inflation_f   <- 1.5  ; min.opt <- n_rvs*0.7}
+  if (c>0.8  & c<=0.85)       {inflation_f   <- 2.1  ; min.opt <- n_rvs*0.8}
+  if (c>0.85 & c<=0.9)        {inflation_f   <- 2.8  ; min.opt <- n_rvs*0.9}
 
-  max.opt <- inflation_f * n_init
 
-  tol = max(5,ceiling(round(n_init/200)/5) * 5)
+  if (c<=0.7  & n.predictors <6)             {inflation_f   <- 0.9 ; min.opt <- n_rvs*0.3}
+  if (c>0.7  & c<=0.8  & n.predictors < 8)   {inflation_f   <- 1.8 ; min.opt <- n_rvs*0.4}
+  if (c>0.8  & c<=0.85 & n.predictors < 8)   {inflation_f   <- 2.1 ; min.opt <- n_rvs *0.5}
+  if (c>0.85 & c<=0.9  & n.predictors < 8)   {inflation_f   <- 2.8 ; min.opt <- n_rvs*0.7}
 
-  if (plot==TRUE & quick==FALSE) print("Optimisation Started: seconds remaining check progress on the appearing plots...") else
-    print("Optimisation Started: seconds remaining...")
+  max.opt <- inflation_f * n_rvs
+
+  if (plot==FALSE & quick== FALSE) print("Optimisation Started:...") else
+    if (plot==TRUE & quick== FALSE)  print("Optimisation Started: check progress on appearing plots...")
   #Automatically adjust number of simulations to ensure MCSE is not too high
-  A   <- 2*p*(1-p)*stats::qnorm(c)^2
-  app <- sqrt(1/(A* max.opt)+2/(max.opt-2) )
+  A        <- 2*p*(1-p)*stats::qnorm(c)^2
+  app      <- sqrt(1/(A* max.opt)+2/(max.opt-2) )
+  mce      <- round(app/sqrt(n_init),4)
+  tol=1.5*mce
 
-  # if (app/sqrt(nsim)>0.0027) nsim = ceiling(app^2/0.0025^2/100)*100
-
-  # s_est_quick <- function(n, nsim=100){
-  #
-  #   s <-  expected_s_n_binary_quick(n, S = S, mean_eta = mean_eta, variance_eta = variance_eta,  beta = beta, p = p, c = c, n.predictors = n.predictors, nval = nval, nsim = 100,  parallel=parallel)
-  #   #(round(s[1]/0.0025)*0.0025-s[2]) - S
-  #   s[1] - S
-  # }
-  #
-  # n <- bisection(s_est_quick, min.opt, max.opt, tol = tol, nsim = 100)
-  # tol = ceiling(round(n_init/200)/10) * 10
-  # n <- ceiling(n/tol)*tol
-  #
-  # max.opt <- n*1.15
-  # min.opt <- n*0.9
-
+  if (c>=0.85) { min.opt <- 1.1* n_init; max.opt <- 1.3 * n_init} else
+  { min.opt <- 0.9 * n_init; max.opt <- 1.05 * n_init}
 
   s_est <- function(n, nsim=nsim){
 
-    s <-  expected_s_n_binary(n, S = S, mean_eta = mean_eta, variance_eta = variance_eta,  beta = beta, p = p, c = c, n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel, tol=tol, plot = plot)
-    #(round(s[1]/0.0025)*0.0025-s[2]) - S
+    s <-  expected_s_n_binary(n, S = S, mean_eta = mean_eta, variance_eta = variance_eta,  beta = beta, p = p, c = c,
+                              n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel, plot = plot)
     s[1] - S
   }
 
 
-  if (quick ==  FALSE) n   <- bisection(s_est, min.opt, max.opt, tol = tol, nsim = nsim) else {
-
-    c_adj <- adjusted_c_mu_sigma(mean_eta, variance_eta, n.predictors, p, set.seed=1)
-
-    n      <- round((n.predictors)/ ((S-1)*log(1-  c_adj[2]/S)))
-
-  }
+  if (quick ==  FALSE) n   <- bisection(s_est, min.opt, max.opt, tol = tol, nsim = nsim) else n = n_init
 
   #print(paste("Required sample size: ", n ))
 
   size               <- NULL
-  size$rvs           <- as.vector(n_init)
-  size$sim           <- as.vector(n)
-  # size$n_simulations <- nsim
-  # size$correct_to_nearest <- as.vector(tol)
+  size$rvs           <- as.vector(n_rvs)
+  size$sim           <- as.vector(round(n))
 
   size
 
