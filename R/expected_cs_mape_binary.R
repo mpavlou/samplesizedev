@@ -533,9 +533,10 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
     ggplot2::theme(axis.text=ggplot2::element_text(size=10),
                    axis.title=ggplot2::element_text(size=10))+
     ggplot2::theme(plot.title =  ggplot2::element_text(size = 10)) +
-    ggplot2::coord_cartesian(xlim = c(0.6, 1.6))
+    ggplot2::geom_vline( ggplot2::aes(xintercept = 0.9), color="black", linetype ="dashed", size = 0.5)
+  # +ggplot2::coord_cartesian(xlim = c(0.6, 1.6))
 
-  if ( abs(mean(cs, na.rm=TRUE)- 0.9) > 0.005)   cs_plot <-  cs_plot + ggplot2::geom_vline( ggplot2::aes(xintercept = 0.9), color="red", linetype ="dashed", size = 1)
+  # if ( abs(mean(cs, na.rm=TRUE)- 0.9) > 0.005)   cs_plot <-  cs_plot + ggplot2::geom_vline( ggplot2::aes(xintercept = 0.9), color="red", linetype ="dashed", size = 1)
 
 
   df        <- data.frame(mape)
@@ -630,10 +631,9 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
       axis.title = ggplot2::element_text(size = 10),
       plot.title = ggplot2::element_text(size = 10)
     ) +
-    ggplot2::scale_x_continuous(limits=c(max(0,p_ipp_true-2.5*p_ipp_true*(1-p_ipp_true)), min(p_ipp_true+2*p_ipp_true*(1-p_ipp_true),1)))
-    # ggplot2::coord_cartesian(
-    #   xlim = c(0, min(stats::quantile(p_quantile, probs = 0.999), 1))
-    # )
+    # ggplot2::scale_x_continuous(limits=c(max(0,p_ipp_true-2.5*p_ipp_true*(1-p_ipp_true)), min(p_ipp_true+2*p_ipp_true*(1-p_ipp_true),1)))
+    ggplot2::coord_cartesian(
+      xlim = c(max(0,p_ipp_true-2.5*p_ipp_true*(1-p_ipp_true)), min(p_ipp_true+2*p_ipp_true*(1-p_ipp_true),1)))
 
   # Get max density to scale placement nicely
   peak_y <- max(df_dens$y)
@@ -746,7 +746,8 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
     ggplot2::theme(axis.text=ggplot2::element_text(size=10),
                    axis.title=ggplot2::element_text(size=10)) +
     ggplot2::theme(plot.title =  ggplot2::element_text(size = 10)) +
-    ggplot2::scale_y_continuous(limits=c(0,quantile(p_true, p=0.98)))
+    # ggplot2::scale_y_continuous(limits=c(0,quantile(p_true, p=0.98)))
+    ggplot2::coord_cartesian(ylim=c(0,quantile(p_true, p=0.98)))
 
 
   # Get max density to scale placement nicely
@@ -822,6 +823,10 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
   # A <- 2*p*(1-p)*qnorm(c)^2
   # app <- sqrt(1/(A*n)+2/(n-2) )
+
+
+  rm(p_quantile_all,p_quantile_true_all, df_dens, df_shade)
+  gc()
 
   options("scipen"=100, "digits"=4)
 

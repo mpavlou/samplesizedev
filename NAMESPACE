@@ -3,3 +3,7 @@
 export(expected_performance)
 export(find_mu_sigma2)
 export(samplesizedev)
+import(doParallel)
+import(doRNG)
+import(foreach)
+importFrom(foreach,"%dopar%")

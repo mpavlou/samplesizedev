@@ -156,7 +156,8 @@ expected_cs_mape_binary_xy <- function(n, p, c, n.predictors, beta, nsim = 1000,
 
     a<- foreach::foreach(i = 1:nsim, .packages=c('mvtnorm','RcppNumerical', 'ggplot2' )) %dopar% {
 
-      set.seed(i)
+      # set.seed(i)
+      doRNG::registerDoRNG(123)
       invlogit <- function(x) 1/(1+exp(-x))
 
       # Approximation of the C-statistic (Large n)
@@ -179,12 +180,13 @@ expected_cs_mape_binary_xy <- function(n, p, c, n.predictors, beta, nsim = 1000,
 
       id         <- sample( N, round(n), replace = FALSE)
       x          <- x_large[id, , drop = FALSE]
-      y          <- y_large[id]
-
+      eta        <- mean+x%*% as.matrix(beta)
+      y          <- stats::rbinom(length(eta),  1, plogis(eta))
 
       idval      <- sample( N, round(nval), replace = FALSE)
       xval       <- x_large[idval, , drop = FALSE]
-      yval       <- y_large[idval]
+      eta        <- mean+xval%*% as.matrix(beta)
+      yval          <- stats::rbinom(length(eta),  1, plogis(eta))
       p_true     <- as.vector(invlogit(mean + xval%*%beta))
 
 
@@ -526,10 +528,11 @@ expected_cs_mape_binary_xy <- function(n, p, c, n.predictors, beta, nsim = 1000,
     ggplot2::xlab("Calibration Slope") + ggplot2::theme_bw()+  ggplot2::theme(legend.position="bottom")+
     ggplot2::theme(axis.text=ggplot2::element_text(size=10),
                    axis.title=ggplot2::element_text(size=10))+
-    ggplot2::theme(plot.title =  ggplot2::element_text(size = 10)) +
-    ggplot2::coord_cartesian(xlim = c(0.6, 1.6))
+    ggplot2::theme(plot.title =  ggplot2::element_text(size = 10))
+  # +
+  #   ggplot2::coord_cartesian(xlim = c(0.6, 1.6))
 
-  if ( abs(mean(cs, na.rm=TRUE)- 0.9) > 0.005)   cs_plot <-  cs_plot + ggplot2::geom_vline( ggplot2::aes(xintercept = 0.9), color="red", linetype ="dashed", size = 1)
+  # if ( abs(mean(cs, na.rm=TRUE)- 0.9) > 0.005)   cs_plot <-  cs_plot + ggplot2::geom_vline( ggplot2::aes(xintercept = 0.9), color="red", linetype ="dashed", size = 1)
 
 
   df        <- data.frame(mape)
@@ -624,10 +627,10 @@ expected_cs_mape_binary_xy <- function(n, p, c, n.predictors, beta, nsim = 1000,
       axis.title = ggplot2::element_text(size = 10),
       plot.title = ggplot2::element_text(size = 10)
     ) +
-    ggplot2::scale_x_continuous(limits=c(max(0,p_ipp_true-2.5*p_ipp_true*(1-p_ipp_true)), min(p_ipp_true+2*p_ipp_true*(1-p_ipp_true),1)))
-  # ggplot2::coord_cartesian(
-  #   xlim = c(0, min(stats::quantile(p_quantile, probs = 0.999), 1))
-  # )
+    # ggplot2::scale_x_continuous(limits=c(max(0,p_ipp_true-2.5*p_ipp_true*(1-p_ipp_true)), min(p_ipp_true+2*p_ipp_true*(1-p_ipp_true),1)))
+  ggplot2::coord_cartesian(
+    xlim = c(max(0,p_ipp_true-2.5*p_ipp_true*(1-p_ipp_true)), min(p_ipp_true+2*p_ipp_true*(1-p_ipp_true),1)))
+
 
   # Get max density to scale placement nicely
   peak_y <- max(df_dens$y)
@@ -817,6 +820,9 @@ expected_cs_mape_binary_xy <- function(n, p, c, n.predictors, beta, nsim = 1000,
 
   # A <- 2*p*(1-p)*qnorm(c)^2
   # app <- sqrt(1/(A*n)+2/(n-2) )
+
+  rm(p_quantile_all,p_quantile_true_all, df_dens, df_shade)
+  gc()
 
   options("scipen"=100, "digits"=4)
 

@@ -32,7 +32,3 @@ resulting prevalence (if check = TRUE)
 \description{
 This function calculates the mean and variance of a normal linear predictor that corresponds to the specified values of C and prevalence (binary outcome).
 }
-\examples{
-find_mu_sigma2(target.prev=0.1, target.c=0.8, check=TRUE)
-
-}

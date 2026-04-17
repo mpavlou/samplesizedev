@@ -33,6 +33,7 @@ Imports:
     prodlim,
     DescTools,
     bindata,
-    pROC
+    pROC,
+    doRNG
 URL: https://github.com/mpavlou/samplesizedev
 BugReports: https://github.com/mpavlou/samplesizedev/issues

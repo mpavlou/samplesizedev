@@ -40,6 +40,11 @@
 #' @return   Standard deviation of the Individual predicted probability (IPP)
 #'
 #'
+#' @import foreach
+#' @importFrom foreach %dopar%
+#' @import doParallel
+#' @import doRNG
+#'
 #' @export
 #'
 #' @examples
