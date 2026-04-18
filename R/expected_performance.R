@@ -16,8 +16,10 @@
 #' @param gamma (numeric) Relative strength of predictors (default=rep(1/p,p); same length as p, must sums up to 1)
 #' @param long (logical) Extract results for all simulations instead of just averages
 #' @param threshold (numeric) A threshold to calculate sensitivity (default=outcome prevalence)
-#' @param individual_predicted_probability (numeric) An individual predicted probability of inderest (default at median predicted probability) to obtain the uncertainty due to finite sample size
-
+#' @param individual_predicted_probability (numeric) An individual predicted probability of interest (default at median predicted probability) to obtain the uncertainty due to finite sample size (if x_individual_predicted_probability had not been provided)
+#' @param x (numeric) Matrix of Covariate values based on a user-defined DGM
+#' @param y (numeric) Vector of responses based on a user-defined DGM
+#' @param x_individual_predicted_probability (numeric) a vector of covariate values for a individual of interest
 
 #' @return   Data frame df with the following elements:
 #' @return   Input sample size (n)
@@ -58,14 +60,24 @@
 
 #'
 #'
-expected_performance <- function(outcome="Binary", n, phi, c,  p,  gamma = rep(1/p, p), nval = 25000, nsim = 1000, parallel = TRUE, method = "MLE", long=FALSE, approx = FALSE, x=NULL, y=NULL, threshold=phi, individual_predicted_probability = NULL){
+expected_performance <- function(outcome="Binary", n, phi, c,  p,  gamma = rep(1/p, p), nval = 25000, nsim = 1000,
+                                 parallel = TRUE, method = "MLE", long=FALSE, approx = FALSE, x=NULL, y=NULL,
+                                 threshold= NULL, individual_predicted_probability = NULL,
+                                 x_individual_predicted_probability = NULL){
 
   beta          <- gamma
   n.predictors  <- p
   p             <- phi
 
-  if (outcome=="Binary" & length(x)==0)   performance <- expected_cs_mape_binary (n=n,  p=p, c=c,  n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel, method = method, long = long, approx = approx, threshold = threshold, individual_predicted_probability = individual_predicted_probability)
-  if (outcome=="Binary" & length(x)!=0)   performance <- expected_cs_mape_binary_xy (n=n,  p=p, c=c,  n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel, method = method, long = long, approx = approx, x=x, y=y, threshold = threshold, individual_predicted_probability = individual_predicted_probability)
+  if (outcome=="Binary" & length(x)==0)   performance <- expected_cs_mape_binary (n=n,  p=p, c=c,  n.predictors = n.predictors, beta=beta, nval = nval,
+                                                                                  nsim = nsim, parallel = parallel,
+                                                                                  method = method, long = long, approx = approx, threshold = threshold,
+                                                                                  individual_predicted_probability = individual_predicted_probability,
+                                                                                  x_individual_predicted_probability = x_individual_predicted_probability)
+  if (outcome=="Binary" & length(x)!=0)   performance <- expected_cs_mape_binary_xy (n=n,  p=p, c=c,  n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim,
+                                                                                     parallel = parallel, method = method, long = long, approx = approx, x=x, y=y,
+                                                                                     threshold = threshold, individual_predicted_probability = individual_predicted_probability,
+                                                                                     x_individual_predicted_probability = x_individual_predicted_probability)
 
   if (outcome=="Survival") performance <- expected_cs_survival (n=n, p=p, c=c,  n.predictors = n.predictors, nval = nval, nsim = nsim, parallel = parallel, method = method)
 

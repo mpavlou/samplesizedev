@@ -41,7 +41,10 @@
 #'
 #'
 #'
-expected_cs_mape_binary_xy <- function(n, p, c, n.predictors, beta, nsim = 1000, nval = 25000, method ="MLE", parallel = TRUE, long = FALSE, approx=FALSE, x=x, y=y, individual_predicted_probability, threshold){
+expected_cs_mape_binary_xy <- function(n, p, c, n.predictors, beta, nsim = 1000, nval = 25000, method ="MLE",
+                                       parallel = TRUE, long = FALSE, approx=FALSE, x=x, y=y,
+                                       individual_predicted_probability, threshold,
+                                       x_individual_predicted_probability){
 
   # Find mean and variance of for Normal linear predictor
   # beta=rep(1/n.predictors, n.predictors)
@@ -74,14 +77,20 @@ expected_cs_mape_binary_xy <- function(n, p, c, n.predictors, beta, nsim = 1000,
 
   p_true     <- as.vector(plogis(mean + x%*%beta))
 
-  if (length(individual_predicted_probability)==0) individual_predicted_probability=median(p_true)
+  if (length(threshold)==0) threshold=round(quantile(p_true, p=0.6),3)
+
+  if (length(x_individual_predicted_probability)==0 & length(individual_predicted_probability)==0) {individual_predicted_probability=median(p_true)
 
   # index of closest value
   idx             <- which.min(abs( p_true - individual_predicted_probability))
   x_ipp           <- x[idx, ]
   p_ipp_true      <- as.vector(invlogit(mean + x_ipp%*%beta))
+  individual_quantile  <- round(mean(p_true <= p_ipp_true, na.rm=TRUE), 2)}
 
-  individual_quantile  <- round(mean(p_true <= p_ipp_true, na.rm=TRUE), 2)
+  if (length(x_individual_predicted_probability)!=0)  {
+    x_ipp <- x_individual_predicted_probability
+    p_ipp_true <- as.vector(invlogit(mean + x_ipp%*%beta))
+    individual_quantile  <- round(mean(p_true <= p_ipp_true, na.rm=TRUE), 2)}
 
 
   # quantiles you want
@@ -156,8 +165,8 @@ expected_cs_mape_binary_xy <- function(n, p, c, n.predictors, beta, nsim = 1000,
 
     a<- foreach::foreach(i = 1:nsim, .packages=c('mvtnorm','RcppNumerical', 'ggplot2' )) %dopar% {
 
-      # set.seed(i)
-      doRNG::registerDoRNG(123)
+       set.seed(i)
+
       invlogit <- function(x) 1/(1+exp(-x))
 
       # Approximation of the C-statistic (Large n)
@@ -670,7 +679,7 @@ expected_cs_mape_binary_xy <- function(n, p, c, n.predictors, beta, nsim = 1000,
     ggplot2::coord_cartesian(
       xlim = c(
         max(0, stats::quantile(p_true, probs = 0.0001)),
-        min(stats::quantile(p_true, probs = 0.999), 1)
+        min(stats::quantile(p_true, probs = 0.99), 1)
       )
     )
 

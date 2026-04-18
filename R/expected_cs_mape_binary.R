@@ -36,7 +36,10 @@
 #'
 #'
 #'
-expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nval = 25000, method ="MLE", parallel = TRUE, long = FALSE, approx=FALSE, threshold, individual_predicted_probability){
+expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nval = 25000, method ="MLE",
+                                    parallel = TRUE, long = FALSE, approx=FALSE, threshold,
+                                    individual_predicted_probability,
+                                    x_individual_predicted_probability){
 
   # Find mean and variance of for Normal linear predictor
   # beta=rep(1/n.predictors, n.predictors)
@@ -66,14 +69,20 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   y          <- stats::rbinom(ncalc,  1, invlogit(eta))
   p_true     <- as.vector(invlogit(mean + x%*%beta))
 
-  if (length(individual_predicted_probability)==0) individual_predicted_probability=median(p_true)
+  if (length(threshold)==0) threshold=round(quantile(p_true, p=0.6),3)
+
+  if (length(x_individual_predicted_probability)==0 & length(individual_predicted_probability)==0) {individual_predicted_probability=median(p_true)}
 
   # index of closest value
-  idx                  <- which.min(abs( p_true - individual_predicted_probability))
-  x_ipp                <- x[idx, ]
-  p_ipp_true           <- as.vector(invlogit(mean + x_ipp%*%beta))
-
+  idx             <- which.min(abs( p_true - individual_predicted_probability))
+  x_ipp           <- x[idx, ]
+  p_ipp_true      <- as.vector(invlogit(mean + x_ipp%*%beta))
   individual_quantile  <- round(mean(p_true <= p_ipp_true, na.rm=TRUE), 2)
+
+  if (length(x_individual_predicted_probability)!=0)  {
+    x_ipp <- x_individual_predicted_probability
+    p_ipp_true <- as.vector(invlogit(mean + x_ipp%*%beta))
+    individual_quantile  <- round(mean(p_true <= p_ipp_true, na.rm=TRUE), 2)}
 
 
   # quantiles you want
@@ -592,7 +601,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
     ggplot2::ggtitle(
       paste(
-        "Sampling distribution of IPP=", round(p_ipp_true, 2),
+        "Sampling distribution of IPP=", round(p_ipp_true, 3),
         "\nMedian IPP = ", round(median(p_quantile, na.rm = TRUE), 2),
         "\n95% CI IPP = (",
         round(stats::quantile(p_quantile, probs = 0.025), 2), ", ",
@@ -673,7 +682,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
     ggplot2::coord_cartesian(
       xlim = c(
         max(0, stats::quantile(p_true, probs = 0.0001)),
-        min(stats::quantile(p_true, probs = 0.999), 1)
+        min(stats::quantile(p_true, probs = 0.99), 1)
       )
     )
 
@@ -760,17 +769,17 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
     ggplot2::annotate(
       "segment",
       x =   p_ipp_true + x_offset,
-      y = y_max * 0.9,
+      y = y_max * 0.8,
       xend =   p_ipp_true,
-      yend = y_max * 0.9 - y_offset,   # ensures diagonal (~45°)
+      yend = y_max * 0.8 - y_offset,   # ensures diagonal (~45°)
       arrow = grid::arrow(length = grid::unit(0.25, "cm")),
       color = "red"
     ) +
     ggplot2::annotate(
       "text",
       x =   p_ipp_true + x_offset,
-      y = y_max * 0.95,
-      label = paste("IPP=",round(  p_ipp_true,3), "\n (",individual_quantile*100,"- percentile)", sep=""),
+      y = y_max * 0.85,
+      label = paste("Individual Predicted Probability, IPP=",round(  p_ipp_true,3), "\n (",individual_quantile*100,"-percentile)", sep=""),
       color = "red",
       hjust = 0,
       size=3
@@ -804,7 +813,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   prob_plot <- ggpubr::annotate_figure(
     figure2,
     top = ggpubr::text_grob(
-      sprintf("\n Uncertainty/Stability of Individual Predicted Probabilities (IPP)"),
+      sprintf("\n Stability of Individual Predicted Probabilities (IPP)"),
       color = "black", face = "bold", size = 10))
 
   final_plot <- ggpubr::ggarrange(

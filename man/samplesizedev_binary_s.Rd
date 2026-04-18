@@ -15,7 +15,8 @@ samplesizedev_binary_s(
   nsim = 1000,
   parallel = TRUE,
   plot = TRUE,
-  quick = TRUE
+  quick = TRUE,
+  tol
 )
 
 samplesizedev_binary_s(
@@ -28,7 +29,8 @@ samplesizedev_binary_s(
   nsim = 1000,
   parallel = TRUE,
   plot = TRUE,
-  quick = TRUE
+  quick = TRUE,
+  tol
 )
 }
 \arguments{

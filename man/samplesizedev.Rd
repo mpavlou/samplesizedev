@@ -19,7 +19,8 @@ samplesizedev(
   nsim = 1000,
   parallel = TRUE,
   plot = TRUE,
-  quick = TRUE
+  quick = TRUE,
+  tol = 0.0025
 )
 }
 \arguments{

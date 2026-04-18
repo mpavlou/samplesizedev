@@ -19,8 +19,9 @@ expected_performance(
   approx = FALSE,
   x = NULL,
   y = NULL,
-  threshold = phi,
-  individual_predicted_probability = NULL
+  threshold = NULL,
+  individual_predicted_probability = NULL,
+  x_individual = NULL
 )
 }
 \arguments{
@@ -46,9 +47,15 @@ expected_performance(
 
 \item{long}{(logical) Extract results for all simulations instead of just averages}
 
+\item{x}{(numeric) Matrix of Covariate values based on a user-defined DGM}
+
+\item{y}{(numeric) Vector of responses based on a user-defined DGM}
+
 \item{threshold}{(numeric) A threshold to calculate sensitivity (default=outcome prevalence)}
 
-\item{individual_predicted_probability}{(numeric) An individual predicted probability of inderest (default at median predicted probability) to obtain the uncertainty due to finite sample size}
+\item{individual_predicted_probability}{(numeric) An individual predicted probability of interest (default at median predicted probability) to obtain the uncertainty due to finite sample size (if x_individual_predicted_probability had not been provided)}
+
+\item{x_individual_predicted_probability}{(numeric) a vector of covariate values for a individual of interest}
 }
 \value{
 Data frame df with the following elements:
