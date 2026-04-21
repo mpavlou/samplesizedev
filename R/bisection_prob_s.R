@@ -26,16 +26,8 @@ bisection_prob_s <- function(f, a, b, iter = 20, tol = ceiling(round(a/200)/5) *
 
   for (k in 1:iter) {
 
-    # if (k <= divide ) nsim <- nsim1/divide*k
-    # a <- round(a/tol)*tol
-    # b <- round(b/tol)*tol
-
     c  <- round((a*4 + b*2) / 6) # Calculate midpoint
     fc <- f(c, nsim = nsim)
-
-    #print(c(k, a, b, c, fa, fb, fc ))
-    #print(c(k))
-
 
 
     # If the function equals 0 at the midpoint or the midpoint is below the desired tolerance, stop the
