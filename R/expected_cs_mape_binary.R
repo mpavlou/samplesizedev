@@ -374,7 +374,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
         return(auc.true)
       }
 
-      mod_penal_ave_foreach <- function(x, y, bn=50, method=method, f = nfolds/(nfolds-1)-1,
+      mod_penal_ave_foreach <- function(x, y, bn=2, method=method, f = nfolds/(nfolds-1)-1,
                                         parallel=TRUE, nfolds=10, boot=TRUE){
 
         if (method=="lasso") a=1
@@ -602,7 +602,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
     ggplot2::ggtitle(
       paste(
         "Sampling distribution of IPP=", round(p_ipp_true, 3),
-        "\nMedian IPP = ", round(median(p_quantile, na.rm = TRUE), 2),
+        "\nMedian IPP = ", round(median(p_quantile, na.rm = TRUE), 3),
         "\n95% CI IPP = (",
         round(stats::quantile(p_quantile, probs = 0.025), 2), ", ",
         round(stats::quantile(p_quantile, probs = 0.975), 2), ") ; Width = ",

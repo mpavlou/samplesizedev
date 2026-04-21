@@ -1,6 +1,6 @@
 n_pap_s_analytical <- function(c, p, n.predictors, l_s, u_s, PAP_s = PAP_s, min.opt = 0.1, max.opt = 0.99){
 
-  r2   <- as.numeric(approximate_R2(c, p, n = 1000000)[2])
+  r2   <- as.numeric(approximate_R2(c, p, n = 500000)[2])
 
   prob <- function(S){
 
@@ -19,6 +19,6 @@ n_pap_s_analytical <- function(c, p, n.predictors, l_s, u_s, PAP_s = PAP_s, min.
 
   probability <- 1-(stats::pnorm( ( l_s - s_est)/se) +pnorm( (s_est - u_s )/se) )
 
-  c(s_est, round(n),se,probability)
+  c(s_est, round(n),se,probability,r2)
 
 }
