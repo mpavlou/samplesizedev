@@ -26,7 +26,7 @@ bisection_prob_s <- function(f, a, b, iter = 20, tol = ceiling(round(a/200)/5) *
 
   for (k in 1:iter) {
 
-    if (k <= divide ) nsim <- nsim1/divide*k
+    # if (k <= divide ) nsim <- nsim1/divide*k
     # a <- round(a/tol)*tol
     # b <- round(b/tol)*tol
 
