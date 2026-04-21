@@ -75,7 +75,6 @@ samplesizedev_binary_prob_s <- function(l_s, u_s, PAP_s, p, c,   n.predictors, b
 
   if (quick==FALSE) n   <- bisection_prob_s(prob_s_est, min.opt, max.opt, tol = tol, nsim = nsim) else {
 
-<<<<<<< HEAD
     a  <- find_n_prap_s(c, p, mean_eta, variance_eta, n.predictors, r2, l_s=l_s, u_s = u_s,
                         PAP_s = PAP_s,min.opt = 0.1, max.opt = 0.99)
     n  <- a[1]
@@ -90,22 +89,6 @@ samplesizedev_binary_prob_s <- function(l_s, u_s, PAP_s, p, c,   n.predictors, b
     if (c>0.88  & c<=0.89 )       {inflation_f   <- 1.22  ; n <- n*inflation_f }
     if (c>0.89  & c<=0.90 )       {inflation_f   <- 1.24  ; n <- n*inflation_f }
   }
-=======
-    a <- find_n_prap_s(c, p, mean_eta, variance_eta, n.predictors, r2, l_s=l_s, u_s = u_s, PAP_s = PAP_s,min.opt = 0.1, max.opt = 0.99)
-    n <- a[1]
-  }
-
-  if (c>0.8   & c<=0.81 )       {inflation_f   <- 1.03  ; n <- n*inflation_f }
-  if (c>0.81  & c<=0.82 )       {inflation_f   <- 1.14  ; n <- n*inflation_f }
-  if (c>0.82  & c<=0.83 )       {inflation_f   <- 1.15  ; n <- n*inflation_f }
-  if (c>0.83  & c<=0.84 )       {inflation_f   <- 1.16  ; n <- n*inflation_f }
-  if (c>0.84  & c<=0.85 )       {inflation_f   <- 1.08  ; n <- n*inflation_f }
-  if (c>0.85  & c<=0.86 )       {inflation_f   <- 1.10  ; n <- n*inflation_f }
-  if (c>0.86  & c<=0.87 )       {inflation_f   <- 1.13  ; n <- n*inflation_f }
-  if (c>0.87  & c<=0.88 )       {inflation_f   <- 1.19  ; n <- n*inflation_f }
-  if (c>0.88  & c<=0.89 )       {inflation_f   <- 1.22  ; n <- n*inflation_f }
-  if (c>0.89  & c<=0.90 )       {inflation_f   <- 1.24  ; n <- n*inflation_f }
->>>>>>> 5b0f22dbe0b1d6a2d9e362a4abbc84a2383374d1
 
   size               <- NULL
   size$rvs           <- as.vector(n_init)
