@@ -4,16 +4,13 @@ bisection_prob_s <- function(f, a, b, iter = 20, tol = ceiling(round(a/200)/5) *
   # If the signs of the function at the evaluated points, a and b, stop the function and return message.
   ##ch
 
-  tol = ceiling(round(a/200)/5) * 3
-
-  nsim1 <- nsim
-
-  if (nsim>=1000) divide <- 1 else divide <- 1
-
-  nsim  <- round(nsim/divide)
+  tol_n = round(a/50)
 
   fa <- f(a, nsim = nsim)
+  if (abs(fa) <= 0.005) return(a)
+
   fb <- f(b, nsim = nsim)
+  if (abs(fb) <= 0.005) return(b)
 
 
   if (fa > 0 & fb > 0) {a<-a*0.8 ;   fa <- f(a, nsim = nsim)}
@@ -45,7 +42,7 @@ bisection_prob_s <- function(f, a, b, iter = 20, tol = ceiling(round(a/200)/5) *
     # function and return the root.
 
     if (nsim<=200){
-    if ( ((abs(fc) <= 0.1) || ((b - a) / 2) < tol)   &  (k >=1 )) {
+    if ( ((abs(fc) <= 0.1) || ((b - a) / 2) < tol_n)   &  (k >=1 )) {
       #if (  abs(fc) <= 0.0025 &  (k >=2 )) {
       return(c)
     }
@@ -53,12 +50,12 @@ bisection_prob_s <- function(f, a, b, iter = 20, tol = ceiling(round(a/200)/5) *
 
     # If the function equals 0 at the midpoint or the midpoint is below the desired tolerance, stop the
     # function and return the root.
-   if (  ((abs(fc) <= 0.005) || ((b - a) / 2) < tol)   &  (k >=1 )) {
+   if (  ((abs(fc) <= 0.005) || ((b - a) / 2) < tol_n)   &  (k >=1 )) {
     #if (  abs(fc) <= 0.0025 &  (k >=2 )) {
       return(c)
    }
 
-    if (  ((abs(fc) <= 0.006) || ((b - a) / 2) < tol)   &  (k >=7) ) {
+    if (  ((abs(fc) <= 0.006) || ((b - a) / 2) < tol_n)   &  (k >=7) ) {
       #if (  abs(fc) <= 0.0025 &  (k >=2 )) {
       return(c)
     }
