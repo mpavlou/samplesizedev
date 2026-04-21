@@ -45,30 +45,11 @@ samplesizedev_binary_prob_s <- function(l_s, u_s, PAP_s, p, c,   n.predictors, b
   mean_eta         <- mean_var_eta[1]
   variance_eta     <- mean_var_eta[2]
 
-  # r2   <- as.numeric(approximate_R2(c, p, n = 500000)[2])
-
-  # n_init <- round((n.predictors)/ ((0.9-1)*log(1-r2/0.9)))
-  #
-  #
-  # if (c<=0.7  )               {inflation_f   <- 1.1 ; min.opt  <- n_init*0.4}
-  # if (c>0.7  & c<=0.8 )       {inflation_f   <- 1.5  ; min.opt <- n_init*0.7}
-  # if (c>0.8  & c<=0.85)       {inflation_f   <- 2.1    ; min.opt <- n_init*0.8}
-  # if (c>0.85 & c<=0.9)        {inflation_f   <- 2.8  ; min.opt <- n_init*0.9}
-  #
-  #
-  # if (c<=0.7  & n.predictors <6)            {inflation_f    <- 2.5 ; min.opt  <- n_init*0.3}
-  # if (c>0.7  & c<=0.8  & n.predictors < 8)   {inflation_f   <- 2.5  ; min.opt <- n_init*0.4}
-  # if (c>0.8  & c<=0.85 & n.predictors < 8)   {inflation_f   <- 2.1    ; min.opt <- n_init *0.5}
-  # if (c>0.85 & c<=0.9  & n.predictors < 8)   {inflation_f   <- 2.8  ; min.opt <- n_init*0.7}
-  #
-  # max.opt <- inflation_f * n_init
-
-
   n_init_an <- n_pap_s_analytical(c, p, n.predictors,l_s= l_s ,u_s = u_s, PAP_s = PAP_s, min.opt = 0.1, max.opt = 0.99)
   n_init    <- n_init_an[2]
   r2        <- n_init_an[5]
 
-  if (c <  0.75 )               {inflation_f   <- 1.02   ; min.opt <- n_init *0.9}
+  if (c <  0.75 )               {inflation_f   <- 1.02  ; min.opt <- n_init *0.9}
   if (c >= 0.75 & c <  0.8  )   {inflation_f   <- 1.1   ; min.opt <- n_init *0.9}
   if (c >= 0.8  & c <= 0.85 )   {inflation_f   <- 1.4   ; min.opt <- n_init*1.2 }
   if (c >  0.85 & c <= 0.9  )   {inflation_f   <- 1.8   ; min.opt <- n_init*1.3 }
@@ -94,14 +75,24 @@ samplesizedev_binary_prob_s <- function(l_s, u_s, PAP_s, p, c,   n.predictors, b
 
   if (quick==FALSE) n   <- bisection_prob_s(prob_s_est, min.opt, max.opt, tol = tol, nsim = nsim) else {
 
-    a <- find_n_prap_s(c, p, mean_eta, variance_eta, n.predictors, r2, l_s=l_s, u_s = u_s, PAP_s = PAP_s,min.opt = 0.1, max.opt = 0.99)
-    n <- a[1]
-}
-
+    a  <- find_n_prap_s(c, p, mean_eta, variance_eta, n.predictors, r2, l_s=l_s, u_s = u_s,
+                        PAP_s = PAP_s,min.opt = 0.1, max.opt = 0.99)
+    n  <- a[1]
+    if (c>0.8   & c<=0.81 )       {inflation_f   <- 1.03  ; n <- n*inflation_f }
+    if (c>0.81  & c<=0.82 )       {inflation_f   <- 1.14  ; n <- n*inflation_f }
+    if (c>0.82  & c<=0.83 )       {inflation_f   <- 1.15  ; n <- n*inflation_f }
+    if (c>0.83  & c<=0.84 )       {inflation_f   <- 1.16  ; n <- n*inflation_f }
+    if (c>0.84  & c<=0.85 )       {inflation_f   <- 1.08  ; n <- n*inflation_f }
+    if (c>0.85  & c<=0.86 )       {inflation_f   <- 1.10  ; n <- n*inflation_f }
+    if (c>0.86  & c<=0.87 )       {inflation_f   <- 1.13  ; n <- n*inflation_f }
+    if (c>0.87  & c<=0.88 )       {inflation_f   <- 1.19  ; n <- n*inflation_f }
+    if (c>0.88  & c<=0.89 )       {inflation_f   <- 1.22  ; n <- n*inflation_f }
+    if (c>0.89  & c<=0.90 )       {inflation_f   <- 1.24  ; n <- n*inflation_f }
+  }
 
   size               <- NULL
   size$rvs           <- as.vector(n_init)
-  size$sim           <- as.vector(n)
+  size$sim           <- as.vector(round(n))
 
   # size$n_simulations <- nsim
   # size$correct_to_nearest <- as.vector(tol)

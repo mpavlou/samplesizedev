@@ -18,8 +18,8 @@ find_n_prap_s <- function(c, p, mean, variance, n.predictors, r2, l_s=0.85, u_s=
   se<- sqrt(s_est/ (2 * p * (1-p) * stats::qnorm(c_adj_var[1])^2 *n) + 2 * s_est^2/(n-2))
   probability <- 1-(stats::pnorm( (l_s-s_est)/se) + stats::pnorm( (s_est-u_s)/se) )
 
-  if (c>0.8  & c<=0.85 )       {inflation_f   <- 1.2  ; n <- n*inflation_f }
-  if (c>0.85  & c<=0.9 )       {inflation_f   <- 1.3  ; n <- n*inflation_f }
+  # if (c>0.8  & c<=0.85 )       {inflation_f   <- 1.2  ; n <- n*inflation_f }
+  # if (c>0.85  & c<=0.9 )       {inflation_f   <- 1.3  ; n <- n*inflation_f }
 
   c(round(n), s_est, se,probability)
 
