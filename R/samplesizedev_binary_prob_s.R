@@ -41,18 +41,39 @@ samplesizedev_binary_prob_s <- function(l_s, u_s, PAP_s, p, c,   n.predictors, b
 
   set.seed(2022)
 
+  set.seed(2022)
+
   mean_var_eta     <- find_mu_sigma(p, c, tol = 0.00001)
   mean_eta         <- mean_var_eta[1]
   variance_eta     <- mean_var_eta[2]
 
-  n_init_an <- n_pap_s_analytical(c, p, n.predictors,l_s= l_s ,u_s = u_s, PAP_s = PAP_s, min.opt = 0.1, max.opt = 0.99)
-  n_init    <- n_init_an[2]
-  r2        <- n_init_an[5]
+  # Find beta that corresponds to that variance
 
-  if (c <  0.75 )               {inflation_f   <- 1.02  ; min.opt <- n_init *0.9}
-  if (c >= 0.75 & c <  0.8  )   {inflation_f   <- 1.1   ; min.opt <- n_init *0.9}
-  if (c >= 0.8  & c <= 0.85 )   {inflation_f   <- 1.4   ; min.opt <- n_init*1.2 }
-  if (c >  0.85 & c <= 0.9  )   {inflation_f   <- 1.8   ; min.opt <- n_init*1.3 }
+  beta    <- beta * sqrt(mean_var_eta[2]/sum(beta^2))
+  sigma   <- diag(1, n.predictors)
+
+  # True R2 and R2CS
+  MaxR2      <- 1-(((p^(p))*((1-p)^(1-p)))^2)
+  ncalc      <- 500000
+  x          <- mvtnorm::rmvnorm(ncalc, rep(0, n.predictors), sigma = sigma )
+  eta        <- mean_eta+x%*% beta
+  y          <- stats::rbinom(ncalc,  1, invlogit(eta))
+  p_true     <- as.vector(invlogit(mean_eta + x%*%beta))
+  a          <- RcppNumerical::fastLR(cbind(1,x), y)
+  L1         <- a$loglikelihood
+  L0         <- sum(y*log(mean(y)) + (1-y)*log(1-mean(y)))
+  LR         <- -2*(L0-L1)
+  r2         <- 1 - exp(-LR/ncalc)
+
+
+  a      <- find_n_prap_s(c, p, mean_eta, variance_eta, n.predictors, r2, l_s=l_s, u_s = u_s,
+                      PAP_s = PAP_s,min.opt = 0.1, max.opt = 0.99)
+  n_init <- a[1]
+
+  if (c <  0.75 )               {inflation_f   <- 1.02  ; min.opt <- n_init *0.95}
+  if (c >= 0.75 & c <  0.8  )   {inflation_f   <- 1.1   ; min.opt <- n_init *1}
+  if (c >= 0.8  & c <= 0.85 )   {inflation_f   <- 1.2   ; min.opt <- n_init*1.1 }
+  if (c >  0.85 & c <= 0.9  )   {inflation_f   <- 1.3   ; min.opt <- n_init*1.2 }
 
 
   max.opt <- inflation_f * n_init
@@ -75,9 +96,8 @@ samplesizedev_binary_prob_s <- function(l_s, u_s, PAP_s, p, c,   n.predictors, b
 
   if (quick==FALSE) n   <- bisection_prob_s(prob_s_est, min.opt, max.opt, tol = tol, nsim = nsim) else {
 
-    a  <- find_n_prap_s(c, p, mean_eta, variance_eta, n.predictors, r2, l_s=l_s, u_s = u_s,
-                        PAP_s = PAP_s,min.opt = 0.1, max.opt = 0.99)
     n  <- a[1]
+
     if (c>0.8   & c<=0.81 )       {inflation_f   <- 1.03  ; n <- n*inflation_f }
     if (c>0.81  & c<=0.82 )       {inflation_f   <- 1.14  ; n <- n*inflation_f }
     if (c>0.82  & c<=0.83 )       {inflation_f   <- 1.15  ; n <- n*inflation_f }
