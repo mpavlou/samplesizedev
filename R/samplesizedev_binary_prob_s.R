@@ -113,13 +113,13 @@ samplesizedev_binary_prob_s <- function(l_s, u_s, PAP_s, p, c,   n.predictors, b
 
   if (quick==FALSE) n_sim   <- bisection_prob_s(prob_s_est, min.opt, max.opt, tol = tol, nsim = nsim)
 
-  if (quick==FALSE) {
+  if (quick==TRUE) {
     size                        <- NULL
     size$analytical_corrected   <- as.vector(round(n_analytical_corrected))
     size$analytical             <- as.vector(round(n_analytical))
   }
 
-  if (quick==TRUE) {
+  if (quick==FALSE) {
     size                        <- NULL
     size$sim                    <- as.vector(round(n_sim))
     size$analytical_corrected   <- as.vector(round(n_analytical_corrected))
