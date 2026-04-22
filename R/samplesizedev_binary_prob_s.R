@@ -99,13 +99,16 @@ samplesizedev_binary_prob_s <- function(l_s, u_s, PAP_s, p, c,   n.predictors, b
 
   inflation_f   <- 1.00  ; nc <-   n_analytical*inflation_f
 
-  if (c>0.64  & c<=0.65 )       {inflation_f   <- 0.95  ; nc <-   n_analytical*inflation_f }
-  if (c>0.65  & c<=0.66 )       {inflation_f   <- 0.95  ; nc <-   n_analytical*inflation_f }
-  if (c>0.66  & c<=0.67 )       {inflation_f   <- 0.96  ; nc <-   n_analytical*inflation_f }
-  if (c>0.67  & c<=0.68 )       {inflation_f   <- 0.97  ; nc <-   n_analytical*inflation_f }
-  if (c>0.68  & c<=0.69 )       {inflation_f   <- 0.98  ; nc <-   n_analytical*inflation_f }
-  if (c>0.69  & c<=0.70 )       {inflation_f   <- 0.985  ; nc <-   n_analytical*inflation_f }
-  if (c>0.7   & c<=0.80 )       {inflation_f   <- 1.00  ; nc <-   n_analytical*inflation_f }
+  if (c>0.64  & c<=0.65 )       {inflation_f   <- 0.92  ; nc <-   n_analytical*inflation_f }
+  if (c>0.65  & c<=0.66 )       {inflation_f   <- 0.93  ; nc <-   n_analytical*inflation_f }
+  if (c>0.66  & c<=0.67 )       {inflation_f   <- 0.95  ; nc <-   n_analytical*inflation_f }
+  if (c>0.67  & c<=0.68 )       {inflation_f   <- 0.96  ; nc <-   n_analytical*inflation_f }
+  if (c>0.68  & c<=0.69 )       {inflation_f   <- 0.96  ; nc <-   n_analytical*inflation_f }
+  if (c>0.69  & c<=0.70 )       {inflation_f   <- 0.96  ; nc <-   n_analytical*inflation_f }
+  if (c>0.70  & c<=0.71 )       {inflation_f   <- 0.97  ; nc <-   n_analytical*inflation_f }
+  if (c>0.71  & c<=0.72 )       {inflation_f   <- 0.97  ; nc <-   n_analytical*inflation_f }
+  if (c>0.72  & c<=0.73 )       {inflation_f   <- 0.99  ; nc <-   n_analytical*inflation_f }
+  if (c>0.73  & c<=0.80 )       {inflation_f   <- 1.00  ; nc <-   n_analytical*inflation_f }
   if (c>0.8   & c<=0.81 )       {inflation_f   <- 1.03  ; nc <-   n_analytical*inflation_f }
   if (c>0.81  & c<=0.82 )       {inflation_f   <- 1.14  ; nc <-   n_analytical*inflation_f }
   if (c>0.82  & c<=0.83 )       {inflation_f   <- 1.15  ; nc <-   n_analytical*inflation_f }
