@@ -95,25 +95,36 @@ samplesizedev_binary_prob_s <- function(l_s, u_s, PAP_s, p, c,   n.predictors, b
     prob_s[1] - PAP_s
   }
 
-  if (quick==FALSE) n   <- bisection_prob_s(prob_s_est, min.opt, max.opt, tol = tol, nsim = nsim) else {
+  n_analytical  <- a[1]
 
-    n  <- a[1]
+  if (c>0.8   & c<=0.81 )       {inflation_f   <- 1.03  ; n <- n*inflation_f }
+  if (c>0.81  & c<=0.82 )       {inflation_f   <- 1.14  ; n <- n*inflation_f }
+  if (c>0.82  & c<=0.83 )       {inflation_f   <- 1.15  ; n <- n*inflation_f }
+  if (c>0.83  & c<=0.84 )       {inflation_f   <- 1.16  ; n <- n*inflation_f }
+  if (c>0.84  & c<=0.85 )       {inflation_f   <- 1.08  ; n <- n*inflation_f }
+  if (c>0.85  & c<=0.86 )       {inflation_f   <- 1.10  ; n <- n*inflation_f }
+  if (c>0.86  & c<=0.87 )       {inflation_f   <- 1.13  ; n <- n*inflation_f }
+  if (c>0.87  & c<=0.88 )       {inflation_f   <- 1.19  ; n <- n*inflation_f }
+  if (c>0.88  & c<=0.89 )       {inflation_f   <- 1.22  ; n <- n*inflation_f }
+  if (c>0.89  & c<=0.90 )       {inflation_f   <- 1.24  ; n <- n*inflation_f }
 
-    if (c>0.8   & c<=0.81 )       {inflation_f   <- 1.03  ; n <- n*inflation_f }
-    if (c>0.81  & c<=0.82 )       {inflation_f   <- 1.14  ; n <- n*inflation_f }
-    if (c>0.82  & c<=0.83 )       {inflation_f   <- 1.15  ; n <- n*inflation_f }
-    if (c>0.83  & c<=0.84 )       {inflation_f   <- 1.16  ; n <- n*inflation_f }
-    if (c>0.84  & c<=0.85 )       {inflation_f   <- 1.08  ; n <- n*inflation_f }
-    if (c>0.85  & c<=0.86 )       {inflation_f   <- 1.10  ; n <- n*inflation_f }
-    if (c>0.86  & c<=0.87 )       {inflation_f   <- 1.13  ; n <- n*inflation_f }
-    if (c>0.87  & c<=0.88 )       {inflation_f   <- 1.19  ; n <- n*inflation_f }
-    if (c>0.88  & c<=0.89 )       {inflation_f   <- 1.22  ; n <- n*inflation_f }
-    if (c>0.89  & c<=0.90 )       {inflation_f   <- 1.24  ; n <- n*inflation_f }
+  n_analytical_corrected <- n
+
+  if (quick==FALSE) n_sim   <- bisection_prob_s(prob_s_est, min.opt, max.opt, tol = tol, nsim = nsim)
+
+  if (quick==FALSE) {
+    size                        <- NULL
+    size$analytical_corrected   <- as.vector(round(n_analytical_corrected))
+    size$analytical             <- as.vector(round(n_analytical))
   }
 
-  size               <- NULL
-  size$init          <- as.vector(round(n_init))
-  size$sim           <- as.vector(round(n))
+  if (quick==TRUE) {
+    size                        <- NULL
+    size$sim                    <- as.vector(round(n_sim))
+    size$analytical_corrected   <- as.vector(round(n_analytical_corrected))
+    size$analytical             <- as.vector(round(n_analytical))
+
+  }
 
   # size$n_simulations <- nsim
   # size$correct_to_nearest <- as.vector(tol)
