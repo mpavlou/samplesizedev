@@ -97,18 +97,19 @@ samplesizedev_binary_prob_s <- function(l_s, u_s, PAP_s, p, c,   n.predictors, b
 
   n_analytical  <- a[1]
 
-  if (c>0.8   & c<=0.81 )       {inflation_f   <- 1.03  ; n <- n*inflation_f }
-  if (c>0.81  & c<=0.82 )       {inflation_f   <- 1.14  ; n <- n*inflation_f }
-  if (c>0.82  & c<=0.83 )       {inflation_f   <- 1.15  ; n <- n*inflation_f }
-  if (c>0.83  & c<=0.84 )       {inflation_f   <- 1.16  ; n <- n*inflation_f }
-  if (c>0.84  & c<=0.85 )       {inflation_f   <- 1.08  ; n <- n*inflation_f }
-  if (c>0.85  & c<=0.86 )       {inflation_f   <- 1.10  ; n <- n*inflation_f }
-  if (c>0.86  & c<=0.87 )       {inflation_f   <- 1.13  ; n <- n*inflation_f }
-  if (c>0.87  & c<=0.88 )       {inflation_f   <- 1.19  ; n <- n*inflation_f }
-  if (c>0.88  & c<=0.89 )       {inflation_f   <- 1.22  ; n <- n*inflation_f }
-  if (c>0.89  & c<=0.90 )       {inflation_f   <- 1.24  ; n <- n*inflation_f }
+  if (c<=0.8)                   {inflation_f   <- 1.00  ; nc <-   n_analytical*inflation_f }
+  if (c>0.8   & c<=0.81 )       {inflation_f   <- 1.03  ; nc <-   n_analytical*inflation_f }
+  if (c>0.81  & c<=0.82 )       {inflation_f   <- 1.14  ; nc <-   n_analytical*inflation_f }
+  if (c>0.82  & c<=0.83 )       {inflation_f   <- 1.15  ; nc <-   n_analytical*inflation_f }
+  if (c>0.83  & c<=0.84 )       {inflation_f   <- 1.16  ; nc <-   n_analytical*inflation_f }
+  if (c>0.84  & c<=0.85 )       {inflation_f   <- 1.08  ; nc <-   n_analytical*inflation_f }
+  if (c>0.85  & c<=0.86 )       {inflation_f   <- 1.10  ; nc <-   n_analytical*inflation_f }
+  if (c>0.86  & c<=0.87 )       {inflation_f   <- 1.13  ; nc <-   n_analytical*inflation_f }
+  if (c>0.87  & c<=0.88 )       {inflation_f   <- 1.19  ; nc <-   n_analytical*inflation_f }
+  if (c>0.88  & c<=0.89 )       {inflation_f   <- 1.22  ; nc <-   n_analytical*inflation_f }
+  if (c>0.89  & c<=0.90 )       {inflation_f   <- 1.24  ; nc <-   n_analytical*inflation_f }
 
-  n_analytical_corrected <- n
+  n_analytical_corrected <- nc
 
   if (quick==FALSE) n_sim   <- bisection_prob_s(prob_s_est, min.opt, max.opt, tol = tol, nsim = nsim)
 
