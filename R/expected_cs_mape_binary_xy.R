@@ -597,7 +597,7 @@ expected_cs_mape_binary_xy <- function(n, p, c, n.predictors, beta, nsim = 1000,
 
     ggplot2::ggtitle(
       paste(
-        "Sampling distribution of IPP=", round(p_ipp_true, 2),
+        "Sampling distribution of IPP=", round(p_ipp_true, 3),
         "\nMedian IPP = ", round(median(p_quantile, na.rm = TRUE), 3),
         "\n95% CI IPP = (",
         round(stats::quantile(p_quantile, probs = 0.025), 2), ", ",
@@ -878,7 +878,7 @@ expected_cs_mape_binary_xy <- function(n, p, c, n.predictors, beta, nsim = 1000,
 
   {
     b        <- cbind(n, p, n.predictors, b)
-    b        <- data.frame(b)
+    b        <- data.frame(b)[,1:14]
     names(b) <- c("n", "phi", "p", "cs", "mape", "opt_r2_nag", "heur_cs", "r2_apparent", "average_risk", "cstat", "brier", "sens", "nb", "  p_quantile")
     b
   }

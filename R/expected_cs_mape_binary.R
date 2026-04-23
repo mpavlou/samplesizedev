@@ -608,7 +608,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
         round(stats::quantile(p_quantile, probs = 0.975), 2), ") ; Width = ",
         round(
           stats::quantile(p_quantile, probs = 0.975) -
-            stats::quantile(p_quantile, probs = 0.025), 2
+            stats::quantile(p_quantile, probs = 0.025), 3
         ),
         "\n", prob_label, " = ", round(prob_region, 2),
         sep = ""
@@ -712,7 +712,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
     ggplot2::theme(axis.text=ggplot2::element_text(size=10),
                    axis.title=ggplot2::element_text(size=10)) +
     ggplot2::theme(plot.title =  ggplot2::element_text(size = 10)) +
-    ggplot2::labs(x = "Percentile of distribution of true probs", y = "Median (95% CI) of IPPs")+
+    ggplot2::labs(x = "Percentile of distribution of true probabilities", y = "Median (95% CI) of IPPs")+
     ggplot2::ggtitle("Stability of IPP")
 
 
@@ -882,7 +882,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
   {
     b        <- cbind(n, p, n.predictors, b)
-    b        <- data.frame(b)
+    b        <- data.frame(b)[,1:14]
     names(b) <- c("n", "phi", "p", "cs", "mape", "opt_r2_nag", "heur_cs", "r2_apparent", "average_risk", "cstat", "brier", "sens", "nb", "  p_quantile")
     b
   }
