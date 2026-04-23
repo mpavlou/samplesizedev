@@ -1,8 +1,8 @@
 find_n_prap_s <- function(c, p, mean, variance, n.predictors, r2, l_s=0.85, u_s=1.15, PAP_s = 0.8, min.opt = 0.1, max.opt = 0.99){
 
 
-  if (c>0.75) c_adj     <- adjusted_c_mu_sigma(mean, variance, n.predictors, p) else c_adj = c(c,r2)
-  if (c>0.75) c_adj_var <- adjusted_c_mu_sigma(mean, variance, 1, p) else c_adj_var = c(c,r2)
+  if (c>=0.75) c_adj     <- adjusted_c_mu_sigma(mean, variance, n.predictors, p) else c_adj = c(c,r2)
+  if (c>=0.75) c_adj_var <- adjusted_c_mu_sigma(mean, variance, 1, p) else c_adj_var = c(c,r2)
 
 
   prob <- function(S){
