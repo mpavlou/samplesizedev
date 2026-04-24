@@ -124,7 +124,7 @@ samplesizedev_binary_prob_s <- function(l_s, u_s, PAP_s, p, c,   n.predictors, b
 
   n_analytical_corrected <- nc
 
-  if (quick==FALSE) n_sim   <- bisection_prob_s(prob_s_est, nc*0.94, nc*1.06, tol = tol, nsim = nsim)
+  if (quick==FALSE) n_sim   <- bisection_prob_s(prob_s_est, nc*0.93, nc*1.07, tol = tol, nsim = nsim)
 
   if (quick==TRUE) {
     size                        <- NULL
