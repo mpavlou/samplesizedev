@@ -70,7 +70,7 @@ samplesizedev_binary_prob_s <- function(l_s, u_s, PAP_s, p, c,   n.predictors, b
 
   if (c <  0.75 )               {inflation_f   <- 1.02  ; min.opt <- n_init *0.95}
   if (c >= 0.75 & c <  0.8  )   {inflation_f   <- 1.1   ; min.opt <- n_init *1}
-  if (c >= 0.8  & c <= 0.85 )   {inflation_f   <- 1.2   ; min.opt <- n_init*1.1 }
+  if (c >= 0.8  & c <= 0.85 )   {inflation_f   <- 1.1   ; min.opt <- n_init*1.05 }
   if (c >  0.85 & c <= 0.9  )   {inflation_f   <- 1.3   ; min.opt <- n_init*1.2 }
 
   max.opt <- round(inflation_f * n_init)
@@ -121,7 +121,7 @@ samplesizedev_binary_prob_s <- function(l_s, u_s, PAP_s, p, c,   n.predictors, b
 
   n_analytical_corrected <- nc
 
-  if (quick==FALSE) n_sim   <- bisection_prob_s(prob_s_est, min.opt, max.opt, tol = tol, nsim = nsim)
+  if (quick==FALSE) n_sim   <- bisection_prob_s(prob_s_est, nc*0.96, nc*1.04, tol = tol, nsim = nsim)
 
   if (quick==TRUE) {
     size                        <- NULL
