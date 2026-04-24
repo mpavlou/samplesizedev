@@ -91,7 +91,7 @@ samplesizedev_binary_s <- function(S, p, c,   n.predictors, beta = rep(1/n.predi
   A        <- 2*p*(1-p)*stats::qnorm(c)^2
   app      <- sqrt(1/(A* n_init)+2/(n_init-2) )
   mce      <- round(app/sqrt(n_init),4)
-  tol      <- max(1.5*mce,0.0025)
+  tol      <- max(1*mce/1.5,0.0025)
 
   if (c>=0.85) { min.opt <- 1.1* n_init; max.opt <- 1.3 * n_init} else
   { min.opt <- 0.9 * n_init; max.opt <- 1.05 * n_init}
