@@ -9,19 +9,19 @@ bisection_prob_s <- function(f, a, b, iter = 20, tol = ceiling(round(a/200)/5) *
   c<-round((a+b)/2)
 
   fc <- f(c, nsim = nsim)
-  if (abs(fc) <= 0.005) return(c)
+  if (abs(fc) < 0.005) return(c)
 
   fa <- f(a, nsim = nsim)
-  if (abs(fa) <= 0.0051) return(a)
+  if (abs(fa) < 0.005) return(a)
 
   fb <- f(b, nsim = nsim)
-  if (abs(fb) <= 0.0051) return(b)
+  if (abs(fb) < 0.005) return(b)
 
 
   if (fa > 0 & fb > 0) {
-    a<-a*0.9  ;  fa <- f(a, nsim = nsim) ; {if (abs(fa) <= 0.0051) return(a)}}
+    a<-a*0.9  ;  fa <- f(a, nsim = nsim) ; {if (abs(fa) < 0.005) return(a)}}
   if (fa < 0 & fb < 0) {
-    b<-b*1.1  ;  fb <- f(b, nsim = nsim);  {if (abs(fb) <= 0.0051) return(b)}}
+    b<-b*1.1  ;  fb <- f(b, nsim = nsim);  {if (abs(fb) < 0.005) return(b)}}
 
 
   if (!(fa < 0) && (fb > 0)) {
