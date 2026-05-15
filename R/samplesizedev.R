@@ -34,6 +34,7 @@
 #' @param parallel (logical) parallel processing to speed up computations (default=TRUE)
 #' @param plot (logical) Show figures for intermediate plots (default=TRUE)
 #' @param quick (logical) Use approximation for a quick calculation (default=FALSE)
+#' @param tol (logical) Tolerance for the calculation for the expected performance, stop when the median calibration slope is within 'tol' from the target value.
 
 #' @return n$sim: the required sample size by simulation
 #' @return n$rvs: the required sample size by the RvS formulae (only for comparison)
@@ -62,7 +63,7 @@
 
 samplesizedev <- function(outcome="Binary", S = NULL, MAPE = NULL, l_s = NULL, u_s = NULL, PAP_s = NULL,
                           phi, c,  p, gamma = rep(1/p, p), nval = 25000, nsim = 1000, parallel = TRUE,
-                          plot = TRUE, quick = TRUE, tol=0.0025){
+                          plot = TRUE, quick = FALSE, tol=0.0025){
 
   beta          <- gamma
   n.predictors  <- p
@@ -77,7 +78,7 @@ samplesizedev <- function(outcome="Binary", S = NULL, MAPE = NULL, l_s = NULL, u
 
   if (outcome=="Binary")   { if (length(MAPE)==0 & length(l_s)==0)    n <- samplesizedev_binary_s(S=S, p=p, c=c,  n.predictors = n.predictors, beta = beta, nval = nval, nsim = nsim, parallel = parallel, plot = plot, quick = quick, tol = tol) else
                              if (length(S)==0    & length(l_s)==0)    n <- samplesizedev_binary_mape(MAPE=MAPE, p=p, c=c,  n.predictors = n.predictors, beta = beta, nval = nval, nsim = nsim, parallel = parallel) else
-                             if (length(S)==0    & length(MAPE)==0)  n <- samplesizedev_binary_prob_s(l_s=l_s, u_s=u_s, PAP_s=PAP_s, p=p, c=c,  n.predictors = n.predictors, beta = beta, nval = nval, nsim = nsim, parallel = parallel, plot = plot, quick = quick) }
+                             if (length(S)==0    & length(MAPE)==0)   n <- samplesizedev_binary_prob_s(l_s=l_s, u_s=u_s, PAP_s=PAP_s, p=p, c=c,  n.predictors = n.predictors, beta = beta, nval = nval, nsim = nsim, parallel = parallel, plot = plot, quick = quick) }
 
   if (outcome=="Survival") n <- samplesizedev_survival(S=S, p=p, c=c, n.predictors = n.predictors, beta=beta, nval = nval, nsim = nsim, parallel = parallel)
 

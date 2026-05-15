@@ -798,7 +798,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
     figure1,
     top = ggpubr::text_grob(
       sprintf(
-        "Distribution of true probabilities and Sampling Distribution of CS (nsims=%s) \nMethod=%s, N=%s, Prevalence=%s, C-stat=%s, No Predictors=%s",
+        "Sampling Distribution of CS (nsims=%s) and Distribution of true probabilities and  \nMethod=%s, N=%s, Prevalence=%s, C-stat=%s, No Predictors=%s",
         nsim, method, n, p, c, n.predictors),
       color = "black", face = "bold", size = 10)
   )

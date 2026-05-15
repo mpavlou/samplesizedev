@@ -50,17 +50,17 @@
 #' @export
 #'
 #' @examples
-#' # expected_performance(outcome="Binary", n = 530, phi = 0.2, c = 0.85, p = 10, nsim = 100, parallel = FALSE)
+#' # expected_performance(outcome="Binary", n = 530, phi = 0.2, c = 0.85, p = 10, nsim = 1000, parallel = FALSE)
 #'
 #' # Prefer parallel computing with >2 cores that ensure faster running
-#' # expected_performance(n = 530, phi = 0.2, c = 0.85, p = 10, nsim = 100, parallel = TRUE)
+#' # expected_performance(n = 530, phi = 0.2, c = 0.85, p = 10, nsim = 1000, parallel = TRUE)
 
 #' @seealso
 #' samplesizedev
 
 #'
 #'
-expected_performance <- function(outcome="Binary", n, phi, c,  p,  gamma = rep(1/p, p), nval = 25000, nsim = 1000,
+expected_performance <- function(outcome="Binary", n, phi, c,  p,  gamma = rep(1/p, p), nval = 50000, nsim = 1000,
                                  parallel = TRUE, method = "MLE", long=FALSE, approx = FALSE, x=NULL, y=NULL,
                                  threshold= NULL, individual_predicted_probability = NULL,
                                  x_individual_predicted_probability = NULL){
