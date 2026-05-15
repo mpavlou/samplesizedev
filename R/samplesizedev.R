@@ -33,8 +33,8 @@
 #' @param nval (numeric) Size of validation data (default=25000; use at least 10000)
 #' @param parallel (logical) parallel processing to speed up computations (default=TRUE)
 #' @param plot (logical) Show figures for intermediate plots (default=TRUE)
+#' @param quick (logical) Use approximation for a quick calculation (default=FALSE)
 
-#'
 #' @return n$sim: the required sample size by simulation
 #' @return n$rvs: the required sample size by the RvS formulae (only for comparison)
 #' @return n$r2_cs: Cox-Snell R square for the input values of phi and p
@@ -68,7 +68,9 @@ samplesizedev <- function(outcome="Binary", S = NULL, MAPE = NULL, l_s = NULL, u
   n.predictors  <- p
   p             <- phi
 
-  if (n.predictors<6) nsim = 3000
+  if (n.predictors==5 & nsim<3000) nsim = 3000
+  if (n.predictors==4 & nsim<4000) nsim = 4000
+
 
   if (length(S)!=0 & (length(l_s)+length(PAP_s) +length(u_s))!=0) {n<-"Calculation not performed. Please enter either S *or* l_s, u_s and PAP_s" ; print(n)} else {
 

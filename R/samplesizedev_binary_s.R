@@ -63,9 +63,9 @@ samplesizedev_binary_s <- function(S, p, c,   n.predictors, beta = rep(1/n.predi
   r2         <- 1 - exp(-LR/ncalc)
 
 
-  c_adj <- adjusted_c_mu_sigma(mean_eta, variance_eta, n.predictors, p, set.seed=1)
+  c_adj  <- adjusted_c_mu_sigma(mean_eta, variance_eta, n.predictors, p, set.seed=1)
 
-  n_init      <- round((n.predictors)/ ((S-1)*log(1-  c_adj[2]/S)))
+  n_init <- round((n.predictors)/ ((S-1)*log(1-  c_adj[2]/S)))
 
   # r2   <- as.numeric(approximate_R2(c, p, n = 300000)[2])
 
@@ -87,11 +87,16 @@ samplesizedev_binary_s <- function(S, p, c,   n.predictors, beta = rep(1/n.predi
 
   if (plot==FALSE & quick== FALSE) print("Optimisation Started:...") else
     if (plot==TRUE & quick== FALSE)  print("Optimisation Started: check progress on appearing plots...")
-  #Automatically adjust number of simulations to ensure MCSE is not too high
-  A        <- 2*p*(1-p)*stats::qnorm(c)^2
-  app      <- sqrt(1/(A* n_init)+2/(n_init-2) )
-  mce      <- round(app/sqrt(n_init),4)
-  tol      <- max(1*mce/1.5,0.0025)
+
+  # Automatically adjust number of simulations to ensure MCSE is not too high
+  A               <- 2*p*(1-p)*stats::qnorm(c)^2
+  app             <- sqrt(1/(A* n_init)+2/(n_init-2) )
+  mce             <- round(app/sqrt(nsim),4)
+
+  # if (mce  > tol )   { nsim    <- ceiling(app^2/tol^2/100)*100; print(paste("Note: Number of simulations increased to nsim=",nsim, "to keep Monte Carlo error small", sep="")) }
+  # if (mce  > tol & nsim > 3000)   { nsim    <- 3000;
+  # #tol <- max(1*mce/1.5,0.0025)}
+  # tol <- round(app/sqrt(nsim),4)}
 
   if (c>=0.85) { min.opt <- 1.1* n_init; max.opt <- 1.3 * n_init} else
   { min.opt <- 0.9 * n_init; max.opt <- 1.05 * n_init}
@@ -99,7 +104,7 @@ samplesizedev_binary_s <- function(S, p, c,   n.predictors, beta = rep(1/n.predi
   s_est <- function(n, nsim=nsim){
 
     s <-  expected_s_n_binary(n, S = S, mean_eta = mean_eta, variance_eta = variance_eta,  beta = beta, p = p, c = c,
-                              n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel, plot = plot)
+                              n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel, plot = plot, tol = tol)
     s[1] - S
   }
 

@@ -790,7 +790,8 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
     cs_plot,  p_true_plot,
     ncol = 2, nrow = 1,
     common.legend = TRUE,
-    legend = "bottom"
+    legend = "bottom",
+    labels=c("A", "B")
   )
 
   cs_mape_plot <- ggpubr::annotate_figure(
@@ -798,16 +799,14 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
     top = ggpubr::text_grob(
       sprintf(
         "Distribution of true probabilities and Sampling Distribution of CS (nsims=%s) \nMethod=%s, N=%s, Prevalence=%s, C-stat=%s, No Predictors=%s",
-        nsim, method, n, p, c, n.predictors
-      ),
-      color = "black", face = "bold", size = 10
-    )
+        nsim, method, n, p, c, n.predictors),
+      color = "black", face = "bold", size = 10)
   )
 
   # ---- Probability plots ----
   figure2 <- ggpubr::ggarrange(
     p_plot, p_plot_quantiles_all,
-    ncol = 2, nrow = 1, widths= c(4,4)
+    ncol = 2, nrow = 1, widths= c(4,4),     labels=c("C", "D")
   )
 
   prob_plot <- ggpubr::annotate_figure(

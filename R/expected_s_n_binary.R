@@ -62,14 +62,14 @@ expected_s_n_binary <- function(n, S, mean_eta, variance_eta,  p, c, n.predictor
   cs_plot   <- ggplot2:: ggplot(df,  ggplot2::aes(x = cs), size=12) +
     ggplot2::geom_density() +  ggplot2::ggtitle(paste("N = ", round(n) ,
                                                 ", Median(CS) = ", round(median(cs,na.rm=TRUE)/0.0025)*0.0025,
-                                                ", Monte Carlo Error=", mce, sep="")) +
+                                                ", Monte Carlo Error=", mce, " (nsims=", nsim,")", sep="")) +
                                                   ggplot2::geom_vline( ggplot2::aes(xintercept = mean(cs, na.rm = TRUE)), color="blue", linetype ="dashed", size = 1) +
     ggplot2::ylab("Density") +  ggplot2::theme(text =  ggplot2::element_text(size = 13)) +    ggplot2::theme_bw()+
     ggplot2::xlab("Calibration Slope")
 
-  if ( abs(median(cs, na.rm=TRUE)- 0.9) > 0.0025)   cs_plot <-  cs_plot + ggplot2::geom_vline( ggplot2::aes(xintercept = 0.9), color="red", linetype ="dashed", size = 1)
+  if ( abs(median(cs, na.rm=TRUE)- 0.9) > tol)   cs_plot <-  cs_plot + ggplot2::geom_vline( ggplot2::aes(xintercept = 0.9), color="red", linetype ="dashed", size = 1)
   if (plot==TRUE) print(cs_plot)
-  c(round(median(cs,na.rm=TRUE)/0.0025)*0.0025, sqrt(stats::var(cs)/nsim))
+  c(round(median(cs,na.rm=TRUE)/tol)*tol, sqrt(stats::var(cs)/nsim))
 
   #c(round(mean(cs,na.rm=TRUE),3), sqrt(stats::var(cs)/nsim))
 }
