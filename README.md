@@ -73,12 +73,13 @@ Please get in touch (m.pavlou@ucl.ac.uk) for any bugs you spot and/or for sugges
 
 This is a basic example which shows how to calculate:
 
-1.  the **sample size** to achieve a target expected calibration slope (e.g. target expected calibration slope **E(S)=0.9**)  or 
+1.  the **sample size** to achieve a target expected calibration slope (e.g. target expected calibration slope **E(CS)=0.9**)  or 
 
 2. $\textcolor{#f00}{\text{NEW:}}$ the **sample size**  to achieve a target probability of acceptable performance in terms of calibration (e.g. Probability of calibration slope $\in (0.85,1.15)$, **PrAP(S)=0.8**}
 
 3.  the **expected calibration slope, MAPE and other performance metrics** for a given sample size
 
+4. $\textcolor{#f00}{\text{NEW:}}$ the  **sample size** for E(CS) or PrAP(CS) using a quick implementtion (no simulation) based on analytical approximations
 ``` r
 library(samplesizedev)
 
@@ -94,13 +95,13 @@ library(samplesizedev)
 # Performance target: E(S)=0.9; Prevalence=0.2; c-statistic=0.85; Number of predictors=10;
 # Calculation takes about a minute 
 
-samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10)
+samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, quick = FALSE)
 #> [1] "Optimisation Started: check progress on the appearing plots..."
 #> $rvs
 #> [1] 308
 #> 
 #> $sim
-#> [1] 500
+#> [1] 535
 
 # $sim is the sample size calculated by simulation
 # $rvs is the sample size calculated using the approach of Riley et al. (2019) (RvS formula Criterion 1 - overfitting)
