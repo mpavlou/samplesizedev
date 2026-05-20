@@ -108,6 +108,7 @@ samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, quick = 
 
 # $sim is the sample size calculated by simulation
 # $rvs is the sample size calculated using the approach of Riley et al. (2019) (RvS formula Criterion 1 - overfitting)
+# $analytical_corrected is the sample size after applying bias reduction to Riley's calibration formula
 ```
 
 The sample size calculated using simulation is n$sim=500 which corresponds to CS=0.9. In comparison, 
