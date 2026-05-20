@@ -123,12 +123,16 @@ be in fact lower than we had aim for this size.  We can verify this using the se
 # Calculate the sample size Size for Probability of Acceptable Performance (PAP=0.8),
 # where Acceptable Performance is defined $S\in (0.85, 1.15)$
 # Performance target: PrAP(S)=0.8; Prevalence=0.2; c-statistic=0.85; Number of predictors=10;
-samplesizedev(outcome="Binary", l_s= 0.85, u_s = 1.15, PAP_s = 0.8, phi = 0.2, c = 0.85, p = 10)
+samplesizedev(outcome="Binary", l_s= 0.85, u_s = 1.15, PAP_s = 0.8, phi = 0.2, c = 0.85, p = 10, $\textcolor{#f00}{ \text{quick = FALSE}})
 
 $sim
-[1] 699
+[1] 701
+$analytical
+[1] 649
 
 # $sim is the sample size calculated by simulation to ensure that PrAP(S)=0.8
+# $analytical is the sample size calculated using an analytical approximatiion to ensure that PrAP(S)=0.8
+
 ```
 
 The sample size calculated using simulation targetting at E(S)=0.9 is 500, while the sample size to ensure that PrAP(S)=0.8 is 699.
