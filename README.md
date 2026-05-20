@@ -109,6 +109,9 @@ samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, quick = 
 # $sim is the sample size calculated by simulation
 # $rvs is the sample size calculated using the approach of Riley et al. (2019) (RvS formula Criterion 1 - overfitting)
 # $analytical_corrected is the sample size after applying bias reduction to Riley's calibration formula
+# Note the Monte Carlo simulation error on the appearing plot
+
+
 ```
 
 The sample size calculated using simulation is n$sim=500 which corresponds to CS=0.9. In comparison, 
@@ -123,7 +126,7 @@ be in fact lower than we had aim for this size.  We can verify this using the se
 # Calculate the sample size Size for Probability of Acceptable Performance (PAP=0.8),
 # where Acceptable Performance is defined $S\in (0.85, 1.15)$
 # Performance target: PrAP(S)=0.8; Prevalence=0.2; c-statistic=0.85; Number of predictors=10;
-samplesizedev(outcome="Binary", l_s= 0.85, u_s = 1.15, PAP_s = 0.8, phi = 0.2, c = 0.85, p = 10, $\textcolor{#f00}{ \text{quick = FALSE}})
+samplesizedev(outcome="Binary", l_s= 0.85, u_s = 1.15, PAP_s = 0.8, phi = 0.2, c = 0.85, p = 10,  quick = FALSE)
 
 $sim
 [1] 701
