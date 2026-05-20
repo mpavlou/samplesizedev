@@ -179,8 +179,8 @@ Median IPP                              0.1020
 SD(IPP)                                 0.0630
 ------------------------------------
 ```
-![image](<img width="823" height="586" alt="github_fig1" src="https://github.com/user-attachments/assets/16436b94-5fc9-4f45-83ce-4ff4f3b3bca4" />
-)
+<img width="823" height="586" alt="github_fig1" src="https://github.com/user-attachments/assets/4eada731-8411-4d42-9265-cf81f99b82de" />
+
 
 As expected, the mean calibration slope for n$rvs=309 is 0.831, smaller than 0.9. The variability is high and translates to 
 43% chance of actually getting a model with calibration slope $\in(0.85,1.15)$ when we develop a model with data of that size. Hence, larger size is required.  
