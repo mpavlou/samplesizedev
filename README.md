@@ -52,6 +52,9 @@ Based on the characteristics above it can perform actions based on two core func
 
 3. **Calculate the expected model performance** at a given sample size (function **'expected_performance'**)
 
+4. $\textcolor{#f00}{\text{NEW:}}$ the  **sample size** for E(CS) or PrAP(CS) using a quick implementation (no simulation) based on analytical approximations
+
+
 
 ## Installation
 
@@ -79,7 +82,6 @@ This is a basic example which shows how to calculate:
 
 3.  the **expected calibration slope, MAPE and other performance metrics** for a given sample size
 
-4. $\textcolor{#f00}{\text{NEW:}}$ the  **sample size** for E(CS) or PrAP(CS) using a quick implementtion (no simulation) based on analytical approximations
 ``` r
 library(samplesizedev)
 
