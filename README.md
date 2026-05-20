@@ -149,7 +149,7 @@ The sample size calculated using simulation targetting at E(S)=0.9 is 535, while
 # Sample size=308; Prevalence=0.2; C-statistic=0.85; Number of predictors=10
 # Calculation takes a few seconds
 
-expected_performance(outcome = "Binary", n = 308, phi = 0.2, c = 0.85, p = 10)
+expected_performance(outcome = "Binary", n = 309, phi = 0.2, c = 0.85, p = 10)
 
 n                                     309.0000
 True prevalence                         0.2000
@@ -181,13 +181,13 @@ SD(IPP)                                 0.0630
 ```
 ![image](https://github.com/user-attachments/assets/b334b848-ec07-4fa9-a718-19a355372d11)
 
-As expected, the mean calibration slope for n$rvs=308 is 0.844, smaller than 0.9. The variability is high and translates to 
-45% chance of actually getting a model with calibration slope $\in(0.85,1.15)$ when we develop a model with data of that size. Hence, larger size is required.  
-In this case, to get a mean calibration slope of 0.9 we need to inflate n$rvs size by 60%! We can confirm that with a sample size of 500 we 
+As expected, the mean calibration slope for n$rvs=309 is 0.831, smaller than 0.9. The variability is high and translates to 
+43% chance of actually getting a model with calibration slope $\in(0.85,1.15)$ when we develop a model with data of that size. Hence, larger size is required.  
+In this case, to get a mean calibration slope of 0.9 we need to inflate n$rvs size by approximately 60%! We can confirm that with a sample size of 535 we 
 get the desired expected calibration slope:  
 
 ``` r
-expected_performance(outcome = "Binary", n = 500, phi = 0.2, c = 0.85, p = 10)
+expected_performance(outcome = "Binary", n = 535, phi = 0.2, c = 0.85, p = 10)
 
 ----------------------------  ---------
 n                           500.0000
