@@ -155,10 +155,10 @@ n                                     309.0000
 True prevalence                         0.2000
 True c-statistic                        0.8500
 Number of predictors                   10.0000
--------------------------------------   0.0000
-Sampling distribution of                0.0000
-aggregate performance measures          0.0000
--------------------------------------   0.0000
+-------------------------------------  
+Sampling distribution of               
+aggregate performance measures          
+-------------------------------------   
 Mean Calibration Slope (CS)             0.8370
 SD(CS)                                  0.1229
 Pr(0.85<CS<1.15)                        0.4300
@@ -171,10 +171,10 @@ Median CS                               0.8310
 Mean Brier Score                        0.1180
 Sensitivity (threshold prevalence)      0.7860
 Net Benefit (threshold prevalence)      0.1120
-------------------------------------    0.0000
-Sampling distribution of Individual     0.0000
-Predicted Probability (IPP) = 0.112     0.0000
-------------------------------------    0.0000
+------------------------------------    
+Sampling distribution of Individual     
+Predicted Probability (IPP) = 0.112     
+------------------------------------    
 Median IPP                              0.1020
 SD(IPP)                                 0.0630
 ------------------------------------
@@ -189,19 +189,33 @@ get the desired expected calibration slope:
 ``` r
 expected_performance(outcome = "Binary", n = 535, phi = 0.2, c = 0.85, p = 10)
 
-----------------------------  ---------
-n                           500.0000
-True prevalence               0.2000
-True c-statistic              0.8500
-Number of predictors         10.0000
----------------------------   0.0000
-Mean_CS                       0.9020
-SD(CS)                        0.0998
-Pr(0.85<CS<1.15)              0.6740
-Mean_MAPE                     0.0396
-SD(MAPE)                      0.0088
-Mean_AUC                      0.8410
-SD(AUC)                       0.0068
+n                                     535.0000
+True prevalence                         0.2000
+True c-statistic                        0.8500
+Number of predictors                   10.0000
+-------------------------------------  
+Sampling distribution of                
+aggregate performance measures          
+-------------------------------------   
+Mean Calibration Slope (CS)             0.9070
+SD(CS)                                  0.0962
+Pr(0.85<CS<1.15)                        0.7100
+Mean MAPE                               0.0383
+SD(MAPE)                                0.0081
+Mean AUC                                0.8420
+SD(AUC)                                 0.0057
+SD(Average Predicted Risk)              0.0150
+Median CS                               0.9000
+Median Brier Score                      0.1150
+Median Sensitivity (threshold prev)     0.8040
+Median Net Benefit (threshold prev)     0.1150
+------------------------------------    
+Sampling distribution of Individual     
+Predicted Probability (IPP) = 0.112     
+------------------------------------   
+Median IPP                              0.1090
+SD(IPP)                                 0.0440
+------------------------------------    
 ```
 
 ![image](https://github.com/user-attachments/assets/d02cda94-a1b5-4618-883d-9e1ed41ec801)
