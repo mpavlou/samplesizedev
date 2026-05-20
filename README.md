@@ -139,7 +139,7 @@ $analytical
 
 ```
 
-The sample size calculated using simulation targetting at E(S)=0.9 is 500, while the sample size to ensure that PrAP(S)=0.8 is 699.
+The sample size calculated using simulation targetting at E(S)=0.9 is 535, while the sample size to ensure that PrAP(S)=0.8 is 701.
 
 
 #### Calculation of expected model performance (CS, C-statitistc MAPE etc and their variability) for a given sample size and model characteristics, and variability in individual predicted probabilities
