@@ -28,11 +28,15 @@ The formula which aims to control model overfitting ('calibration' formula - C1)
 
 Hence, we developed the **new package 'samplesizedev'** which performs ***unbiased sample size calculations*** regardless of model strength. Our software uses simulation in the background so calculations can take a bit to run (from 30s to some minutes depending on scenatio and computational power). Currently it can be used for the development of risk models for binary outcomes; functionality for ***time to event outcomes***  is under development. 
 
-### $\textcolor{#f00}{\large  \textbf{UPDATE}}$
+### $\textcolor{#f00}{\large  \textbf{UPDATES}}$
 
-The package has now been updated and can perform sample size calculations than also ***control the*** $\textcolor{#f00}{variability}$ ***in the calibration slope, instead of *just* the expected value***. 
+The package has now been updated to:
+- perform sample size calculations than also ***control the*** $\textcolor{#f00}{variability}$ ***in the calibration slope, instead of *just* the expected value***.
+- perform sample size calculations using analytical expressions which result in a very good approximation and impressive speed improvement 
+- obtain the sampling distribution for a variety of measures for a given sample size
+- obtain the sampling distribution for individual predicted probabilities for a given sample size  
 
-This is very important because, as shown in the accompanied paper, the variability in performance can be very high when the number of predictors is small. Therefore, while one may think that a reduced model should be preferred to avoid model overfitting, this can be misleading. That's because even though performance is controlled on average,  e.g., E(S)=0.9, the variability can still be very high. In this context, E(S)=0.9 is interpreted to mean that if one were to collect many datasets of the recommended size, and  validate them on large external dataset, then the calibration slope would be on average around 0.9. However, if the variability is very high, the probability of actually obtaining an individual dataset with calibration slope close to 0.9 might be unacceptably low (see examples in the paper and below). 
+The first is very important because, as shown in the Arxiv paper, the variability in performance can be very high when the number of predictors is small. Therefore, while one may think that a reduced model should be preferred to avoid model overfitting, this can be misleading. That's because even though performance is controlled on average,  e.g., E(S)=0.9, the variability can still be very high. In this context, E(S)=0.9 is interpreted to mean that if one were to collect many datasets of the recommended size, and  validate them on large external dataset, then the calibration slope would be on average around 0.9. However, if the variability is very high, the probability of actually obtaining an individual dataset with calibration slope close to 0.9 might be unacceptably low (see examples in the paper and below). 
 
 Hence, in our more recent work we $\textcolor{#f00}{\text{develop sample size calculations where we aim to control the probability of acceptable performance, rather}}$ $\textcolor{#f00}{ \text{than just performance on average}}$. In a simulation-based framework this approach can be easily implemented for any performance metric and a suitably defined range of acceptable performance. Here and in the paper above, we focused on the calibration slope. In addition to the simulation-based approach, we also derived an approximate analytical calculation that avoids and is very quick. 
 
