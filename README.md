@@ -96,20 +96,18 @@ library(samplesizedev)
 # Calculation takes about a minute 
 
 samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, quick = FALSE)
-#> [1] "Optimisation Started: check progress on the appearing plots..."
-#> $rvs
-#> [1] 308
-#>
-#> $analytical_corrected
-#> [1] 486
-#>
-#> $sim
-#> [1] 535
+> [1] "Optimisation Started: check progress on the appearing plots..."
+> $rvs
+> [1] 308
+> $analytical_corrected
+> [1] 486
+> $sim
+> [1] 535
 
 # $sim is the sample size calculated by simulation
 # $rvs is the sample size calculated using the approach of Riley et al. (2019) (RvS formula Criterion 1 - overfitting)
 # $analytical_corrected is the sample size after applying bias reduction to Riley's calibration formula
-# Note the Monte Carlo simulation error on the appearing plot
+# Note: Check the Monte Carlo simulation error on the appearing plots
 
 
 ```
