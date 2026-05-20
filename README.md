@@ -99,7 +99,10 @@ samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, quick = 
 #> [1] "Optimisation Started: check progress on the appearing plots..."
 #> $rvs
 #> [1] 308
-#> 
+#>
+#> $analytical_corrected
+#> [1] 486
+#>
 #> $sim
 #> [1] 535
 
