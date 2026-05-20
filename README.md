@@ -179,7 +179,7 @@ Median IPP                              0.1020
 SD(IPP)                                 0.0630
 ------------------------------------
 ```
-<img width="823" height="586" alt="github_fig1" src="https://github.com/user-attachments/assets/4eada731-8411-4d42-9265-cf81f99b82de" />
+<img width="788" height="586" alt="github_fig1" src="https://github.com/user-attachments/assets/82ed1f9a-eb00-4c0a-a81d-4a3c2308f250" />
 
 
 As expected, the mean calibration slope for n$rvs=309 is 0.831, smaller than 0.9. The variability is high and translates to 
@@ -219,9 +219,7 @@ SD(IPP)                                 0.0440
 ------------------------------------    
 ```
 
-<img width="823" height="586" alt="github_fig2" src="https://github.com/user-attachments/assets/6d1e0049-8884-48e6-8b8b-bff91a74af7b" />
-
-
+<img width="788" height="586" alt="github_fig2" src="https://github.com/user-attachments/assets/6127960f-e82b-4719-a623-d80cf172fcd8" />
 
 
 
