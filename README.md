@@ -219,8 +219,8 @@ SD(IPP)                                 0.0440
 ------------------------------------    
 ```
 
-![image](<img width="823" height="586" alt="github_fig2" src="https://github.com/user-attachments/assets/f5fc2d02-73f0-49f6-b65e-af51070ec305" />
-)
+<img width="823" height="586" alt="github_fig2" src="https://github.com/user-attachments/assets/6d1e0049-8884-48e6-8b8b-bff91a74af7b" />
+
 
 
 
