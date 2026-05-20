@@ -128,14 +128,14 @@ samplesizedev_binary_prob_s <- function(l_s, u_s, PAP_s, p, c,   n.predictors, b
 
   if (quick==TRUE) {
     size                        <- NULL
-    size$analytical_corrected   <- as.vector(round(n_analytical_corrected))
+    # size$analytical_corrected   <- as.vector(round(n_analytical_corrected))
     size$analytical             <- as.vector(round(n_analytical))
   }
 
   if (quick==FALSE) {
     size                        <- NULL
     size$sim                    <- as.vector(round(n_sim))
-    size$analytical_corrected   <- as.vector(round(n_analytical_corrected))
+    # size$analytical_corrected   <- as.vector(round(n_analytical_corrected))
     size$analytical             <- as.vector(round(n_analytical))
 
   }

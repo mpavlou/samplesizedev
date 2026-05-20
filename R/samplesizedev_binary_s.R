@@ -113,9 +113,16 @@ samplesizedev_binary_s <- function(S, p, c,   n.predictors, beta = rep(1/n.predi
 
   #print(paste("Required sample size: ", n ))
 
-  size               <- NULL
-  size$rvs           <- as.vector(n_rvs)
-  size$sim           <- as.vector(round(n))
+  size                       <- NULL
+
+  if (quick ==  FALSE) {
+  size$rvs                   <- as.vector(n_rvs)
+  size$analytical_corrected  <- as.vector(n_init)
+  size$sim                   <- as.vector(round(n)) } else
+
+  {size$rvs                  <- as.vector(n_rvs)
+  size$analytical_corrected  <- as.vector(n_init)}
+
 
   size
 
