@@ -100,7 +100,7 @@ library(samplesizedev)
 samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, quick = FALSE)
 > [1] "Optimisation Started: check progress on the appearing plots..."
 > $rvs
-> [1] 308
+> [1] 309
 > $analytical_corrected
 > [1] 486
 > $sim
@@ -151,20 +151,33 @@ The sample size calculated using simulation targetting at E(S)=0.9 is 500, while
 
 expected_performance(outcome = "Binary", n = 308, phi = 0.2, c = 0.85, p = 10)
 
-----------------------------  ---------
-n                           308.0000
-True prevalence               0.2000
-True c-statistic              0.8500
-Number of predictors         10.0000
----------------------------   0.0000
-Mean_CS                       0.8440
-SD(CS)                        0.1265
-Pr(0.85<CS<1.15)              0.4520
-Mean_MAPE                     0.0513
-SD(MAPE)                      0.0119
-Mean_AUC                      0.8350
-SD(AUC)                       0.0092
-----------------------------  ---------
+n                                     309.0000
+True prevalence                         0.2000
+True c-statistic                        0.8500
+Number of predictors                   10.0000
+-------------------------------------   0.0000
+Sampling distribution of                0.0000
+aggregate performance measures          0.0000
+-------------------------------------   0.0000
+Mean Calibration Slope (CS)             0.8370
+SD(CS)                                  0.1229
+Pr(0.85<CS<1.15)                        0.4300
+Mean MAPE                               0.0509
+SD(MAPE)                                0.0117
+Mean_AUC                                0.8360
+SD(AUC)                                 0.0085
+SD(Average Predicted Risk)              0.0190
+Median CS                               0.8310
+Mean Brier Score                        0.1180
+Sensitivity (threshold prevalence)      0.7860
+Net Benefit (threshold prevalence)      0.1120
+------------------------------------    0.0000
+Sampling distribution of Individual     0.0000
+Predicted Probability (IPP) = 0.112     0.0000
+------------------------------------    0.0000
+Median IPP                              0.1020
+SD(IPP)                                 0.0630
+------------------------------------
 ```
 ![image](https://github.com/user-attachments/assets/b334b848-ec07-4fa9-a718-19a355372d11)
 
