@@ -141,7 +141,7 @@ $analytical
 The sample size calculated using simulation targetting at E(S)=0.9 is 500, while the sample size to ensure that PrAP(S)=0.8 is 699.
 
 
-#### Calculation of expected model performance (CS, C-statitistc MAPE etc and their variability) for a given sample size and model characteristics
+#### Calculation of expected model performance (CS, C-statitistc MAPE etc and their variability) for a given sample size and model characteristics, and variability in individual predicted probabilities
 
 ``` r
 # Calculate the expected calibration slope and MAPE
@@ -191,6 +191,9 @@ SD(AUC)                       0.0068
 ```
 
 ![image](https://github.com/user-attachments/assets/d02cda94-a1b5-4618-883d-9e1ed41ec801)
+
+
+
 
 N.B. Although the mean calibration slope is now indeed 0.9 bare in mind that still there is variability in the CS
 and *we are not guaranteed* to achieve that performance for every development sample of size 500 ... Indeed, $P(calibration \space slope \in (0.85,1.15))$=67%...
