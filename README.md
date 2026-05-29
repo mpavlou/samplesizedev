@@ -16,7 +16,7 @@ Related papers:
 $\textcolor{#f00}{\large  \textbf{NEW preprint:}}$ **"Sample Size Calculations for the Development of Risk Prediction Models that Account for Performance Variability"**,
 https://doi.org/10.48550/arXiv.2509.14028
 
-**"Penalized Regression Methods With Modified Cross-Validation and Bootstrap Tuning Produce Better Prediction Models". Biometrical Journal, https://onlinelibrary.wiley.com/doi/10.1002/bimj.202300245
+**"Penalized Regression Methods With Modified Cross-Validation and Bootstrap Tuning Produce Better Prediction Models"**. Biometrical Journal, https://onlinelibrary.wiley.com/doi/10.1002/bimj.202300245
 
 ### Why do we need 'samplesizedev'?
 
