@@ -110,8 +110,9 @@ samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, quick = 
 # $analytical_corrected is the sample size after applying bias reduction to Riley's calibration formula
 # Note: Check the Monte Carlo simulation error on the appearing plots
 
-
 ```
+
+Alternatively, one may use the 'quick = TRUE' option which re
 
 The sample size calculated using simulation is n$sim=535 which corresponds to CS=0.9. In comparison, 
 the sample size using previously proposed formulae is n$rvs=308. According to the findings in our paper
@@ -119,7 +120,7 @@ the RvS overfitting formula  underestimates the sample size for high C-statistic
 be in fact lower than we had aim for this size.  We can verify this using the second command of our package, 'expected_performance'.
 
 
-#### Calculation of sample size for given model characteristics, aiming at the $\textcolor{#f00}{ \text{Probability of acceptable calibrtion, PrAP(S)=0.8}}$ 
+#### Calculation of sample size for given model characteristics, aiming at the $\textcolor{#f00}{ \text{Probability of acceptable calibration, PrAP(S)=0.8}}$ 
 
 ``` r
 # Calculate the sample size Size for Probability of Acceptable Performance (PAP=0.8),
