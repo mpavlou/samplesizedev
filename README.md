@@ -123,7 +123,7 @@ samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, quick = 
 > [1] 309
 > $analytical_corrected
 > [1] 486
-
+``` 
 
 The sample size calculated using simulation is n$sim=535 which corresponds to CS=0.9. In comparison, 
 the sample size using previously proposed formulae is n$rvs=309. According to the findings in our paper
