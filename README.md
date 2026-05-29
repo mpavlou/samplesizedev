@@ -119,7 +119,6 @@ Alternatively, one may use the 'quick = TRUE' option which directly uses the bia
 # Fast calculation (approximation) 
 
 samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, quick = FALSE)
-> [1] "Optimisation Started: check progress on the appearing plots..."
 > $rvs
 > [1] 309
 > $analytical_corrected
