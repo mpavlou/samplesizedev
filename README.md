@@ -215,6 +215,13 @@ SD(IPP)                                 0.0440
 N.B. Although the mean calibration slope is now indeed 0.9 bare in mind that still there is variability in the CS
 and *we are not guaranteed* to achieve that performance for every development sample of size 500 ... Indeed, $P(calibration \space slope \in (0.85,1.15))$=67%...
 
+ $\textcolor{#f00}{\textbf{NEW:}}$ **Alternative fitting methods.** The package now provides the option to calculation expected performance after using shrinkage with a) post estimation shrinkage via the linear shrinkage factor (method="LSF"), b) modified Ridge (method = "ridge") and c) modified LASSO (method = "lasso"), where modified Ridge and LASSO were proposed by Pavlou et al. (2024) to solve problems with increase varaibility of standard ridhe and LASSO. Note that the implementation for these alternative methods is time consuming as the corresponding algorithms are much slower than MLE (about 5-10 times slower).
+ 
+``` r
+# Try the alternative estimation methods ridge and LASSO
+expected_performance(outcome = "Binary", n = 535, phi = 0.2, c = 0.85, p = 10, method = "LSF")
+```
+
 
 #### Calculation of sample size for given model characteristics, aiming at the $\textcolor{#f00}{ \text{Probability of acceptable calibration, PrAP(S)=0.8}}$ 
 
