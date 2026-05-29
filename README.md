@@ -112,34 +112,23 @@ samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, quick = 
 
 ```
 
-Alternatively, one may use the 'quick = TRUE' option which re
-
-The sample size calculated using simulation is n$sim=535 which corresponds to CS=0.9. In comparison, 
-the sample size using previously proposed formulae is n$rvs=308. According to the findings in our paper
-the RvS overfitting formula  underestimates the sample size for high C-statistic. Thus, the expected calibration slope will
-be in fact lower than we had aim for this size.  We can verify this using the second command of our package, 'expected_performance'.
-
-
-#### Calculation of sample size for given model characteristics, aiming at the $\textcolor{#f00}{ \text{Probability of acceptable calibration, PrAP(S)=0.8}}$ 
+Alternatively, one may use the 'quick = TRUE' option which uses a bias-reduction method to reduce the bias in Riley's formula:
 
 ``` r
-# Calculate the sample size Size for Probability of Acceptable Performance (PAP=0.8),
-# where Acceptable Performance is defined $S\in (0.85, 1.15)$
-# Performance target: PrAP(S)=0.8; Prevalence=0.2; c-statistic=0.85; Number of predictors=10
+# Fast calculation (approximation) 
 
-samplesizedev(outcome="Binary", l_s= 0.85, u_s = 1.15, PAP_s = 0.8, phi = 0.2, c = 0.85, p = 10,  quick = FALSE)
+samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, quick = FALSE)
+> [1] "Optimisation Started: check progress on the appearing plots..."
+> $rvs
+> [1] 309
+> $analytical_corrected
+> [1] 486
 
-$sim
-[1] 701
-$analytical
-[1] 649
 
-# $sim is the sample size calculated by simulation to ensure that PrAP(S)=0.8
-# $analytical is the sample size calculated using an analytical approximatiion to ensure that PrAP(S)=0.8
-
-```
-
-The sample size calculated using simulation targetting at E(S)=0.9 is 535, while the sample size to ensure that PrAP(S)=0.8 is 701.
+The sample size calculated using simulation is n$sim=535 which corresponds to CS=0.9. In comparison, 
+the sample size using previously proposed formulae is n$rvs=309. According to the findings in our paper
+the RvS overfitting formula underestimates the sample size for high C-statistic. Thus, the expected calibration slope will
+be in fact lower than we had aim for this size.  We can verify this using the second command of our package, 'expected_performance'.
 
 
 #### Calculation of expected model performance (CS, C-statistic, MAPE etc and their variability) for a given sample size and model characteristics, and variability in individual predicted probabilities
@@ -225,5 +214,27 @@ SD(IPP)                                 0.0440
 
 N.B. Although the mean calibration slope is now indeed 0.9 bare in mind that still there is variability in the CS
 and *we are not guaranteed* to achieve that performance for every development sample of size 500 ... Indeed, $P(calibration \space slope \in (0.85,1.15))$=67%...
+
+
+#### Calculation of sample size for given model characteristics, aiming at the $\textcolor{#f00}{ \text{Probability of acceptable calibration, PrAP(S)=0.8}}$ 
+
+``` r
+# Calculate the sample size Size for Probability of Acceptable Performance (PAP=0.8),
+# where Acceptable Performance is defined $S\in (0.85, 1.15)$
+# Performance target: PrAP(S)=0.8; Prevalence=0.2; c-statistic=0.85; Number of predictors=10
+
+samplesizedev(outcome="Binary", l_s= 0.85, u_s = 1.15, PAP_s = 0.8, phi = 0.2, c = 0.85, p = 10,  quick = FALSE)
+
+$sim
+[1] 701
+$analytical
+[1] 649
+
+# $sim is the sample size calculated by simulation to ensure that PrAP(S)=0.8
+# $analytical is the sample size calculated using an analytical approximatiion to ensure that PrAP(S)=0.8
+
+```
+
+The sample size calculated using simulation targetting at E(S)=0.9 is 535, while the sample size to ensure that PrAP(S)=0.8 is 701.
 
 
