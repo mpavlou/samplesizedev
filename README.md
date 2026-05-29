@@ -19,14 +19,9 @@ https://doi.org/10.48550/arXiv.2509.14028
 
 ### Why do we need 'samplesizedev'?
 
-Riley et al. (2019) proposed 3 formulae, based on 3 distinct criteria, for calculating the sample size for the development of risk models.
-- Criterion 1: control overfitting (target: calibration slope=0.9),
-- Criterion 2: control optimism in R2 Nageleherke (target: opt=0.05)
-- Criterion 3:  precision in the mean predicted risk (target: precision = 0.05).
+Riley et al. (2019) proposed calculating the development for a prediction model to ensure that the expected overfitting, as quantifieed by the calibration slope, is samll . The default target is calibration slope=0.9. Other criteria which include the optimism in R2 Nageleherke and the precision in the mean predicted risk. The formula which aims to control model overfitting ('calibration' formula - C1) most often gives that highest sample size and our article we focused primarily around this formula. While the calibration formula performed well for models with C-statistic/C-index<0.8, we found that that it substantially ***underestimated*** the sample size when the predictive strength of the model was higher. The sample sizes often needed to be increased by 50% or even doubled to meet the calibration targets.
 
-The formula which aims to control model overfitting ('calibration' formula - C1) most often gives that highest sample size and our article we focused primarily around this formula. While the calibration formula performed well for models with C-statistic/C-index<0.8, we found that that it substantially ***underestimated*** the sample size when the predictive strength of the model was higher. The sample sizes often needed to be increased by 50% or even doubled to meet the calibration targets.
-
-Hence, we developed the **new package 'samplesizedev'** which performs ***unbiased sample size calculations*** regardless of model strength. Our software uses simulation in the background so calculations can take a bit to run (from 30s to some minutes depending on scenatio and computational power). Currently it can be used for the development of risk models for binary outcomes; functionality for ***time to event outcomes***  is under development. 
+Hence, we developed the **new package 'samplesizedev'** which performs ***unbiased sample size calculations*** regardless of model strength. Our software uses simulation in the background so calculations can take a bit to run (from  few seconds to 3 minutes depending on the specific scenario and computational power). Currently it can be used for the development of risk models for binary outcomes; functionality for ***time to event outcomes***  is under development. 
 
 ### $\textcolor{#f00}{\large  \textbf{UPDATES}}$
 
