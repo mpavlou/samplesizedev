@@ -236,7 +236,7 @@ $analytical
 ```
 The sample size calculated using simulation targetting at E(S)=0.9 is 535, while the sample size to ensure that PrAP(S)=0.8 is 701.
 
-As before, one may use the 'quick = TRUE' option which uses a bias-reduction analytical method which runs much faster:
+As before, one may use the 'quick = TRUE' option which uses a bias-reduction analytical method. This runs much faster and provides a very good approximation:
 ``` r
 samplesizedev(outcome="Binary", l_s= 0.85, u_s = 1.15, PAP_s = 0.8, phi = 0.2, c = 0.85, p = 10,  quick = FALSE)
 
