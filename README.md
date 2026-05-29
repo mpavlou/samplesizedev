@@ -27,7 +27,7 @@ Hence, we developed the **new package 'samplesizedev'** which performs ***unbias
 
 The package has now been updated to:
 - perform sample size calculations than also ***control the*** $\textcolor{#f00}{variability}$ ***in the calibration slope, instead of *just* the expected value***.
-- perform sample size calculations using analytical expressions which result in a very good approximation and impressive speed improvement 
+- perform sample size calculations using analytical expressions which result in a very good approximation and impressive speed improvements 
 - obtain the sampling distribution for a variety of measures for a given sample size
 - obtain the sampling distribution for individual predicted probabilities for a given sample size  
 
