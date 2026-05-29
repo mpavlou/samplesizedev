@@ -28,7 +28,7 @@ Hence, we developed the **new package 'samplesizedev'** which performs ***unbias
 The package has now been updated to:
 - perform sample size calculations than also ***control the*** $\textcolor{#f00}{variability}$ ***in the calibration slope, instead of *just* the expected value***.
 - perform sample size calculations using analytical expressions which result in a very good approximation and impressive speed improvements 
-- obtain the sampling distribution for a variety of measures for a given sample size
+- obtain the sampling distribution for a variety of performance measures (e.g. C-statistic, Brier score etc) for a given sample size
 - obtain the sampling distribution for individual predicted probabilities for a given sample size  
 
 The first is very important because, as shown in the Arxiv paper, the variability in performance can be very high when the number of predictors is small. Therefore, while one may think that a reduced model should be preferred to avoid model overfitting, this can be misleading. That's because even though performance is controlled on average,  e.g., E(S)=0.9, the variability can still be very high. In this context, E(S)=0.9 is interpreted to mean that if one were to collect many datasets of the recommended size, and  validate them on large external dataset, then the calibration slope would be on average around 0.9. However, if the variability is very high, the probability of actually obtaining an individual dataset with calibration slope close to 0.9 might be unacceptably low (see examples in the paper and below). 
