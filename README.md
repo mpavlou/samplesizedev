@@ -138,7 +138,7 @@ be in fact lower than we had aim for this size.  We can verify this using the se
 # Sample size=308; Prevalence=0.2; C-statistic=0.85; Number of predictors=10
 # Calculation takes a few seconds
 
-expected_performance(outcome = "Binary", n = 309, phi = 0.2, c = 0.85, p = 10)
+expected_performance(outcome = "Binary", n = 309, phi = 0.2, c = 0.85, p = 10, method = "MLE")
 
 n                                     309.0000
 True prevalence                         0.2000
@@ -177,7 +177,7 @@ In this case, to get a mean calibration slope of 0.9 we need to inflate n$rvs si
 get the desired expected calibration slope:  
 
 ``` r
-expected_performance(outcome = "Binary", n = 535, phi = 0.2, c = 0.85, p = 10)
+expected_performance(outcome = "Binary", n = 535, phi = 0.2, c = 0.85, p = 10, method = "MLE")
 
 n                                     535.0000
 True prevalence                         0.2000
