@@ -11,11 +11,12 @@ R package to calculate the sample size for the development of risk models for bi
 
 Related papers: 
 
-**"An evaluation of sample size requirements for developing risk prediction models with binary outcomes"**
-published in BMC Medical Research Methodology https://doi.org/10.1186/s12874-024-02268-5
+**"An evaluation of sample size requirements for developing risk prediction models with binary outcomes"**, BMC Medical Research Methodology https://doi.org/10.1186/s12874-024-02268-5
 
-$\textcolor{#f00}{\large  \textbf{NEW preprint:}}$ **"Sample Size Calculations for the Development of Risk Prediction Models that Account for Performance Variability"**
+$\textcolor{#f00}{\large  \textbf{NEW preprint:}}$ **"Sample Size Calculations for the Development of Risk Prediction Models that Account for Performance Variability"**,
 https://doi.org/10.48550/arXiv.2509.14028
+
+**"Penalized Regression Methods With Modified Cross-Validation and Bootstrap Tuning Produce Better Prediction Models". Biometrical Journal, https://onlinelibrary.wiley.com/doi/10.1002/bimj.202300245
 
 ### Why do we need 'samplesizedev'?
 
