@@ -53,7 +53,7 @@ expected_s_n_binary <- function(n, S, mean_eta, variance_eta,  p, c, n.predictor
 
   cs <- unlist(a)
 
-  mce <-   round(sqrt(stats::var(cs,na.rm = TRUE)/n), 4)
+  mce <-   round(sqrt(stats::var(cs,na.rm = TRUE)/nsim), 4)
 
 
   #graphics::hist(cs, main = paste("CS=",round(mean(cs,na.rm=TRUE)/0.0025)*0.0025, "N=",n))

@@ -542,7 +542,9 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
     ggplot2::theme(axis.text=ggplot2::element_text(size=10),
                    axis.title=ggplot2::element_text(size=10))+
     ggplot2::theme(plot.title =  ggplot2::element_text(size = 10)) +
-    ggplot2::geom_vline( ggplot2::aes(xintercept = 0.9), color="black", linetype ="dashed", size = 0.5)
+    ggplot2::geom_vline( ggplot2::aes(xintercept = 0.9), color="black", linetype ="dashed", size = 0.5) +
+    scale_x_continuous(breaks = c(seq(0, 1.8, by = 0.2), 0.9))
+
   # +ggplot2::coord_cartesian(xlim = c(0.6, 1.6))
 
   # if ( abs(mean(cs, na.rm=TRUE)- 0.9) > 0.005)   cs_plot <-  cs_plot + ggplot2::geom_vline( ggplot2::aes(xintercept = 0.9), color="red", linetype ="dashed", size = 1)
@@ -798,7 +800,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
     figure1,
     top = ggpubr::text_grob(
       sprintf(
-        "Sampling Distribution of CS (nsims=%s) and Distribution of true probabilities and  \nMethod=%s, N=%s, Prevalence=%s, C-stat=%s, No Predictors=%s",
+        "Sampling Distribution of CS (nsims=%s) and Distribution of true probabilities  \nMethod=%s, N=%s, Prevalence=%s, C-stat=%s, No Predictors=%s",
         nsim, method, n, p, c, n.predictors),
       color = "black", face = "bold", size = 10)
   )
@@ -842,13 +844,16 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
                           round(prev, 2),
                           round(cstat, 2 ), n.predictors,
                           c(0),
+                          c(0),
+                          c(0),
+                          c(0),
                           round(mean(cs, na.rm = TRUE),3),
                           round(sqrt(stats::var(cs,na.rm = TRUE)), 4),
                           # round(sqrt( mean( ((cs-1)^2), na.rm=TRUE) ), 4),
                           round(mean(ifelse( (cs > 0.85 & cs <1.15), 1, 0),na.rm=TRUE), 2),
                           round(stats::median(mape, na.rm = TRUE),4),
                           round(sqrt(stats::var(mape,na.rm = TRUE)), 4),
-                          round(mean(opt, na.rm = TRUE),3),
+                          # round(mean(opt, na.rm = TRUE),3),
                           round(median(cest, na.rm = TRUE),3),
                           round(sqrt(stats::var(cest,na.rm = TRUE)), 4),
                           round(sqrt(var(ave_pred_risk, na.rm = TRUE)),3),
@@ -856,18 +861,35 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
                           round(median(brier, na.rm = TRUE),3),
                           round(median(sens, na.rm = TRUE),3),
                           round(median(nb, na.rm = TRUE),3),
+                          c(0),
+                          c(0),
+                          c(0),
+                          c(0),
                           round(median(p_quantile, na.rm = TRUE),3),
-                          round(sqrt(stats::var(p_quantile,na.rm = TRUE)), 3)
+                          round(sqrt(stats::var(p_quantile,na.rm = TRUE)), 3),
+                          c(0)
+
   )
 
   # round(mean(heuristic, na.rm = TRUE),3),
   # round(r2_cs_true,4),
   # round(mean(r2_app,na.rm=TRUE)*mean(cs, na.rm = TRUE),4),
 
-  names(df) <- c("n","True prevalence", "True c-statistic", "Number of predictors","---------------------------",
-                 "Mean_calibration_slope", "SD(CS)", "Pr(0.85<CS<1.15)", "Mean_MAPE",  "SD(MAPE)", "Optimism_R2_Nag",
-                 "Mean_AUC", "SD(AUC)", "SD(Average Predicted Risk)", "Median CS", "Brier", "Sensitivity", "NB",
-                 "Individual Predicted risk", "SD(IPP)")
+  names(df) <- c("n","True prevalence", "True c-statistic", "Number of predictors",
+                 "-------------------------------------",
+                 "Sampling distribution of",
+                 "aggregate performance measures",
+                 "-------------------------------------",
+                 "Mean Calibration Slope (CS)", "SD(CS)", "Pr(0.85<CS<1.15)", "Mean MAPE",  "SD(MAPE)",
+                 "Mean AUC", "SD(AUC)", "SD(Average Predicted Risk)", "Median CS", "Median Brier Score",
+                 "Median Sensitivity (threshold prev)", "Median Net Benefit (threshold prev)",
+                 "------------------------------------",
+                 paste("Sampling distribution of Individual"),
+                 paste("Predicted Probability (IPP) =", round(p_ipp_true,3) ),
+                 "------------------------------------",
+                 "Median IPP", "SD(IPP)",
+                 "------------------------------------"
+  )
 
 
   # names(df) <- c("n", "mean_CS", "sd_CS", "Pr(CS<0.8)", "mean_MAPE",  "sd_MAPE", "optimism_R2_Nag", "heuristic_SF", "r2_true", "r2_app/cs", "prevalence", "c-statistic", " # predictors")
