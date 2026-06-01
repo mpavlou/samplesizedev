@@ -106,7 +106,7 @@ samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, quick = 
 > $sim
 > [1] 535
 $note
-[1] "Monte Carlo Simulation Error (MCSE) = 0.003. The sample size within 1 MCSE from S=0.9 would be approximately 517-553. \nFor lower MCE error increase the number of simulations."
+[1] "Monte Carlo Simulation Error (MCSE) = 0.003. The sample size within 1 MCSE from S=0.9 would be approximately 517-553. For lower MCE error increase the number of simulations."
 
 # $sim is the sample size calculated by simulation
 # $rvs is the sample size calculated using the approach of Riley et al. (2019) (RvS formula Criterion 1 - overfitting)
