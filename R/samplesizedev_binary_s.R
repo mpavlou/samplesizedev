@@ -111,8 +111,8 @@ samplesizedev_binary_s <- function(S, p, c,   n.predictors, beta = rep(1/n.predi
 
   if (quick ==  FALSE) n   <- bisection(s_est, min.opt, max.opt, tol = tol, nsim = nsim) else n = n_init
 
-  A         <- 2*p*(1-p)*stats::qnorm(c_adj[2])^2
-  app       <- sqrt(S^2/(A* n)+ (2*S^2)/(n-2) )
+  A         <- 2*p*(1-p)*stats::qnorm(c_adj[1])^2
+  app       <- sqrt( S^2/(A* n)+ (2*S^2)/(n-2) )
   mce       <- round(app/sqrt(nsim),3)
 
 
@@ -127,7 +127,9 @@ samplesizedev_binary_s <- function(S, p, c,   n.predictors, beta = rep(1/n.predi
   def <- n_low/n_middle
   inf <- n_high/n_middle
 
-  message <- paste("Monte Carlo Simulation Error (MCSE) = ", mce, ". The sample size within 1 MCSE from S=", S," would be approximately ", round(n*def), "-", round(n*inf), ". For lower MCE error increase the number of simulations.", sep="")
+  message <- paste("Monte Carlo Simulation Error (MCSE) = ", mce, ". The sample size within 1 MCSE from S=", S," would be approximately between ", round(n*def), "-", round(n*inf), ". For lower MCSE error increase the number of simulations.", sep="")
+
+  # message <- paste("The sample size within 1 Monte Carlo Simulation Error (MCSE) from S=", S," would be approximately between ", round(n*def), "-", round(n*inf), ". For lower MCSE error increase the number of simulations.", sep="")
 
 
   #print(paste("Required sample size: ", n ))

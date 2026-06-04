@@ -59,12 +59,12 @@ expected_s_n_binary <- function(n, S, mean_eta, variance_eta,  p, c, n.predictor
   #graphics::hist(cs, main = paste("CS=",round(mean(cs,na.rm=TRUE)/0.0025)*0.0025, "N=",n))
   df        <- data.frame(cs)
   df        <- stats::na.omit(df)
-  cs_plot   <- ggplot2:: ggplot(df,  ggplot2::aes(x = cs), size=12) +
+  cs_plot   <- ggplot2:: ggplot(df,  ggplot2::aes(x = cs)) +
     ggplot2::geom_density() +  ggplot2::ggtitle(paste("N = ", round(n) ,
                                                 ", Median(CS) = ", round(median(cs,na.rm=TRUE)/0.0025)*0.0025,
                                                 ", Monte Carlo Error=", mce, " (nsims=", nsim,")", sep="")) +
                                                   ggplot2::geom_vline( ggplot2::aes(xintercept = mean(cs, na.rm = TRUE)), color="blue", linetype ="dashed", size = 1) +
-    ggplot2::ylab("Density") +  ggplot2::theme(text =  ggplot2::element_text(size = 13)) +    ggplot2::theme_bw()+
+    ggplot2::ylab("Density") +  ggplot2::theme(text =  ggplot2::element_text(size = 12)) +    ggplot2::theme_bw()+
     ggplot2::xlab("Calibration Slope")
 
   if ( abs(median(cs, na.rm=TRUE)- 0.9) > tol)   cs_plot <-  cs_plot + ggplot2::geom_vline( ggplot2::aes(xintercept = 0.9), color="red", linetype ="dashed", size = 1)

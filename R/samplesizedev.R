@@ -58,7 +58,7 @@
 #' # expected_performance(outcome = "Binary", n = 500, phi= 0.2, c = 0.85, p = 10)
 #'
 #' @seealso
-#' expected_cs
+#' expected_performance
 
 
 samplesizedev <- function(outcome="Binary", S = NULL, MAPE = NULL, l_s = NULL, u_s = NULL, PAP_s = NULL,
