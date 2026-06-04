@@ -120,9 +120,9 @@ samplesizedev_binary_s <- function(S, p, c,   n.predictors, beta = rep(1/n.predi
   #                         n.predictors = n.predictors, nval = nval, nsim = nsim, parallel=parallel, plot = plot, tol = tol)[2],3)
 
 
-  n_middle  <- round((n.predictors)/ ((S-1)*log(1-  c_adj[2]/S)))
-  n_low     <- round((n.predictors)/ ((S-mce-1)*log(1-  c_adj[2]/(S-mce))))
-  n_high    <- round((n.predictors)/ ((S+mce-1)*log(1-  c_adj[2]/(S+mce))))
+  n_middle  <- round((n.predictors)/ ((S-1)*log(1-  c_adj[1]/S)))
+  n_low     <- round((n.predictors)/ ((S-mce-1)*log(1-  c_adj[1]/(S-mce))))
+  n_high    <- round((n.predictors)/ ((S+mce-1)*log(1-  c_adj[1]/(S+mce))))
 
   def <- n_low/n_middle
   inf <- n_high/n_middle
