@@ -20,7 +20,7 @@ https://doi.org/10.48550/arXiv.2509.14028
 
 ### Why do we need 'samplesizedev'?
 
-Riley et al. (2019) proposed calculating the development for a prediction model to ensure that the expected overfitting, as quantifieed by the calibration slope, is samll . The default target is calibration slope=0.9. Other criteria which include the optimism in R2 Nageleherke and the precision in the mean predicted risk. The formula which aims to control model overfitting ('calibration' formula - C1) most often gives that highest sample size and our article we focused primarily around this formula. While the calibration formula performed well for models with C-statistic/C-index<0.8, we found that that it substantially ***underestimated*** the sample size when the predictive strength of the model was higher. The sample sizes often needed to be increased by 50% or even doubled to meet the calibration targets.
+Riley et al. (2019) proposed calculating the development for a prediction model to ensure that the expected overfitting, as quantified by the calibration slope, is small . The default target is calibration slope=0.9. Other criteria which include the optimism in R2 Nagelkerke and the precision in the mean predicted risk. The formula which aims to control model overfitting ('calibration' formula - C1) most often gives that highest sample size and our article we focused primarily around this formula. While the calibration formula performed well for models with C-statistic/C-index<0.8, we found that that it substantially ***underestimated*** the sample size when the predictive strength of the model was higher. The sample sizes often needed to be increased by 50% or even doubled to meet the calibration targets.
 
 Hence, we developed the **new package 'samplesizedev'** which performs ***unbiased sample size calculations*** regardless of model strength. Our software uses simulation in the background so calculations can take a bit to run (from  few seconds to 3 minutes depending on the specific scenario and computational power). Currently it can be used for the development of risk models for binary outcomes; functionality for ***time to event outcomes***  is under development. 
 
@@ -32,9 +32,9 @@ The package has been recently been updated (April 2026) to:
 - obtain the sampling distribution for a variety of performance measures (e.g. C-statistic, Brier score etc) for a given sample size
 - obtain the sampling distribution for individual predicted probabilities for a given sample size  
 
-**The imporatance of accounting for variability in performance.** The first above is very important because, as shown in our recent [preprint on performance variability](https://doi.org/10.48550/arXiv.2509.14028), under the current sample size calculations aiming at expected calibration slope (CS) of 0.9,  the variability in performance can be very high when the number of predictors is small. Therefore, while it might be thought that a small model developed with a relatively small sample size can avoid model overfitting, this can be misleading. That's because even though performance is controlled on average,  e.g., expected calibation slope E(CS) = 0.9, the variability can be very high. In this context, E(CS)=0.9 is interpreted to mean that if one were to collect many datasets of the recommended size, and  validate them on large external dataset, then the calibration slope would be on average around 0.9. However, if the variability is very high, the probability of actually obtaining an individual dataset with calibration slope close to 0.9 might be unacceptably low (see examples in the paper and below). 
+**The importance of accounting for variability in performance.** The first above is very important because, as shown in our recent [preprint on performance variability](https://doi.org/10.48550/arXiv.2509.14028), under the current sample size calculations aiming at expected calibration slope (CS) of 0.9,  the variability in performance can be very high when the number of predictors is small. Therefore, while it might be thought that a small model developed with a relatively small sample size can avoid model overfitting, this can be misleading. That's because even though performance is controlled on average,  e.g., expected calibration slope E(CS) = 0.9, the variability can be very high. In this context, E(CS)=0.9 is interpreted to mean that if one were to collect many datasets of the recommended size, and  validate them on large external dataset, then the calibration slope would be on average around 0.9. However, if the variability is very high, the probability of actually obtaining an individual dataset with calibration slope close to 0.9 might be unacceptably low (see examples in the paper and below). 
 
-Hence, in our more recent work we $\textcolor{#f00}{\text{develop sample size calculations where we aim to control the probability of acceptable performance, rather}}$ $\textcolor{#f00}{ \text{than just performance on average}}$. In a simulation-based framework this approach can be easily implemented for any performance metric and a suitably defined range of acceptable performance. Here and in the paper above, we focused on the calibration slope. In addition to the simulation-based approach, we also derived an approximate analytical calculation that avoids and is very quick. 
+Hence, in our more recent work we $\textcolor{#f00}{\text{develop sample size calculations where we aim to control the probability of acceptable performance, rather}}$ $\textcolor{#f00}{ \text{than just performance on average}}$. In a simulation-based framework this approach can be easily implemented for any performance metric and a suitably defined range of acceptable performance. Here and in the paper above, we focused on the calibration slope. In addition to the simulation-based approach, we also derived an approximate analytical calculation that avoids simulation and is, hence,  very quick. 
 
 
 ### How does 'samplesizedev' work?
@@ -105,6 +105,8 @@ samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, quick = 
 > [1] 486
 > $sim
 > [1] 535
+$note
+[1] "Monte Carlo Simulation Error (MCSE) = 0.003. The sample size within 1 MCSE from S=0.9 would be approximately 517-553. For lower MCE error increase the number of simulations."
 
 # $sim is the sample size calculated by simulation
 # $rvs is the sample size calculated using the approach of Riley et al. (2019) (RvS formula Criterion 1 - overfitting)
@@ -215,7 +217,7 @@ SD(IPP)                                 0.0440
 N.B. Although the mean calibration slope is now indeed 0.9 bare in mind that still there is variability in the CS
 and *we are not guaranteed* to achieve that performance for every development sample of size 500 ... Indeed, $P(calibration \space slope \in (0.85,1.15))$=67%...
 
- $\textcolor{#f00}{\textbf{NEW:}}$ **Alternative fitting methods.** The package now provides the option to calculation expected performance after using shrinkage with a) post estimation shrinkage via the linear shrinkage factor (method="LSF"), b) modified Ridge (method = "ridge") and c) modified LASSO (method = "lasso"), where  [modified Ridge and LASSO were proposed by Pavlou et al. (2024)](https://onlinelibrary.wiley.com/doi/10.1002/bimj.202300245)  to solve problems with increase variability of standard ridhe and LASSO. Note that the implementation for these alternative methods is time consuming as the corresponding algorithms are much slower than MLE (about 5-10 times slower).
+ $\textcolor{#f00}{\textbf{NEW:}}$ **Alternative fitting methods.** The package now provides the option to calculation expected performance after using shrinkage with a) post estimation shrinkage via the linear shrinkage factor (method="LSF"), b) modified Ridge (method = "ridge") and c) modified LASSO (method = "lasso"), where  [modified Ridge and LASSO were proposed by Pavlou et al. (2024)](https://onlinelibrary.wiley.com/doi/10.1002/bimj.202300245)  to solve problems with increase variability of standard Ridge and LASSO. Note that the implementation for these alternative methods is time consuming as the corresponding algorithms are much slower than MLE (about 5-10 times slower).
  
 ``` r
 # Try the alternative estimation methods ridge and LASSO
@@ -238,10 +240,10 @@ $analytical
 [1] 649
 
 # $sim is the sample size calculated by simulation to ensure that PrAP(S)=0.8
-# $analytical is the sample size calculated using an analytical approximatiion to ensure that PrAP(S)=0.8
+# $analytical is the sample size calculated using an analytical approximation to ensure that PrAP(S)=0.8
 
 ```
-The sample size calculated using simulation targetting at E(S)=0.9 is 535, while the sample size to ensure that PrAP(S)=0.8 is 701.
+The sample size calculated using simulation targeting at E(S)=0.9 is 535, while the sample size to ensure that PrAP(S)=0.8 is 701.
 
 As before, one may use the 'quick = TRUE' option which uses a bias-reduction analytical method. This runs much faster and provides a very good approximation:
 ``` r
