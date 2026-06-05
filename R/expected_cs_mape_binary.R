@@ -534,7 +534,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
   df        <- data.frame(cs)
   df        <- stats::na.omit(df)
-  cs_plot   <- ggplot2:: ggplot(df,  ggplot2::aes(x = cs), size=12) +
+  cs_plot   <- ggplot2:: ggplot(df,  ggplot2::aes(x = cs)) +
     ggplot2::geom_density() +  ggplot2::ggtitle(paste("Median CS = ",round(median(cs,na.rm=TRUE),2), ", Pr(0.85<CS<1.15) = ", round(mean(ifelse( (cs > 0.85 & cs <1.15), 1, 0),na.rm=TRUE), 2) )) +
     ggplot2::geom_vline( ggplot2::aes(xintercept = mean(cs, na.rm = TRUE)), color="blue", linetype ="dashed", size = 1) +
     ggplot2::ylab("Density") +  ggplot2::theme(text =  ggplot2::element_text(size = 13)) +
@@ -543,7 +543,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
                    axis.title=ggplot2::element_text(size=10))+
     ggplot2::theme(plot.title =  ggplot2::element_text(size = 10)) +
     ggplot2::geom_vline( ggplot2::aes(xintercept = 0.9), color="black", linetype ="dashed", size = 0.5) +
-    scale_x_continuous(breaks = c(seq(0, 1.8, by = 0.2), 0.9))
+    ggplot2::scale_x_continuous(breaks = c(seq(0, 1.8, by = 0.2), 0.9))
 
   # +ggplot2::coord_cartesian(xlim = c(0.6, 1.6))
 
@@ -715,7 +715,17 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
                    axis.title=ggplot2::element_text(size=10)) +
     ggplot2::theme(plot.title =  ggplot2::element_text(size = 10)) +
     ggplot2::labs(x = "Percentile of distribution of true probabilities", y = "Median (95% CI) of IPPs")+
-    ggplot2::ggtitle("Stability of IPP")
+    ggplot2::ggtitle("Stability of IPP")+
+    +
+    ggplot2::annotate(
+      "text",
+      x = -Inf,
+      y = Inf,
+      label = "CI = Central interval",
+      hjust = -0.1,
+      vjust = 1.5,
+      size = 1
+    )
 
 
   df <- data.frame(
@@ -781,7 +791,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
       "text",
       x =   p_ipp_true + x_offset,
       y = y_max * 0.85,
-      label = paste("Individual Predicted Probability, IPP=",round(  p_ipp_true,3), "\n (",individual_quantile*100,"-percentile)", sep=""),
+      label = paste("IPP=",round(  p_ipp_true,3), "\n (",individual_quantile*100,"-percentile)", sep=""),
       color = "red",
       hjust = 0,
       size=3
@@ -789,7 +799,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
 
   # ---- CS + MAPE ----
   figure1 <- ggpubr::ggarrange(
-    cs_plot,  p_true_plot,
+    cs_plot, p_plot_quantiles_all,
     ncol = 2, nrow = 1,
     common.legend = TRUE,
     legend = "bottom",
@@ -800,21 +810,21 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
     figure1,
     top = ggpubr::text_grob(
       sprintf(
-        "Sampling Distribution of CS (nsims=%s) and Distribution of true probabilities  \nMethod=%s, N=%s, Prevalence=%s, C-stat=%s, No Predictors=%s",
-        nsim, method, n, p, c, n.predictors),
+        "Sampling Distribution of CS and of Individual Predicted Probabilities (IPPs) \nMethod=%s, N=%s, Prevalence=%s, C-stat=%s, No Predictors=%s",
+      method, n, p, c, n.predictors),
       color = "black", face = "bold", size = 10)
   )
 
   # ---- Probability plots ----
   figure2 <- ggpubr::ggarrange(
-    p_plot, p_plot_quantiles_all,
+    p_true_plot , p_plot,
     ncol = 2, nrow = 1, widths= c(4,4),     labels=c("C", "D")
   )
 
   prob_plot <- ggpubr::annotate_figure(
     figure2,
     top = ggpubr::text_grob(
-      sprintf("\n Stability of Individual Predicted Probabilities (IPP)"),
+      sprintf("\n Probability Distibution of true probabilities and Stability for a specific IPP"),
       color = "black", face = "bold", size = 10))
 
   final_plot <- ggpubr::ggarrange(
