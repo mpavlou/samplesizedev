@@ -716,7 +716,6 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
     ggplot2::theme(plot.title =  ggplot2::element_text(size = 10)) +
     ggplot2::labs(x = "Percentile of distribution of true probabilities", y = "Median (95% CI) of IPPs")+
     ggplot2::ggtitle("Stability of IPP")+
-    +
     ggplot2::annotate(
       "text",
       x = -Inf,
