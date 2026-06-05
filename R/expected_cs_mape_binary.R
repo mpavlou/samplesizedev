@@ -766,7 +766,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
       label = "CI = Central interval",
       hjust = -0.1,
       vjust = 1.5,
-      size = 1
+      size = 3
     )
 
 
