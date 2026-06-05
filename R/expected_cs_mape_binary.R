@@ -715,16 +715,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
                    axis.title=ggplot2::element_text(size=10)) +
     ggplot2::theme(plot.title =  ggplot2::element_text(size = 10)) +
     ggplot2::labs(x = "Percentile of distribution of true probabilities", y = "Median (95% CI) of IPPs")+
-    ggplot2::ggtitle("Stability of IPP")+
-    ggplot2::annotate(
-      "text",
-      x = -Inf,
-      y = Inf,
-      label = "CI = Central interval",
-      hjust = -0.1,
-      vjust = 1.5,
-      size = 1
-    )
+    ggplot2::ggtitle("Stability of IPP")
 
 
   df <- data.frame(
@@ -767,7 +758,16 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
                    axis.title=ggplot2::element_text(size=10)) +
     ggplot2::theme(plot.title =  ggplot2::element_text(size = 10)) +
     # ggplot2::scale_y_continuous(limits=c(0,quantile(p_true, p=0.98)))
-    ggplot2::coord_cartesian(ylim=c(0,quantile(p_true, p=0.98)))
+    ggplot2::coord_cartesian(ylim=c(0,quantile(p_true, p=0.98))) +
+    ggplot2::annotate(
+      "text",
+      x = -Inf,
+      y = Inf,
+      label = "CI = Central interval",
+      hjust = -0.1,
+      vjust = 1.5,
+      size = 1
+    )
 
 
   # Get max density to scale placement nicely
