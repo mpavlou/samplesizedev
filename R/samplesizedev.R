@@ -23,7 +23,7 @@
 #' @param S (numeric) The target expected calibration slope
 #' @param l_s (numeric) Lower bound for calibration slope
 #' @param u_s (numeric) Upper bound for calibration slope
-#' @param PAP_s (numeric) Target Probability of Acceptable performance in terms of calibration, (l_s, u_s)
+#' @param PrAP_s (numeric) Target Probability of Acceptable Performance in terms of calibration, (l_s, u_s)
 #' @param MAPE (numeric) The target expected mean absolute prediction error
 #' @param phi (numeric) The anticipated outcome prevalence of the binary outcome (or proportion of events for survival outcome)
 #' @param c (numeric) The anticipated c-statistic for binary outcome (or c-index for survival outcome)
@@ -49,7 +49,7 @@
 #' # samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10)
 #'
 #'Size for Probability of Acceptable Performance (PAP=0.8), where Acceptable Performance means 0.85<=S<=1.15
-#'samplesizedev(outcome="Binary", l_s= 0.85, u_s = 1.15, PAP_s = 0.8, phi = 0.2, c = 0.85, p = 10)
+#'samplesizedev(outcome="Binary", l_s= 0.85, u_s = 1.15, PrAP_s = 0.8, phi = 0.2, c = 0.85, p = 10)
 #'
 #'#' Size for target MAPE=0.04
 #' # samplesizedev(outcome = "Binary", MAPE = 0.04, phi = 0.2, c = 0.85, p = 10)
@@ -61,13 +61,15 @@
 #' expected_performance
 
 
-samplesizedev <- function(outcome="Binary", S = NULL, MAPE = NULL, l_s = NULL, u_s = NULL, PAP_s = NULL,
+samplesizedev <- function(outcome="Binary", S = NULL, MAPE = NULL, l_s = NULL, u_s = NULL, PrAP_s = NULL,
                           phi, c,  p, gamma = rep(1/p, p), nval = 25000, nsim = 1000, parallel = TRUE,
                           plot = TRUE, quick = FALSE, tol=0.0025){
+
 
   beta          <- gamma
   n.predictors  <- p
   p             <- phi
+  PAP_s         <- PrAP_s
 
   if (n.predictors==5 & nsim<3000) nsim = 3000
   if (n.predictors==4 & nsim<4000) nsim = 4000

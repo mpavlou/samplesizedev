@@ -87,8 +87,6 @@ find_mu_sigma2 <- function(target.prev, target.c, min.opt = c(-10,0), max.opt = 
  # round(find_mu_sigma(0.05, 0.7, tol=0.00001),4)
 
 
-
-
 #####################################################
 
 

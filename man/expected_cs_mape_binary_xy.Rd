@@ -19,7 +19,8 @@ expected_cs_mape_binary_xy(
   x = x,
   y = y,
   individual_predicted_probability,
-  threshold
+  threshold,
+  x_individual_predicted_probability
 )
 }
 \arguments{
