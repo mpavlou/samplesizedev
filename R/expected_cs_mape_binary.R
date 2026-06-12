@@ -69,7 +69,9 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   y          <- stats::rbinom(ncalc,  1, invlogit(eta))
   p_true     <- as.vector(invlogit(mean + x%*%beta))
 
-  if (length(threshold)==0) threshold=round(quantile(p_true, p=0.6),3)
+  threshold_plot<-threshold
+
+  if (length(threshold)==0) threshold=p
 
   if (length(x_individual_predicted_probability)==0 & length(individual_predicted_probability)==0) {individual_predicted_probability=median(p_true)}
 
@@ -589,6 +591,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
     prob_label <- "P(IPP > threshold)"
   }
 
+  if (length(threshold_plot)!=0) {
   p_plot <- ggplot2::ggplot(df_dens, ggplot2::aes(x = x, y = y)) +
 
     # full density curve
@@ -664,8 +667,49 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
       color = "black",
       hjust = 0,
       size = 3
-    )
+    ) } else {
 
+   p_plot <- ggplot2::ggplot(df_dens, ggplot2::aes(x = x, y = y)) +
+
+    # full density curve
+    ggplot2::geom_line() +
+    ggplot2::ggtitle(
+      paste(
+        "Sampling distribution of IPP=", round(p_ipp_true, 3),
+        "\nMedian IPP = ", round(median(p_quantile, na.rm = TRUE), 3),
+        "\n95% CI IPP = (",
+        round(stats::quantile(p_quantile, probs = 0.025), 2), ", ",
+        round(stats::quantile(p_quantile, probs = 0.975), 2), ") ; Width = ",
+        round(
+          stats::quantile(p_quantile, probs = 0.975) -
+            stats::quantile(p_quantile, probs = 0.025), 3
+        ),
+        sep = ""
+      )
+    ) +
+
+    # median
+    ggplot2::geom_vline(
+      xintercept = median(p_quantile, na.rm = TRUE),
+      color = "blue",
+      linetype = "dashed",
+      linewidth = 1
+    )  +
+    ggplot2::ylab("Density") +
+    ggplot2::xlab("Predicted Probability") +
+    ggplot2::theme(text = ggplot2::element_text(size = 10)) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(
+      legend.position = "bottom",
+      axis.text = ggplot2::element_text(size = 10),
+      axis.title = ggplot2::element_text(size = 10),
+      plot.title = ggplot2::element_text(size = 10)
+    ) +
+    # ggplot2::scale_x_continuous(limits=c(max(0,p_ipp_true-2.5*p_ipp_true*(1-p_ipp_true)), min(p_ipp_true+2*p_ipp_true*(1-p_ipp_true),1)))
+    ggplot2::coord_cartesian(
+      xlim = c(max(0,p_ipp_true-2.5*p_ipp_true*(1-p_ipp_true)), min(p_ipp_true+2*p_ipp_true*(1-p_ipp_true),1)))
+
+    }
 
   # True probability distribution
 

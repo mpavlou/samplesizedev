@@ -1,14 +1,9 @@
 adjusted_c_mu_sigma <-function(mean, variance, n.predictors, p, set.seed=1) {
 
   set.seed(set.seed)
-  # mean_var <- find_mu_sigma(p, c, tol=0.00001)
-  # mean     <- mean_var[1]
-  # variance <- mean_var[2]
 
   bj       <- sqrt(variance/n.predictors); bj
-  # cj       <- find_c(mean, bj^2) ;cj
-  # mean_varj <- find_mu_sigma(p, cj, tol=0.00001)
-  #
+
   n <- 1000000
 
   x <- mvtnorm::rmvnorm(n, rep(0, n.predictors), sigma = diag(n.predictors) )
@@ -35,30 +30,16 @@ adjusted_c_mu_sigma <-function(mean, variance, n.predictors, p, set.seed=1) {
 
   }
 
-  # variance_new  <-  sum(delta_j^2)
   if (n.predictors==1)   variance_new  <-  delta_j^2 else
     variance_new  <-  (mean(delta_j))^2*n.predictors; variance_new
 
-  mean_new      <- find_mu(p, variance_new)[1]
+  mean_new     <- find_mu(p, variance_new)[1]
 
   c_new        <- find_c(mean_new, variance_new); c_new
 
   ncalc <- 1000000
   LP    <- stats::rnorm(ncalc, mean_new, sqrt(variance_new))
   y     <- stats::rbinom(ncalc, 1, plogis(LP))
-
-  # Fit a logistic regression with LP as covariate;
-  # this is essentially a calibration model, and the intercept and
-  # slope estimate will ensure the outcome proportion is accounted
-  # for, without changing C-statistic
-
-  # fit <- rms::lrm(y~LP)
-  #
-  # max_R2 <- function(prev){
-  #   1-(prev^prev*(1-prev)^(1-prev))^2
-  # }
-  #
-  # R2 <- as.numeric(fit$stats['R2']) * max_R2(p)
 
   a   <- RcppNumerical::fastLR(cbind(1,LP), y)
   L1  <- a$loglikelihood
@@ -101,7 +82,7 @@ find_mu <- function(target.prev, variance, min.opt = c(-10), max.opt = c(0.02), 
 
 
 
-adjusted_c<-function(mean, variance, n.predictors=NULL, set.seed=1) {
+adjusted_c <- function(p, c, n.predictors=NULL, set.seed=1) {
 
   set.seed(set.seed)
   mean_var <- find_mu_sigma(p, c, tol=0.00001)
@@ -109,9 +90,7 @@ adjusted_c<-function(mean, variance, n.predictors=NULL, set.seed=1) {
   variance <- mean_var[2]
 
   bj       <- sqrt(variance/n.predictors); bj
-  # cj       <- find_c(mean, bj^2) ;cj
-  # mean_varj <- find_mu_sigma(p, cj, tol=0.00001)
-  #
+
   n <- 2000000
 
   x <- mvtnorm::rmvnorm(n, rep(0, n.predictors), sigma = diag(n.predictors) )
@@ -140,29 +119,13 @@ adjusted_c<-function(mean, variance, n.predictors=NULL, set.seed=1) {
 
   # variance_new  <-  sum(delta_j^2)
   if (n.predictors==1)   variance_new  <-  delta_j^2 else
-    variance_new  <-  (mean(delta_j))^2*n.predictors; variance_new
+      variance_new  <-  (mean(delta_j))^2*n.predictors; variance_new
 
   mean_new      <- find_mu(p, variance_new)[1]
-
-  # c_new        <- find_c(mean_new, variance_new); c_new
 
   ncalc <- 1000000
   LP    <- stats::rnorm(ncalc, mean_new, sqrt(variance_new))
   y     <- stats::rbinom(ncalc, 1, plogis(LP))
-
-  # Fit a logistic regression with LP as covariate;
-  # this is essentially a calibration model, and the intercept and
-  # slope estimate will ensure the outcome proportion is accounted
-  # for, without changing C-statistic
-
-  # fit <- rms::lrm(y~LP)
-  #
-  # max_R2 <- function(prev){
-  #   1-(prev^prev*(1-prev)^(1-prev))^2
-  # }
-  #
-  # R2 <- as.numeric(fit$stats['R2']) * max_R2(p)
-  #
 
   a   <- RcppNumerical::fastLR(cbind(1,LP), y)
   L1  <- a$loglikelihood

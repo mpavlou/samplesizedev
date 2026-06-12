@@ -17,7 +17,8 @@ expected_cs_mape_binary(
   long = FALSE,
   approx = FALSE,
   threshold,
-  individual_predicted_probability
+  individual_predicted_probability,
+  x_individual_predicted_probability
 )
 }
 \arguments{

@@ -19,7 +19,7 @@ samplesizedev(
   nsim = 1000,
   parallel = TRUE,
   plot = TRUE,
-  quick = TRUE,
+  quick = FALSE,
   tol = 0.0025
 )
 }
@@ -51,6 +51,10 @@ samplesizedev(
 \item{parallel}{(logical) parallel processing to speed up computations (default=TRUE)}
 
 \item{plot}{(logical) Show figures for intermediate plots (default=TRUE)}
+
+\item{quick}{(logical) Use approximation for a quick calculation (default=FALSE)}
+
+\item{tol}{(logical) Tolerance for the calculation for the expected performance, stop when the median calibration slope is within 'tol' from the target value.}
 }
 \value{
 n$sim: the required sample size by simulation
@@ -94,5 +98,5 @@ samplesizedev(outcome="Binary", l_s= 0.85, u_s = 1.15, PAP_s = 0.8, phi = 0.2, c
 
 }
 \seealso{
-expected_cs
+expected_performance
 }

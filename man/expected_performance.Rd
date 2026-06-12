@@ -11,7 +11,7 @@ expected_performance(
   c,
   p,
   gamma = rep(1/p, p),
-  nval = 25000,
+  nval = 50000,
   nsim = 1000,
   parallel = TRUE,
   method = "MLE",
@@ -21,7 +21,7 @@ expected_performance(
   y = NULL,
   threshold = NULL,
   individual_predicted_probability = NULL,
-  x_individual = NULL
+  x_individual_predicted_probability = NULL
 )
 }
 \arguments{
@@ -101,10 +101,10 @@ This function calculates the sampling distribution of calibration slope and MAPE
 (outcome prevalence, c-statistic and number of predictors). It takes approximately 15 seconds to run (binary outcome).
 }
 \examples{
-# expected_performance(outcome="Binary", n = 530, phi = 0.2, c = 0.85, p = 10, nsim = 100, parallel = FALSE)
+# expected_performance(outcome="Binary", n = 530, phi = 0.2, c = 0.85, p = 10, nsim = 1000, parallel = FALSE)
 
 # Prefer parallel computing with >2 cores that ensure faster running
-# expected_performance(n = 530, phi = 0.2, c = 0.85, p = 10, nsim = 100, parallel = TRUE)
+# expected_performance(n = 530, phi = 0.2, c = 0.85, p = 10, nsim = 1000, parallel = TRUE)
 }
 \seealso{
 samplesizedev
