@@ -7,7 +7,7 @@ find_n_prap_s <- function(c, p, mean, variance, n.predictors, r2, l_s=0.85, u_s=
 
   prob <- function(S){
     n  <- (n.predictors)/ ((S-1)*log(1-  c_adj[2]/S));
-    se <- sqrt(S/ (2*p*(1-p)*stats::qnorm(c_adj_var[1])^2 *n) + 2*S^2/(n-2))
+    se <- sqrt(S^2/ (2*p*(1-p)*stats::qnorm(c_adj_var[1])^2 *n) + 2*S^2/(n-2))
 
     zz <- 1-(stats::pnorm( (l_s-S)/se) +pnorm( (S-u_s)/se) )
     abs(zz - PAP_s)
@@ -15,7 +15,7 @@ find_n_prap_s <- function(c, p, mean, variance, n.predictors, r2, l_s=0.85, u_s=
 
   s_est <- stats::optimize(prob, c(min.opt, max.opt, tol = 0.0001))$minimum
   n <- (n.predictors)/ ((s_est-1)*log(1 - c_adj[2]/s_est))
-  se<- sqrt(s_est/ (2 * p * (1-p) * stats::qnorm(c_adj_var[1])^2 *n) + 2 * s_est^2/(n-2))
+  se<- sqrt(s_est^2/ (2 * p * (1-p) * stats::qnorm(c_adj_var[1])^2 *n) + 2 * s_est^2/(n-2))
   probability <- 1-(stats::pnorm( (l_s-s_est)/se) + stats::pnorm( (s_est-u_s)/se) )
 
   # if (c>0.8  & c<=0.85 )       {inflation_f   <- 1.2  ; n <- n*inflation_f }

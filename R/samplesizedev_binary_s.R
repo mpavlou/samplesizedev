@@ -137,13 +137,15 @@ samplesizedev_binary_s <- function(S, p, c,   n.predictors, beta = rep(1/n.predi
   size                       <- NULL
 
   if (quick ==  FALSE) {
-  size$rvs                   <- as.vector(n_rvs)
+
   size$analytical_corrected  <- as.vector(n_init)
   size$sim                   <- as.vector(round(n))
-  size$note                  <- message} else
+  size$note                  <- message
+  size$rvs                   <- as.vector(n_rvs)} else
 
-  {size$rvs                  <- as.vector(n_rvs)
-  size$analytical_corrected  <- as.vector(n_init)}
+  { size$analytical_corrected  <- as.vector(n_init)
+    size$rvs                   <- as.vector(n_rvs)
+ }
 
 
   size
