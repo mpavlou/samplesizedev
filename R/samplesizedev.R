@@ -37,9 +37,8 @@
 #' @param tol (logical) Tolerance for the calculation for the expected performance, stop when the median calibration slope is within 'tol' from the target value.
 
 #' @return n$sim: the required sample size by simulation
-#' @return n$rvs: the required sample size by the RvS formulae (only for comparison)
-#' @return n$r2_cs: Cox-Snell R square for the input values of phi and p
-
+#' @return n$rvs: the required sample size by the RvS formula (only for expected performance  - for comparioson)
+#' @return n$analytical: the required sample size using a quick analytical approximation (only for  PrAP calculation)
 #' @export
 #'
 #' @examples

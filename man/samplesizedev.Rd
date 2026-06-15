@@ -59,9 +59,9 @@ samplesizedev(
 \value{
 n$sim: the required sample size by simulation
 
-n$rvs: the required sample size by the RvS formulae (only for comparison)
+n$rvs: the required sample size by the RvS formula (only for expected performance  - for comparioson)
 
-n$r2_cs: Cox-Snell R square for the input values of phi and p
+n$analytical: the required sample size using a quick analytical approximation (only for  PrAP calculation)
 }
 \description{
 This function calculates the sample size required to achieve an expected Calibration Slope (S) or an expected MAPE (MAPE) given anticipated features of the data and the model. For a binary outcome these
