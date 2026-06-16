@@ -44,11 +44,18 @@
 #' @examples
 #'
 #' # Binary Outcome
+#'
 #' # Size for target S=0.9
 #' # samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10)
 #'
-#'Size for Probability of Acceptable Performance (PAP=0.8), where Acceptable Performance means 0.85<=S<=1.15
-#'samplesizedev(outcome="Binary", l_s= 0.85, u_s = 1.15, PrAP_s = 0.8, phi = 0.2, c = 0.85, p = 10)
+#' # Try option quick = TRUE for a fast approximation
+#' samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, quick = TRUE)
+#'
+#' # Size for Probability of Acceptable Performance (PrAP=0.8), where Acceptable Performance means 0.85<=S<=1.15
+#'  samplesizedev(outcome="Binary", l_s= 0.85, u_s = 1.15, PrAP_s = 0.8, phi = 0.2, c = 0.85, p = 10)
+#'
+#' # Try option quick = TRUE for a fast approximation
+#'  samplesizedev(outcome="Binary", l_s= 0.85, u_s = 1.15, PrAP_s = 0.8, phi = 0.2, c = 0.85, p = 10, quick = TRUE)
 #'
 #'#' Size for target MAPE=0.04
 #' # samplesizedev(outcome = "Binary", MAPE = 0.04, phi = 0.2, c = 0.85, p = 10)
