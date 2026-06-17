@@ -115,12 +115,12 @@ $note
 
 ```
 
-Alternatively, one may use the 'quick = TRUE' option which directly uses the bias-reduction for Riley's formula, but with the 'adjusted C-statistic' which is effective a bias-reducing correction:
+Alternatively, one may use the 'quick = TRUE' option which directly uses the bias-reduction adjustment for Riley's formula, which uses an 'adjusted C-statistic' as input:
 
 ``` r
 # Fast calculation (approximation) 
 
-samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, quick = FALSE)
+samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, quick = TRUE)
 > $rvs
 > [1] 309
 > $analytical_corrected
