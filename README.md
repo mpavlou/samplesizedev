@@ -115,7 +115,7 @@ $note
 
 ```
 
-Alternatively, one may use the 'quick = TRUE' option which directly uses the bias-reduction for Riley's formula:
+Alternatively, one may use the 'quick = TRUE' option which directly uses the bias-reduction for Riley's formula, but with the 'adjusted C-statistic' which is effective a bias-reducing correction:
 
 ``` r
 # Fast calculation (approximation) 
@@ -126,6 +126,12 @@ samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, quick = 
 > $analytical_corrected
 > [1] 486
 ``` 
+we note that the adjusted C-statistic value used for the corrcted calculation above is 0.79
+
+``` r
+c_adj(target.prev = 0.2, target.c = 0.85, p = 10)
+> [1] 0.788
+```
 
 The sample size calculated using simulation is n$sim=535 which corresponds to CS=0.9. In comparison, 
 the sample size using previously proposed formulae is n$rvs=309. According to the findings in our paper
