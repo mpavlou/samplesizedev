@@ -126,7 +126,7 @@ samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, quick = 
 > $analytical_corrected
 > [1] 486
 ``` 
-We note that the adjusted C-statistic value used for the corrcted calculation above is 0.79:
+We note that the adjusted C-statistic value used for the corrected calculation above is 0.79:
 
 ``` r
 c_adj(target.prev = 0.2, target.c = 0.85, p = 10)
