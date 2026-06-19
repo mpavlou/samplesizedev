@@ -236,7 +236,7 @@ expected_performance(outcome = "Binary", n = 535, phi = 0.2, c = 0.85, p = 10, m
 #### Calculation of sample size for given model characteristics, aiming at $\textcolor{#f00}{ \textbf{Probability of acceptable calibration, PrAP(CS)=0.8}}$ 
 
 ``` r
-# Calculate the sample size Size for Probability of Acceptable Performance (PAP=0.8),
+# Calculate the sample size Size for Probability of Acceptable Performance (PrAP=0.8),
 # where Acceptable Performance is defined $S\in (0.85, 1.15)$
 # Performance target: PrAP(S)=0.8; Prevalence=0.2; c-statistic=0.85; Number of predictors=10
 
