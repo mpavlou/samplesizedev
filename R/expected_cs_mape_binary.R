@@ -538,14 +538,15 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   df        <- stats::na.omit(df)
   cs_plot   <- ggplot2:: ggplot(df,  ggplot2::aes(x = cs)) +
     ggplot2::geom_density() +  ggplot2::ggtitle(paste("Median CS = ",round(median(cs,na.rm=TRUE),2), ", Pr(0.85<CS<1.15) = ", round(mean(ifelse( (cs > 0.85 & cs <1.15), 1, 0),na.rm=TRUE), 2) )) +
-    ggplot2::geom_vline( ggplot2::aes(xintercept = mean(cs, na.rm = TRUE)), color="blue", linetype ="dashed", size = 1) +
+    ggplot2::geom_vline( ggplot2::aes(xintercept = median(cs, na.rm = TRUE)), color="blue", linetype ="dashed", size = 1) +
     ggplot2::ylab("Density") +  ggplot2::theme(text =  ggplot2::element_text(size = 13)) +
     ggplot2::xlab("Calibration Slope") + ggplot2::theme_bw()+  ggplot2::theme(legend.position="bottom")+
     ggplot2::theme(axis.text=ggplot2::element_text(size=10),
                    axis.title=ggplot2::element_text(size=10))+
     ggplot2::theme(plot.title =  ggplot2::element_text(size = 10)) +
     ggplot2::geom_vline( ggplot2::aes(xintercept = 0.9), color="black", linetype ="dashed", size = 0.5) +
-    ggplot2::scale_x_continuous(breaks = c(seq(0, 1.8, by = 0.2), 0.9))
+     ggplot2::coord_cartesian(xlim = c(0.5, 1.4))
+    # ggplot2::scale_x_continuous(breaks = sort(c(seq(0, 1.8, by = 0.2), 0.9)))
 
   # +ggplot2::coord_cartesian(xlim = c(0.6, 1.6))
 
@@ -688,13 +689,13 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
       )
     ) +
 
-    # median
-    ggplot2::geom_vline(
-      xintercept = median(p_quantile, na.rm = TRUE),
-      color = "blue",
-      linetype = "dashed",
-      linewidth = 1
-    )  +
+    # add median
+    # ggplot2::geom_vline(
+    #   xintercept = median(p_quantile, na.rm = TRUE),
+    #   color = "blue",
+    #   linetype = "dashed",
+    #   linewidth = 1
+    # )  +
     ggplot2::ylab("Density") +
     ggplot2::xlab("Predicted Probability") +
     ggplot2::theme(text = ggplot2::element_text(size = 10)) +

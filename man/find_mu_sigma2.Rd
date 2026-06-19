@@ -9,7 +9,7 @@ find_mu_sigma2(
   target.c,
   min.opt = c(-10, 0),
   max.opt = c(0.02, 5),
-  tol = 0.00001,
+  tol = 1e-05,
   check = FALSE
 )
 }
