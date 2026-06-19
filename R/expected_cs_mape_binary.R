@@ -539,11 +539,11 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   cs_plot   <- ggplot2:: ggplot(df,  ggplot2::aes(x = cs)) +
     ggplot2::geom_density() +  ggplot2::ggtitle(paste("Median CS = ",round(median(cs,na.rm=TRUE),2), ", Pr(0.85<CS<1.15) = ", round(mean(ifelse( (cs > 0.85 & cs <1.15), 1, 0),na.rm=TRUE), 2) )) +
     ggplot2::geom_vline( ggplot2::aes(xintercept = median(cs, na.rm = TRUE)), color="blue", linetype ="dashed", size = 1) +
-    ggplot2::ylab("Density") +  ggplot2::theme(text =  ggplot2::element_text(size = 14)) +
+    ggplot2::ylab("Density") +  ggplot2::theme(text =  ggplot2::element_text(size = 11)) +
     ggplot2::xlab("Calibration Slope") + ggplot2::theme_bw()+  ggplot2::theme(legend.position="bottom")+
-    ggplot2::theme(axis.text=ggplot2::element_text(size=14),
-                   axis.title=ggplot2::element_text(size=14))+
-    ggplot2::theme(plot.title =  ggplot2::element_text(size = 14)) +
+    ggplot2::theme(axis.text=ggplot2::element_text(size = 11),
+                   axis.title=ggplot2::element_text(size = 11))+
+    ggplot2::theme(plot.title =  ggplot2::element_text(size = 11)) +
     ggplot2::geom_vline( ggplot2::aes(xintercept = 0.9), color="black", linetype ="dashed", size = 0.5) +
      ggplot2::coord_cartesian(xlim = c(0.5, 1.5))
     # ggplot2::scale_x_continuous(breaks = sort(c(seq(0, 1.8, by = 0.2), 0.9)))
@@ -558,10 +558,10 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   mape_plot <- ggplot2::ggplot(df,  ggplot2::aes(x = mape), size=12) +
     ggplot2::geom_density() + ggplot2::ggtitle(paste("Median MAPE = ", round(median(mape,na.rm=TRUE),3), sep = "")) +
     ggplot2::geom_vline( ggplot2::aes(xintercept=mean(mape, na.rm = TRUE)), color="blue", linetype = "dashed", size=1) + ggplot2::ylab("Density") +
-    ggplot2::theme(text =  ggplot2::element_text(size = 14)) +ggplot2::xlab("MAPE") + ggplot2::theme_bw()+
-    ggplot2::theme(axis.text=ggplot2::element_text(size=14),
-                   axis.title=ggplot2::element_text(size=14))+
-    ggplot2::theme(plot.title =  ggplot2::element_text(size = 14))
+    ggplot2::theme(text =  ggplot2::element_text(size = 11)) +ggplot2::xlab("MAPE") + ggplot2::theme_bw()+
+    ggplot2::theme(axis.text=ggplot2::element_text(size = 11),
+                   axis.title=ggplot2::element_text(size = 11))+
+    ggplot2::theme(plot.title =  ggplot2::element_text(size = 11))
 
   # Predicted Probability
 
@@ -638,13 +638,13 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
     ) +
     ggplot2::ylab("Density") +
     ggplot2::xlab("Predicted Probability") +
-    ggplot2::theme(text = ggplot2::element_text(size = 14)) +
+    ggplot2::theme(text = ggplot2::element_text(size = 11)) +
     ggplot2::theme_bw() +
     ggplot2::theme(
       legend.position = "bottom",
-      axis.text = ggplot2::element_text(size = 14),
-      axis.title = ggplot2::element_text(size = 14),
-      plot.title = ggplot2::element_text(size = 14)
+      axis.text = ggplot2::element_text(size = 11),
+      axis.title = ggplot2::element_text(size = 11),
+      plot.title = ggplot2::element_text(size = 11)
     ) +
     # ggplot2::scale_x_continuous(limits=c(max(0,p_ipp_true-2.5*p_ipp_true*(1-p_ipp_true)), min(p_ipp_true+2*p_ipp_true*(1-p_ipp_true),1)))
     ggplot2::coord_cartesian(
@@ -698,13 +698,13 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
     # )  +
     ggplot2::ylab("Density") +
     ggplot2::xlab("Predicted Probability") +
-    ggplot2::theme(text = ggplot2::element_text(size = 14)) +
+    ggplot2::theme(text = ggplot2::element_text(size = 11)) +
     ggplot2::theme_bw() +
     ggplot2::theme(
       legend.position = "bottom",
-      axis.text = ggplot2::element_text(size = 14),
-      axis.title = ggplot2::element_text(size = 14),
-      plot.title = ggplot2::element_text(size = 14)
+      axis.text = ggplot2::element_text(size = 11),
+      axis.title = ggplot2::element_text(size = 11),
+      plot.title = ggplot2::element_text(size = 11)
     ) +
     # ggplot2::scale_x_continuous(limits=c(max(0,p_ipp_true-2.5*p_ipp_true*(1-p_ipp_true)), min(p_ipp_true+2*p_ipp_true*(1-p_ipp_true),1)))
     ggplot2::coord_cartesian(
@@ -721,11 +721,11 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
   p_true_plot <- ggplot2::ggplot(df,  ggplot2::aes(x = p_true), size=14) +
     ggplot2::geom_density() + ggplot2::ggtitle(paste("Distribution of true probabilities")) +
     ggplot2::geom_vline( ggplot2::aes(xintercept=  p_ipp_true), color="blue", linetype = "dashed", size=1) + ggplot2::ylab("Density") +
-    ggplot2::theme(text =  ggplot2::element_text(size = 14)) +ggplot2::xlab("True Probabilities") +
+    ggplot2::theme(text =  ggplot2::element_text(size = 11)) +ggplot2::xlab("True Probabilities") +
     ggplot2::theme_bw()+ ggplot2::theme(legend.position="bottom")+
-    ggplot2::theme(axis.text=ggplot2::element_text(size=14),
-                   axis.title=ggplot2::element_text(size=14))+
-    ggplot2::theme(plot.title =  ggplot2::element_text(size = 14))+
+    ggplot2::theme(axis.text=ggplot2::element_text(size = 11),
+                   axis.title=ggplot2::element_text(size = 11))+
+    ggplot2::theme(plot.title =  ggplot2::element_text(size = 11))+
     ggplot2::coord_cartesian(
       xlim = c(
         max(0, stats::quantile(p_true, probs = 0.0001)),
@@ -756,9 +756,9 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
       width = 0.005,
       color = "blue"
     ) +     ggplot2::theme_bw()+
-    ggplot2::theme(axis.text=ggplot2::element_text(size=14),
-                   axis.title=ggplot2::element_text(size=14)) +
-    ggplot2::theme(plot.title =  ggplot2::element_text(size = 14)) +
+    ggplot2::theme(axis.text=ggplot2::element_text(size = 11),
+                   axis.title=ggplot2::element_text(size = 11)) +
+    ggplot2::theme(plot.title =  ggplot2::element_text(size = 11)) +
     ggplot2::labs(x = "Percentile of distribution of true probabilities", y = "Median (95% CI) of IPPs")+
     ggplot2::ggtitle("Stability of IPP")
 
@@ -799,9 +799,9 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
       y = "Median (95% CI) of IPPs")+
     ggplot2::ggtitle("Stability of IPPs")+
     ggplot2::theme_bw()+
-    ggplot2::theme(axis.text=ggplot2::element_text(size=14),
-                   axis.title=ggplot2::element_text(size=14)) +
-    ggplot2::theme(plot.title =  ggplot2::element_text(size = 14)) +
+    ggplot2::theme(axis.text=ggplot2::element_text(size = 11),
+                   axis.title=ggplot2::element_text(size = 11)) +
+    ggplot2::theme(plot.title =  ggplot2::element_text(size = 11)) +
     # ggplot2::scale_y_continuous(limits=c(0,quantile(p_true, p=0.98)))
     ggplot2::coord_cartesian(ylim=c(0,quantile(p_true, p=0.98))) +
     ggplot2::annotate(
@@ -854,9 +854,9 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
     figure1,
     top = ggpubr::text_grob(
       sprintf(
-        "Sampling Distribution of CS and of Individual Predicted Probabilities (IPPs) \nMethod=%s, N=%s, Prevalence=%s, C-stat=%s, No Predictors=%s",
+        "Sampling Distribution of the CS and Individual Predicted Probabilities (IPPs) \nMethod=%s, N=%s, Prevalence=%s, C-stat=%s, No Predictors=%s",
       method, n, p, c, n.predictors),
-      color = "black", face = "bold", size = 14)
+      color = "black", face = "bold", size = 11)
   )
 
   # ---- Probability plots ----
@@ -869,7 +869,7 @@ expected_cs_mape_binary <- function(n, p, c, n.predictors, beta, nsim = 1000, nv
     figure2,
     top = ggpubr::text_grob(
       sprintf("\n Probability Distibution of true probabilities and Stability for a specific IPP"),
-      color = "black", face = "bold", size = 14))
+      color = "black", face = "bold", size = 11))
 
   final_plot <- ggpubr::ggarrange(
     cs_mape_plot, prob_plot,

@@ -17,7 +17,6 @@
 #' @param nsim (numeric) The number of simulations (at least 500, default value 1000 to ensure small simulation error)
 #' @param nval (numeric) Size of validation data (at least 10000 )
 #' @param parallel (logical) parallel processing to speed up computations (default=TRUE)
-
 #'
 #' @return n: the required sample size
 #'
