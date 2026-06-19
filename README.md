@@ -240,7 +240,8 @@ expected_performance(outcome = "Binary", n = 535, phi = 0.2, c = 0.85, p = 10, m
 # where Acceptable Performance is defined $S\in (0.85, 1.15)$
 # Performance target: PrAP(S)=0.8; Prevalence=0.2; c-statistic=0.85; Number of predictors=10
 
-samplesizedev(outcome="Binary", l_s= 0.85, u_s = 1.15, PAP_s = 0.8, phi = 0.2, c = 0.85, p = 10,  quick = FALSE)
+samplesizedev(outcome="Binary", l_s= 0.85, u_s = 1.15, PAP_s = 0.8,
+              phi = 0.2, c = 0.85, p = 10,  quick = FALSE)
 
 $sim
 [1] 701
