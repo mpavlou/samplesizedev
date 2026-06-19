@@ -255,7 +255,8 @@ The sample size calculated using simulation targeting at E(S)=0.9 is 535, while 
 
 As before, one may use the 'quick = TRUE' option which uses a bias-reduction analytical method. This runs much faster and provides a very good approximation:
 ``` r
-samplesizedev(outcome="Binary", l_s= 0.85, u_s = 1.15, PAP_s = 0.8, phi = 0.2, c = 0.85, p = 10,  quick = FALSE)
+samplesizedev(outcome="Binary", l_s= 0.85, u_s = 1.15, PAP_s = 0.8,
+              phi = 0.2, c = 0.85, p = 10,  quick = FALSE)
 
 $analytical
 [1] 649
