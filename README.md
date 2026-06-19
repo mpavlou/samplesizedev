@@ -9,6 +9,8 @@
 
 R package to calculate the sample size for the development of risk models for binary outcomes.
 
+Last Update: 17/06/2026
+
 Related papers: 
 
 **"An evaluation of sample size requirements for developing risk prediction models with binary outcomes"**, BMC Medical Research Methodology https://doi.org/10.1186/s12874-024-02268-5
@@ -115,17 +117,23 @@ $note
 
 ```
 
-Alternatively, one may use the 'quick = TRUE' option which directly uses the bias-reduction for Riley's formula:
+Alternatively, one may use the 'quick = TRUE' option which directly uses the bias-reduction adjustment for Riley's formula, which uses the 'adjusted C-statistic' as input:
 
 ``` r
 # Fast calculation (approximation) 
 
-samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, quick = FALSE)
+samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, quick = TRUE)
 > $rvs
 > [1] 309
 > $analytical_corrected
 > [1] 486
 ``` 
+We note that the adjusted C-statistic value used for the corrected calculation above is 0.79:
+
+``` r
+c_adj(target.prev = 0.2, target.c = 0.85, p = 10)
+> [1] 0.788
+```
 
 The sample size calculated using simulation is n$sim=535 which corresponds to CS=0.9. In comparison, 
 the sample size using previously proposed formulae is n$rvs=309. According to the findings in our paper
@@ -173,10 +181,10 @@ SD(IPP)                                 0.0630
 <img width="788" height="586" alt="github_fig1" src="https://github.com/user-attachments/assets/82ed1f9a-eb00-4c0a-a81d-4a3c2308f250" />
 
 
-As expected, the mean calibration slope for n$rvs=309 is 0.831, smaller than 0.9. The variability is high and translates to 
+As expected, the median calibration slope for n$rvs=309 is 0.831, smaller than 0.9. The variability is high and translates to 
 43% chance of actually getting a model with calibration slope $\in(0.85,1.15)$ when we develop a model with data of that size. Hence, larger size is required.  
-In this case, to get a mean calibration slope of 0.9 we need to inflate n$rvs size by approximately 60%! We can confirm that with a sample size of 535 we 
-get the desired expected calibration slope:  
+In this case, to get a median calibration slope of 0.9 we need to inflate n$rvs size by approximately 60%! We can confirm that with a sample size of 535 we 
+get the desired median calibration slope:  
 
 ``` r
 expected_performance(outcome = "Binary", n = 535, phi = 0.2, c = 0.85, p = 10, method = "MLE")
@@ -225,7 +233,7 @@ expected_performance(outcome = "Binary", n = 535, phi = 0.2, c = 0.85, p = 10, m
 ```
 
 
-#### Calculation of sample size for given model characteristics, aiming at the $\textcolor{#f00}{ \text{Probability of acceptable calibration, PrAP(S)=0.8}}$ 
+#### Calculation of sample size for given model characteristics, aiming at $\textcolor{#f00}{ \textbf{Probability of acceptable calibration, PrAP(CS)=0.8}}$ 
 
 ``` r
 # Calculate the sample size Size for Probability of Acceptable Performance (PAP=0.8),
