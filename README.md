@@ -229,7 +229,7 @@ and *we are not guaranteed* to achieve that performance for every development sa
  
 ``` r
 # Try the alternative estimation methods ridge and LASSO
-expected_performance(outcome = "Binary", n = 535, phi = 0.2, c = 0.85, p = 10, method = "LSF")
+expected_performance(outcome = "Binary", n = 535, phi = 0.2, c = 0.85, p = 10, method = "ridge")
 ```
 
 
