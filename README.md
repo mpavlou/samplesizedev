@@ -230,6 +230,35 @@ and *we are not guaranteed* to achieve that performance for every development sa
 ``` r
 # Try the alternative estimation methods ridge and LASSO
 expected_performance(outcome = "Binary", n = 535, phi = 0.2, c = 0.85, p = 10, method = "ridge")
+                                          [,1]
+n                                     535.0000
+True prevalence                         0.2000
+True c-statistic                        0.8500
+Number of predictors                   10.0000
+-------------------------------------  
+Sampling distribution of                
+aggregate performance measures          
+-------------------------------------   
+Mean Calibration Slope (CS)             1.0160
+SD(CS)                                  0.1123
+Pr(0.85<CS<1.15)                        0.8200
+Mean MAPE                               0.0375
+SD(MAPE)                                0.0082
+Mean AUC                                0.8420
+SD(AUC)                                 0.0055
+SD(Average Predicted Risk)              0.0150
+Median CS                               1.0070
+Median Brier Score                      0.1150
+Median Sensitivity (threshold prev)     0.7690
+Median Net Benefit (threshold prev)     0.1040
+------------------------------------    
+Sampling distribution of Individual     
+Predicted Probability (IPP) = 0.112     
+------------------------------------    
+Median IPP                              0.1200
+SD(IPP)                                 0.0430
+------------------------------------    
+
 ```
 
 
