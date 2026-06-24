@@ -11,7 +11,7 @@ R package to calculate the sample size for the development of risk models for bi
 
 Last Update: 17/06/2026
 
-Related papers: 
+**Related papers:**
 
 **"An evaluation of sample size requirements for developing risk prediction models with binary outcomes"**, BMC Medical Research Methodology https://doi.org/10.1186/s12874-024-02268-5
 
@@ -20,7 +20,7 @@ https://doi.org/10.48550/arXiv.2509.14028
 
 **"Penalized Regression Methods With Modified Cross-Validation and Bootstrap Tuning Produce Better Prediction Models"**. Biometrical Journal, https://onlinelibrary.wiley.com/doi/10.1002/bimj.202300245
 
-**Note** For sample size calculations for ***model validation*** you may consider the R package [samplesizeval](https://github.com/mpavlou/sampsizeval).  
+**Note:** For sample size calculations for ***model validation*** you may consider the R package [samplesizeval](https://github.com/mpavlou/sampsizeval).  
 
 ### Why do we need 'samplesizedev'?
 
