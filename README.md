@@ -28,9 +28,8 @@ Riley et al. (2019) proposed calculating the development for a prediction model 
 
 Hence, we developed the **new package 'samplesizedev'** which performs ***unbiased sample size calculations*** regardless of model strength. Our software uses simulation in the background so calculations can take a bit to run (from  few seconds to 3 minutes depending on the specific scenario and computational power). Currently it can be used for the development of risk models for binary outcomes; functionality for ***time to event outcomes***  is under development. 
 
-### $\textcolor{#f00}{\large  \textbf{UPDATES}}$
+### $\textcolor{#f00}{\large  \textbf{RECENT UPDATES}}$
 
-The package has been recently been updated (April 2026) to:
 - perform sample size calculations than also ***control the*** $\textcolor{#f00}{variability}$ ***in the calibration slope, instead of *just* the expected value***.
 - perform sample size calculations using analytical expressions which result in a very good approximation and impressive speed improvements 
 - obtain the sampling distribution for a variety of performance measures (e.g. C-statistic, Brier score etc) for a given sample size
