@@ -20,7 +20,7 @@ https://doi.org/10.48550/arXiv.2509.14028
 
 **"Penalized Regression Methods With Modified Cross-Validation and Bootstrap Tuning Produce Better Prediction Models"**. Biometrical Journal, https://onlinelibrary.wiley.com/doi/10.1002/bimj.202300245
 
-\textbf{Note:} For sample size calculations for \textit{model validation} you may consider the R package [samplesizeval](https://github.com/mpavlou/sampsizeval).  
+$\textbf{Note:}$ For sample size calculations for \textit{model validation} you may consider the R package [samplesizeval](https://github.com/mpavlou/sampsizeval).  
 
 ### Why do we need 'samplesizedev'?
 
