@@ -92,11 +92,11 @@ library(samplesizedev)
 # ?expected_performance
 ```
 
-#### Calculation of sample size for given model characteristics, aiming at $\textcolor{#f00}{ \text{ expected Calibration slope,  E(S)=0.9}}$ 
+#### Calculation of sample size for given model characteristics, aiming at $\textcolor{#f00}{ \text{ average Calibration slope,  Median(CS)=0.9}}$ 
 
 ``` r
 # Calculate sample size for target calibration slope
-# Performance target: E(S)=0.9; Prevalence=0.2; c-statistic=0.85; Number of predictors=10;
+# Performance target: Median(CS)=0.9; Prevalence=0.2; c-statistic=0.85; Number of predictors=10;
 # Calculation takes about a minute 
 
 samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, quick = FALSE)
@@ -282,7 +282,7 @@ $analytical
 # $analytical is the sample size calculated using an analytical approximation to ensure that PrAP(S)=0.8
 
 ```
-The sample size calculated using simulation targeting at E(S)=0.9 is 535, while the sample size to ensure that PrAP(S)=0.8 is 701.
+The sample size calculated using simulation targeting at Median(CS)=0.9 is 535, while the sample size to ensure that PrAP(S)=0.8 is 701.
 
 As before, one may use the 'quick = TRUE' option which uses a bias-reduction analytical method. This runs much faster and provides a very good approximation:
 ``` r
