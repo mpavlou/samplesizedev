@@ -20,6 +20,8 @@ https://doi.org/10.48550/arXiv.2509.14028
 
 **"Penalized Regression Methods With Modified Cross-Validation and Bootstrap Tuning Produce Better Prediction Models"**. Biometrical Journal, https://onlinelibrary.wiley.com/doi/10.1002/bimj.202300245
 
+For sample size calculations for the validation of risk models please look at the R package [samplesizeval](https://github.com/mpavlou/sampsizeval)  
+
 ### Why do we need 'samplesizedev'?
 
 Riley et al. (2019) proposed calculating the development for a prediction model to ensure that the expected overfitting, as quantified by the calibration slope, is small . The default target is calibration slope=0.9. Other criteria which include the optimism in R2 Nagelkerke and the precision in the mean predicted risk. The formula which aims to control model overfitting ('calibration' formula - C1) most often gives that highest sample size and our article we focused primarily around this formula. While the calibration formula performed well for models with C-statistic/C-index<0.8, we found that that it substantially ***underestimated*** the sample size when the predictive strength of the model was higher. The sample sizes often needed to be increased by 50% or even doubled to meet the calibration targets.
