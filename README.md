@@ -81,7 +81,7 @@ This is a basic example which shows how to calculate:
 
 1.  the **sample size** to achieve a target expected calibration slope (e.g. target expected calibration slope **E(CS)=0.9**)  or 
 
-2. $\textcolor{#f00}{\text{NEW:}}$ the **sample size**  to achieve a target probability of acceptable performance in terms of calibration (e.g. Probability of calibration slope $\in (0.85,1.15)$, **PrAP(S)=0.8**}
+2. $\textcolor{#f00}{\text{NEW:}}$ the **sample size**  to achieve a target probability of acceptable performance in terms of calibration (e.g. Probability of calibration slope $\in (0.85,1.15)$, **PrAP(CS)=0.8**}
 
 3.  the **expected calibration slope, MAPE and other performance metrics** for a given sample size
 
@@ -97,7 +97,7 @@ library(samplesizedev)
 
 ``` r
 # Calculate sample size for target calibration slope
-# Performance target: Median(CS)=0.9; Prevalence=0.2; c-statistic=0.85; Number of predictors=10;
+# Performance target: Median(CS)=S=0.9; Prevalence=0.2; c-statistic=0.85; Number of predictors=10;
 # Calculation takes about a minute 
 
 samplesizedev(outcome = "Binary", S = 0.9, phi = 0.2, c = 0.85, p = 10, quick = FALSE)
